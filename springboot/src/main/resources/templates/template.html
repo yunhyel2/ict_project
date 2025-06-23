@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<title>template.html</title>
+		<!-- 
+			~{템플릿파일의 경로::조각명} 
+			이때 경로는 src/main/resources/templates 하위에서 부터 시작
+			확장자(.html)는 생략한다
+		-->
+		<th:block th:replace="~{layout/config::config}"></th:block>
+	</head>
+<body>
+	<div class="container">
+		<div class="container-fluid">
+			<!--  헤더:네비게이션 바 -->
+			<th:block th:replace="~{layout/header::header}"></th:block>
+			<!-- 컨텐츠 시작 -->
+			
+			<!-- 컨텐츠 끝 -->
+			<th:block th:replace="~{layout/footer::footer}"></th:block>
+		</div><!-- container-fluid -->
+	</div><!-- container -->
+</body>
+</html>

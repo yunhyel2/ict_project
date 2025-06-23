@@ -1,0 +1,21 @@
+nav .nav-item a, nav .nav-item button{
+  font-size: 13px;
+}
+
+nav a {
+  display: block;
+  padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
+  margin-right: 12px;
+  color: #ccc;
+  text-decoration: none;
+}
+
+nav a.active {
+  color: rgb(52, 142, 245);
+  font-weight: 900;
+}
+
+
+.container {
+  max-width: 800px;
+}
