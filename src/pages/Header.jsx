@@ -3,6 +3,7 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { USERS } from "/config/constants";
 import { UsersContext } from "/context/UsersContext";
 import classes from "./Header.module.scss";
+import Logo from "../components/Logo";
 
 export default function Header() {
     const { usersInfo = {}, dispatch } = useContext(UsersContext);
@@ -19,15 +20,7 @@ export default function Header() {
     return <>
         <nav className={classes.header} style={{ height: 55 }}>
             <NavLink to="/" className={({ isActive }) => isActive ? 'active' : ''}>
-                <img src="/assets/icons/logo.png" width="auto" height={30} alt="logo"/>
-                <span className={classes.logoText}>
-                    <span>D</span>
-                    <span>o</span>
-                    <span>n</span>
-                    <span>g</span>
-                    <span>n</span>
-                    <span>e</span>
-                </span>
+                <Logo />
             </NavLink>
             <ul className="navbar-nav">
                 <li className="nav-item">
