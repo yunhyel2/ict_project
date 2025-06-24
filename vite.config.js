@@ -1,5 +1,8 @@
 import { defineConfig } from 'vite';
+import path from 'path';
 import react from '@vitejs/plugin-react';
+
+const __dirname = path.resolve();
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,4 +15,14 @@ export default defineConfig({
   build: {
     outDir: 'springboot/src/main/resources/static',   // 빌드 결과물 폴더 지정
   },
+  resolve: {
+    alias: [
+      { find: '/', replacement: path.resolve(__dirname, 'src/') },
+      { find: '/pages', replacement: path.resolve(__dirname, 'src/pages') },
+      { find: '/components', replacement: path.resolve(__dirname, 'src/components') },
+      { find: '/config', replacement: path.resolve(__dirname, 'src/config') },
+      { find: '/context', replacement: path.resolve(__dirname, 'src/context') },
+      { find: '/assets', replacement: path.resolve(__dirname, '/assets') }
+    ],
+  }   
 });

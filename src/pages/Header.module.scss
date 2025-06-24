@@ -1,0 +1,47 @@
+$header_height: 60px;
+
+.header {
+    position: sticky;
+    position: -webkit-sticky;
+    top: 0;
+    width: 100%;
+    padding: 0 20px;
+    min-width: initial;
+    height: $header_height;
+    min-height: $header_height;
+    max-height: $header_height;
+    border-bottom: 1px solid var(--gray-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #FFF;
+    z-index: 2;
+    a {
+        text-decoration: none;
+    }
+    .logoText { 
+        color: black;
+        margin-left: 4px;
+        display:inline-flex;
+        gap: 2px;
+        & > span {
+            animation: updown 3s infinite;
+            transform: translateY(0);
+            &:nth-child(1) { animation-delay: .3s; }
+            &:nth-child(2) { animation-delay: .9s; }
+            &:nth-child(3) { animation-delay: 1.2s; }
+            &:nth-child(4) { animation-delay: 1.5s; }
+            &:nth-child(5) { animation-delay: 1.8s; }
+            &:nth-child(6) { animation-delay: 2.1s; }
+        }
+     }
+}
+
+@keyframes updown {
+    30% {
+        transform: translateY(-5px);
+    }
+    60% {
+        transform: translateY(0);
+    }
+}

@@ -1,7 +1,7 @@
-import axios from "axios";
-import { URL, USERS } from "../config/constants";
 import { useContext, useEffect } from "react";
-import { UsersContext } from "../context/UsersContext";
+import axios from "axios";
+import { URL, USERS } from "/config/constants";
+import { UsersContext } from "/context/UsersContext";
 
 async function getUsersFromServer () {
     const { data } = await axios.get(URL.USERS);

@@ -1,4 +1,4 @@
-import scss from '../assets/css/Loading.module.css';
+import scss from './Loading.module.css';
 
 //  <<<     데이터 뿌려주기 전 로딩 UI 컴포넌트   >>>
 export default function Loading () {

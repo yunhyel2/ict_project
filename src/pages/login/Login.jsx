@@ -1,9 +1,8 @@
-import { useContext } from "react";
-import { useRef } from "react";
-import { UsersContext } from "../context/UsersContext";
-import { URL, USERS } from "../config/constants";
-import axios from "axios";
+import { useContext, useRef } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { UsersContext } from "/context/UsersContext";
+import { URL, USERS } from "/config/constants";
 
 export default function Login() {
     const { dispatch } = useContext(UsersContext);

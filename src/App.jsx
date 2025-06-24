@@ -1,7 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import Header from './pages/Header';
-import { UsersProvider } from './context/UsersContext';
+import Header from '/pages/Header';
+import { UsersProvider } from '/context/UsersContext';
 import './App.css';
+import Menu from '/pages/Menu';
 
 function App() {
 
@@ -15,10 +16,14 @@ function App() {
   return (
     <>
       <UsersProvider>
-        <Header />
-        <div className="container">
-          <Outlet />
+        <div id="main_section">
+          <Header />
+          <main className="container">
+            <Outlet />
+          </main>
+          <Menu />
         </div>
+        <div id="side_section"></div>
       </UsersProvider>
     </>
   )

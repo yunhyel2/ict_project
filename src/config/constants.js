@@ -1,4 +1,13 @@
 
+export const MENU_URLS = {
+    MAIN: '/',
+    TODAYFEED: '/todayfeed',
+    JOINUS: '/joinUs',
+    OURPLACE: '/ourPlace',
+    MYPAGE: '/mypage'
+};
+
+
 export const URL = {
     ALLUSERS: 'http://localhost:3002/allUsers',
     USERS: 'http://localhost:3002/users',

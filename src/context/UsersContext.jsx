@@ -1,26 +1,34 @@
 import { createContext, useEffect, useReducer } from "react";
-import usersReducer from "../reducer/usersReducer";
 import axios from "axios";
 import { AUTH_KEY, URL, USERS } from "../config/constants";
 
-//  <<  1. 리듀서를 사용해 관리할 초기 State 정의  >>
 const initialState = {
     users: [],      // 사용자들 저장용
     auth: sessionStorage.getItem(AUTH_KEY.USERNAME) || null,     // 로그인한 사용자 아이디 저장용
 };
 
-//  <<  2. Context 객체 생성  >>
-//  자식 컴포넌트에서 useContext(Context객체)로 데이터를 받아야 함으로
-//  Context 객체를 export
+const usersReducer = (state, action) => {
+    console.log('(usersReducer.js)의 현재 state: ', state);
+    switch(action.type) {
+        case USERS.ALL:     // 사용자 목록
+            return { ...state, users: action.users };
+        case USERS.LOGIN:   // 로그인 처리
+            sessionStorage.setItem(AUTH_KEY.USERNAME, action.auth);
+            return { ...state, auth: action.auth };
+        case USERS.LOGOUT:  // 로그아웃 처리
+            sessionStorage.removeItem(AUTH_KEY.USERNAME);
+            return { ...state, auth: null };
+        case USERS.LIKES:   // 좋아요 처리
+            return { ...state, users: state.users.map(user => user.username === action.username ? { ...user, likes: parseInt(user.likes)+1 } : user) };
+        default:
+            console.error("존재하지 않는 요청입니다.");
+    }
+    return state;
+};
+
+
 export const UsersContext = createContext(null);
 
-//  <<  3. 사용자 관련 Provider 컴포넌트 정의  >>
-/*
-    ** children 키워드는 React에서 기본 제공하는 Props다
-       해당 컴포넌트(UsersProvider)의 자식 요소를 Props로 전달하는 역할을 한다.
-       즉 <컴포넌트>자식 JSX들</컴포넌트> 형태로 사용하면
-       이 자식 JSX들이 props.children 으로 전달된다.
-*/
 
 async function getUsersFromServer () {
   try {

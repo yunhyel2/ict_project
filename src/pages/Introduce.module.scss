@@ -1,0 +1,119 @@
+.container {
+    margin:0px;
+    text-align:center;
+    padding-top:43vh;
+    color:#fff;
+    font-family:'Roboto';
+    font-size:36px;
+    font-weight:100;
+    overflow:hidden;
+    animation:bg 5s linear infinite;
+    min-width: 800px;
+    .droppingTexts {
+        display: inline-block;
+        width: 180px;
+        text-align: left;
+        height: 36px;
+        vertical-align: 0;
+        margin-left: 16px;
+        & > div {
+            font-size:0px;
+            opacity:0;
+            margin-left:-30px;
+            position:absolute;
+            font-weight:300;   
+            &:nth-child(1) { 
+                animation: roll 4s linear infinite 0s; 
+            }
+            &:nth-child(2) {
+                animation: roll 4s linear infinite 1s;
+            }
+            &:nth-child(3) {
+                animation: roll 4s linear infinite 2s;
+            }
+            &:nth-child(4) {
+                animation: roll 4s linear infinite 3s;
+            }
+        }
+    }
+}
+
+
+
+@keyframes roll {
+  0% {
+    font-size:0px;
+    opacity:0;
+    margin-left:-30px;
+    margin-top:0px;
+    transform: rotate(-25deg);
+  }
+  3% {
+    opacity:1;
+    transform: rotate(0deg);
+  }
+  5% {
+    font-size:inherit;
+    opacity:1;
+    margin-left:0px;
+    margin-top:0px;
+  }
+  20% {
+    font-size:inherit;
+    opacity:1;
+    margin-left:0px;
+    margin-top:0px;
+    transform: rotate(0deg);
+  }
+  27% {
+    font-size:0px;
+    opacity:0.5;
+    margin-left:20px;
+    margin-top:100px;
+  }
+  100% {
+    font-size:0px;
+    opacity:0;
+    margin-left:-30px;
+    margin-top:0px;
+    transform: rotate(15deg);
+  }
+}
+
+@keyframes roll2 {
+  0% {
+    font-size:0px;
+    opacity:0;
+    margin-left:-30px;
+    margin-top:0px;
+    transform: rotate(-25deg);
+  }
+  3% {
+    opacity:1;
+    transform: rotate(0deg);
+  }
+  5% {
+    font-size:inherit;
+    opacity:1;
+    margin-left:0px;
+    margin-top:0px;
+  }
+  30% {
+    font-size:inherit;
+    opacity:1;
+    margin-left:0px;
+    margin-top:0px;
+    transform: rotate(0deg);
+  }
+  37% {
+    font-size:0;
+    opacity:0;
+  }
+  100% {
+    font-size:0px;
+    opacity:0;
+    margin-left:-30px;
+    margin-top:0px;
+    transform: rotate(15deg);
+  }
+}

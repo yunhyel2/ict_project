@@ -1,21 +1,35 @@
-nav .nav-item a, nav .nav-item button{
-  font-size: 13px;
+html {
+  --point-color: rgb(28, 134, 255);
+  --gray-border-color: #ececec;
 }
 
-nav a {
-  display: block;
-  padding: var(--bs-nav-link-padding-y) var(--bs-nav-link-padding-x);
-  margin-right: 12px;
-  color: #ccc;
-  text-decoration: none;
+#root {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: stretch;
+  width: 100vw;
+  height: 100vh;
+  background:rgb(123, 184, 255);
 }
 
-nav a.active {
-  color: rgb(52, 142, 245);
-  font-weight: 900;
+#root > #main_section {
+  width: 500px;
+  background: #FFF;
+  display: flex;
+  flex-direction: column;
 }
 
+#root > #main_section > .container {
+  flex-grow: 1;
+  padding: 20px;
+  overflow-y: auto;
+}
 
-.container {
-  max-width: 800px;
+#root > #side_section {
+  width: 500px;
+}
+
+.point {
+  color: var(--point-color);
 }
