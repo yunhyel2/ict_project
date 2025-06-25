@@ -22,7 +22,3 @@ spring:
     resources:      
       static-location: classpath:/static/ #정적자원의 물리적 위치
       add-mappings: true #자동 매핑 활성화(true:기본값),비 활성화시(false) path-pattern 및 static-location등이 적용되지 않는다
-#사용자 정의 키(타임리프 테스트 용)
-mykey:
-  yourkey:
-    wekey: love

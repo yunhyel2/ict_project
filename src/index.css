@@ -1,6 +1,6 @@
 html {
   --point-color: rgb(28, 134, 255);
-  --gray-border-color: #ececec;
+  --gray-border-color: #dedede;
 }
 
 * {
@@ -10,12 +10,12 @@ html {
 
 #root {
   display: flex;
-  gap: 20px;
+  gap: 60px;
   justify-content: center;
   align-items: stretch;
   width: 100vw;
   height: 100vh;
-  background:rgb(123, 184, 255);
+  background:rgb(202, 227, 255);
 }
 
 #root > #main_section {
@@ -23,6 +23,7 @@ html {
   background: #FFF;
   display: flex;
   flex-direction: column;
+  box-shadow: 0 0 20px 0 #191E2333
 }
 
 #root > #main_section > .container {
@@ -32,7 +33,11 @@ html {
 }
 
 #root > #side_section {
-  width: 500px;
+  width: 400px;
+  display: flex;
+  flex-direction: column;
+  -ms-flex-direction: column;
+  justify-content: center;
 }
 
 .point {

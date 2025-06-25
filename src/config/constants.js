@@ -1,19 +1,10 @@
 
-export const MENU_URLS = {
+export const URL = {
     MAIN: '/',
     TODAYFEED: '/todayfeed',
     JOINUS: '/joinUs',
     OURPLACE: '/ourPlace',
     MYPAGE: '/mypage'
-};
-
-
-export const URL = {
-    ALLUSERS: 'http://localhost:3002/allUsers',
-    USERS: 'http://localhost:3002/users',
-    BBS: 'http://localhost:3002/bbs',
-    PHOTO: 'https://picsum.photos/v2/list?page=2&limit=5000',
-    PHOTOS: 'https://jsonplaceholder.typicode.com/photos'
 };
 
 export const AUTH_KEY = {

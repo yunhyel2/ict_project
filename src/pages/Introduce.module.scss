@@ -3,7 +3,6 @@
     text-align:center;
     padding-top:43vh;
     color:#fff;
-    font-family:'Roboto';
     font-size:36px;
     font-weight:100;
     overflow:hidden;
@@ -15,6 +14,8 @@
         text-align: left;
         height: 36px;
         vertical-align: 0;
+        position: relative;
+        top: -0.18em;
         margin-left: 16px;
         & > div {
             font-size:0px;

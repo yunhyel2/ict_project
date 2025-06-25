@@ -1,8 +1,10 @@
 import { Outlet } from 'react-router-dom';
 import Header from '/pages/Header';
 import { UsersProvider } from '/context/UsersContext';
-import './App.css';
 import Menu from '/pages/Menu';
+import Search from '/components/Search';
+import './App.css';
+
 
 function App() {
 
@@ -23,7 +25,9 @@ function App() {
           </main>
           <Menu />
         </div>
-        <div id="side_section"></div>
+        <div id="side_section">
+          <Search placeholder="동네에서 검색해보세요" />
+        </div>
       </UsersProvider>
     </>
   )

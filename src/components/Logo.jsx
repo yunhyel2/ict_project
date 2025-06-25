@@ -5,7 +5,7 @@ import classes from './Logo.module.scss'
 export default function Logo() {
     return <>
         <span className={classes.logo}>
-            <img src="/assets/icons/logo.png" width="auto" height={30} alt="logo"/>
+            {/* <img src="/assets/icons/logo.png" width="auto" height={30} alt="logo"/> */}
             <span className={classes.logoText}>
                 Dongne
                 <span>Dongne</span>
