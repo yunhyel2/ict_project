@@ -10,8 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 @Controller
 public class IndexController {
 	
-	@GetMapping("/")
+	@GetMapping("*")
 	public String index(Model model) {
 		return "static/index";
+	}
+
+	@GetMapping("/admin")
+	public String admin(Model model) {
+		return "templates/admin";
 	}
 }
