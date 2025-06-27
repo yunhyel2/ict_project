@@ -1,11 +1,20 @@
 html {
+  /* 색 */
+  --text-color: #333333;
+  --text-dim-color: #cccccc;
   --point-color: rgb(28, 134, 255);
+  --point-dim-color: rgb(202, 227, 255);
   --gray-border-color: #dedede;
 }
 
 * {
   font-family: 'Noto sans KR', sans-serif;
   font-weight: 400;
+  color: var(--text-color);
+}
+
+div, input, fieldset, select {
+  border-color: var(--gray-border-color);
 }
 
 #root {
@@ -15,7 +24,7 @@ html {
   align-items: stretch;
   width: 100vw;
   height: 100vh;
-  background:rgb(202, 227, 255);
+  background:var(--point-dim-color);
 }
 
 #root > #main_section {
