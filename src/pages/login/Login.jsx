@@ -1,9 +1,8 @@
 import { useRef, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { UsersContext } from "/context/UsersContext";
 import { URL, USERS } from "/config/constants";
-import { Link } from "react-router-dom";
 
 export default function Login() {
     const { dispatch } = useContext(UsersContext);

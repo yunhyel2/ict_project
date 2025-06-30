@@ -6,8 +6,9 @@ import NotFound from "/pages/NotFound";
 import Introduce from "/pages/Introduce";
 import Map from "/pages/ourplace/Map";
 import MyPage from "/pages/mypage";
-import App from './App';
+import Gathering from "/pages/gathering/Gathering";
 import Signup from "/pages/signup/Signup";
+import App from './App';
 
 const router = createBrowserRouter([
     {
@@ -18,6 +19,7 @@ const router = createBrowserRouter([
             { path: URL.LOGIN, element: <Login /> },
             { path: "signup", element: <Signup /> },
             { path: URL.OURPLACE, element: <Map /> },
+            { path: URL.JOINUS, element: <Gathering /> },
             { path: URL.MYPAGE, element: <MyPage /> },
             { path: "*", element: <NotFound /> }
         ]
