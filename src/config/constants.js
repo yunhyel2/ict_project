@@ -1,7 +1,7 @@
 
 export const URL = {
     MAIN: '/',
-    TODAYFEED: '/todayfeed',
+    FEED: '/feed',
     JOINUS: '/joinUs',
     OURPLACE: '/ourPlace',
     MYPAGE: '/mypage',

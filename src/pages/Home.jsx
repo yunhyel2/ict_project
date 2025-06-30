@@ -1,10 +1,10 @@
 import { useContext, useEffect } from "react";
+import { Link } from "react-router-dom";
 import axios from "axios";
 import { URL, USERS } from "/config/constants";
 import { UsersContext } from "/context/UsersContext";
 import Weather from "/components/Weather";
 import ProfileImg from "/components/ProfileImg";
-import { Link } from "react-router-dom";
 
 async function getUsersFromServer () {
     const { data } = await axios.get(URL.USERS);
@@ -131,7 +131,7 @@ export default function Home() {
                                 <small className="text-gray"><i className="fas fa-calendar-check me-1" /> {getDate(date)}</small>
                             </div>
                             <div className="d-flex flex-column">
-                                <small className="text-gray text-right" style={{ fontSize: 12 }}>지원 {party}명 / {max}명</small>
+                                <small className="text-gray text-right text-nowrap" style={{ fontSize: 12 }}>지원 {party}명 / {max}명</small>
                                 <Link to={`/join/${id}`} className="btn btn-outline-primary btn-sm mt-1">지원</Link>
                             </div>
                         </li>

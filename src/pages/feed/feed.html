@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Feed Page</title>
+  <link rel="stylesheet" href="../../index.css" />
+  <style>
+    body {
+      margin: 0;
+      background: var(--point-dim-color);
+      font-family: 'Noto Sans KR', sans-serif;
+      color: var(--text-color);
+    }
+
+    /* 상단 네비게이션 바 바깥 박스 (하늘색 배경) */
+    .top-nav-wrapper {
+      width: 100%;
+      background-color: var(--point-dim-color);
+      display: flex;
+      justify-content: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 상단 네비게이션 바 본체 (가로폭 500px, 흰색 직사각형) */
+    .top-nav {
+      width: 500px;
+      height: 60px;
+      background-color: white;
+      display: flex;
+      align-items: center;
+      padding: 0 20px;
+      box-sizing: border-box;
+      border-bottom: 1px solid var(--gray-border-color);
+      font-size: 20px;
+      font-weight: bold;
+      color: var(--point-color);
+    }
+
+    /* 피드 컨테이너 (가로폭 500px, 배경 회색) */
+    .feed-container {
+      width: 500px;
+      margin: 0 auto;
+      background-color: var(--text-dim-color);
+      padding: 10px;
+      padding-top: 10px; /* 상단 네비와 겹치지 않도록 여유 */
+      padding-bottom: 65px; /* 하단 네비와 겹치지 않도록 여유 */
+      box-sizing: border-box;
+      min-height: 100vh;
+    }
+
+    .feed-card {
+    background-color: white;
+    border: 1px solid var(--gray-border-color);
+    padding: 15px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start; /* 좌측 정렬 */
+    }
+
+    .profile {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+    }
+
+    /* 회색 원형 프로필 사진 */
+    .profile-photo {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #aaa;
+    }
+
+    .username {
+    font-size: 15px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 0; /* h3, p랑 스타일 다르게 충돌 없게 */
+    }
+
+    .feed-image {
+      width: 100%;
+      height: 300px;
+      background-color: var(--gray-border-color);
+      margin-bottom: 10px;
+    }
+
+    .feed-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-start;
+    width: 100%;
+    }
+
+    .feed-actions img {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+      background: none;
+      border: none;
+    }
+    .feed-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: var(--text-color);
+    margin: 0 0 4px 0; /* 아래만 4px 띄우기 */
+    width: 100%;
+    text-align: left;
+    }
+    .feed-content {
+    font-size: 14px;
+    color: var(--text-color);
+    margin: 0 0 10px 0; /* 아래만 10px 띄우기 */
+    width: 100%;
+    text-align: left;
+    }
+
+
+    /* 하단 네비게이션 바 바깥 박스 (하늘색 배경) */
+    .bottom-nav-wrapper {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      background-color: var(--point-dim-color);
+      display: flex;
+      justify-content: center;
+      z-index: 1000;
+      box-shadow: 0 -1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    /* 하단 네비게이션 바 본체 (가로폭 500px, 흰색 직사각형) */
+    .bottom-nav {
+      width: 500px;
+      height: 60px;
+      background-color: white;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      border-top: 1px solid var(--gray-border-color);
+      box-sizing: border-box;
+    }
+
+    .nav-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      font-size: 12px;
+      color: var(--text-color);
+      text-decoration: none;
+      user-select: none;
+      cursor: pointer;
+    }
+
+    .nav-item img {
+      width: 26px;
+      height: 26px;
+      margin-bottom: 4px;
+    }
+
+    .nav-item:hover {
+      color: var(--point-color);
+    }
+  </style>
+</head>
+<body>
+  <!-- 상단 네비게이션 바 -->
+  <div class="top-nav-wrapper">
+    <nav class="top-nav">
+      MyFeed
+    </nav>
+  </div>
+
+  <!-- 피드 영역 -->
+  <main class="feed-container">
+    <!-- 피드 카드 6개 예시 -->
+    <div class="feed-card">
+    <div class="profile">
+        <div class="profile-photo"></div>
+        <h3 class="username">김수한무거북이</h3>
+    </div>
+
+    <h3 class="feed-title">오늘 날씨가 너무 좋아요! ☀️</h3>
+
+    <p class="feed-content">
+        산책하실 분 급구~<br />
+        찢었다 날씨🕶️
+    </p>
+
+    <div class="feed-actions">
+        <img src="./images/heart.png" alt="좋아요" />
+        <img src="./images/comment.png" alt="댓글" />
+    </div>
+    </div>
+
+    <div class="feed-card">
+    <div class="profile">
+        <div class="profile-photo"></div>
+        <h3 class="username">문래동핵주먹</h3>
+    </div>
+
+    <h3 class="feed-title">대학동 금호아파트 상가에  닭꼬치 트럭</h3>
+
+    <p class="feed-content">
+        타코야끼 닭꼬치 둘다 팔고 있네요^^<br />
+        강추🐔~
+    </p>
+
+    <div class="feed-actions">
+        <img src="./images/heart.png" alt="좋아요" />
+        <img src="./images/comment.png" alt="댓글" />
+    </div>
+    </div>
+
+   <div class="feed-card">
+    <div class="profile">
+        <div class="profile-photo"></div>
+        <h3 class="username">관악산샐리</h3>
+    </div>
+
+    <h3 class="feed-title">이 동네로 오늘 이사왔는데</h3>
+
+    <p class="feed-content">
+        넘 낯서네요ㅋㅋ 이 동네는 이사 오기 전까지는 한번도 와본적이<br />
+        없어서ㅎㅎ 정을 빨리 붙이고 싶은데 여기 근방의 좋은점이나<br />
+        가기 좋은장소 얘기 해 주실수 있을까요ㅎㅎ
+    </p>
+
+    <div class="feed-actions">
+        <img src="./images/heart.png" alt="좋아요" />
+        <img src="./images/comment.png" alt="댓글" />
+    </div>
+    </div>
+   <div class="feed-card">
+    <div class="profile">
+        <div class="profile-photo"></div>
+        <h3 class="username">아차산돌냥이</h3>
+    </div>
+
+    <h3 class="feed-title">광야로 걸어가</h3>
+
+    <p class="feed-content">
+        절대적 룰을 지켜 내 손을 놓지 말아<br />
+        결속은 나의 무기<br />
+        광야로 걸어가
+    </p>
+
+    <div class="feed-actions">
+        <img src="./images/heart.png" alt="좋아요" />
+        <img src="./images/comment.png" alt="댓글" />
+    </div>
+    </div>
+
+    <div class="feed-card">
+    <div class="profile">
+        <div class="profile-photo"></div>
+        <h3 class="username">구룡초슛돌이</h3>
+    </div>
+
+    <h3 class="feed-title">오늘 밤 풋살뛰실 분⚽</h3>
+
+    <p class="feed-content">
+        풋살 벙개 구해요<br/>
+        선착순 3명 쪽지 주세용✉️
+    </p>
+
+    <div class="feed-actions">
+        <img src="./images/heart.png" alt="좋아요" />
+        <img src="./images/comment.png" alt="댓글" />
+    </div>
+    </div>
+  </main>
+
+  <!-- 하단 네비게이션 바 -->
+  <div class="bottom-nav-wrapper">
+    <nav class="bottom-nav">
+      <a href="#" class="nav-item">
+        <img src="./images/home.png" alt="홈" />
+        홈
+      </a>
+      <a href="#" class="nav-item">
+        <img src="./images/feed.png" alt="오늘의 피드" />
+        오늘의 피드
+      </a>
+      <a href="#" class="nav-item">
+        <img src="./images/map.png" alt="추천플레이스" />
+        추천플레이스
+      </a>
+      <a href="#" class="nav-item">
+        <img src="./images/friendship.png" alt="친목" />
+        친목
+      </a>
+      <a href="#" class="nav-item">
+        <img src="./images/profile.png" alt="마이" />
+        마이
+      </a>
+    </nav>
+  </div>
+</body>
+</html>

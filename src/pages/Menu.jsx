@@ -4,7 +4,7 @@ import classes from './Menu.module.scss';
 
 const menus = [
   { path: URL.MAIN, label: '홈', icon: 'menuIcon1.png' },
-  { path: URL.TODAYFEED, label: '오늘의 피드', icon: 'menuIcon2.png' },
+  { path: URL.FEED, label: '오늘의 피드', icon: 'menuIcon2.png' },
   { path: URL.OURPLACE, label: '추천플레이스', icon: 'menuIcon3.png' },
   { path: URL.JOINUS, label: '구인/모집', icon: 'menuIcon4.png' },
   { path: URL.MYPAGE, label: '마이', icon: 'menuIcon5.png' }

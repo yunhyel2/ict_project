@@ -1,9 +1,9 @@
 import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { USERS } from "/config/constants";
+import { USERS, URL } from "/config/constants";
+import Logo from "/components/Logo";
 import { UsersContext } from "/context/UsersContext";
 import classes from "./Header.module.scss";
-import Logo from "../components/Logo";
 
 export default function Header() {
     const { usersInfo = {}, dispatch } = useContext(UsersContext);
@@ -29,8 +29,8 @@ export default function Header() {
     <li className="nav-item">
         {!isLogin && (
             <>
-                <NavLink to="/login" className={({ isActive }) => isActive ? 'active' : ''}>로그인</NavLink>
-                <NavLink to="/signup" className={({ isActive }) => isActive ? 'active' : ''}>회원가입</NavLink>
+                <NavLink to={URL.LOGIN} className={({ isActive }) => isActive ? 'active' : ''}>로그인</NavLink>
+                <NavLink to={URL.REGISTER} className={({ isActive }) => isActive ? 'active' : ''}>회원가입</NavLink>
             </>
         )}
         {isLogin && (
