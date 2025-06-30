@@ -4,7 +4,9 @@ export const URL = {
     TODAYFEED: '/todayfeed',
     JOINUS: '/joinUs',
     OURPLACE: '/ourPlace',
-    MYPAGE: '/mypage'
+    MYPAGE: '/mypage',
+    LOGIN: '/login',
+    REGISTER: '/register'
 };
 
 export const AUTH_KEY = {

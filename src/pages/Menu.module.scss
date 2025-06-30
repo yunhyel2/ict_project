@@ -25,6 +25,7 @@ $menu_height: 64px;
         font-weight: 400;
         text-decoration: none;
         margin: 0;
+        max-width: 20%;
         &:not(.active) {
             opacity: 0.5;
             mix-blend-mode: luminosity;

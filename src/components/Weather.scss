@@ -1,0 +1,30 @@
+#weather {
+    width: 100%;
+    height: 130px;
+    background: linear-gradient(var(--point-dim-color), var(--point-color));
+    margin-bottom: 20px;
+    gap: 8px;
+
+    .degree {
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        font-weight: 300;
+        font-size: 60px;
+        line-height: 1;
+        p { }
+        &::after {
+            content: "°C";
+            font-size: 20px;
+            vertical-align: top;
+            padding-top: 10px;
+            display: inline-block;
+        }
+    }
+
+    hr {
+        width: 1px;
+        height: 55%;
+        background-color: rgba($color: #FFF, $alpha: 1);
+        box-shadow: 0 0 5px rgba($color: #FFF, $alpha: 0.5);
+        margin-right: 20px;
+    }
+}

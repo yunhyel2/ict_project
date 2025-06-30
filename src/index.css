@@ -1,7 +1,8 @@
 html {
+  --header-height: 60px;
   /* 색 */
   --text-color: #333333;
-  --text-dim-color: #cccccc;
+  --text-dim-color: rgba(0,0,0,0.3);
   --point-color: rgb(28, 134, 255);
   --point-dim-color: rgb(202, 227, 255);
   --gray-border-color: #dedede;
@@ -10,8 +11,11 @@ html {
 * {
   font-family: 'Noto sans KR', sans-serif;
   font-weight: 400;
-  color: var(--text-color);
+  color: inherit;
 }
+
+p, ul { margin: 0; padding: 0 }
+ul { list-style: none; }
 
 div, input, fieldset, select {
   border-color: var(--gray-border-color);
@@ -32,13 +36,15 @@ div, input, fieldset, select {
   background: #FFF;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 20px 0 #191E2333
+  box-shadow: 0 0 20px 0 #191E2333;
+  position: relative;
 }
 
 #root > #main_section > .container {
   flex-grow: 1;
   padding: 20px;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 #root > #side_section {
@@ -49,6 +55,23 @@ div, input, fieldset, select {
   justify-content: center;
 }
 
-.point {
-  color: var(--point-color);
-}
+.point { color: var(--point-color); }
+.text-gray { color: var(--text-dim-color); }
+
+/* border 관련 */
+.border { border: 1px solid; }
+.border-top { border-top: 1px solid; }
+.border-left { border-left: 1px solid; }
+.border-bottom { border-bottom: 1px solid; }
+.border-right { border-right: 1px solid; }
+.border-gray { border-color: var(--gray-border-color); }
+.border-point { border-color: var(--point-color); }
+.border-radius-12 { border-radius: 12px; }
+.border-radius-20 { border-radius: 20px; }
+
+/* flex 관련 */
+.flex-grow { flex-grow: 1; }
+.gap-8 { gap: 8px; }
+.gap-20 { gap: 20px; }
+
+.pointer { cursor: pointer; }
