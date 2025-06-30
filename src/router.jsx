@@ -6,9 +6,14 @@ import Signup from "/pages/login/Signup";
 import NotFound from "/pages/NotFound";
 import Introduce from "/pages/Introduce";
 import Map from "/pages/ourplace/Map";
+import CreatePlace from "/pages/ourplace/Create";
 import MyPage from "/pages/mypage";
-import Gathering from "/pages/gathering/Gathering";
-import Feeds from "/pages/feed/Feeds";
+import Gathering from "/pages/gathering";
+import CreateGathering from "/pages/gathering/Create";
+import DetailGathering from "/pages/gathering/Detail";
+import Feeds from "/pages/feed";
+import DetailFeed from "/pages/feed/Detail";
+import CreateFeed from "/pages/feed/Create";
 import App from './App';
 
 const router = createBrowserRouter([
@@ -19,9 +24,30 @@ const router = createBrowserRouter([
             { path: "", element: <Home /> },
             { path: URL.LOGIN, element: <Login /> },
             { path: URL.REGISTER, element: <Signup /> },
-            { path: URL.FEED, element: <Feeds /> },
-            { path: URL.OURPLACE, element: <Map /> },
-            { path: URL.JOINUS, element: <Gathering /> },
+            { 
+                path: URL.FEED,
+                element: <Feeds />,
+                children: [
+                    { path: `create`, element: <CreateFeed /> },
+                    { path: ':id', element: <DetailFeed /> },
+                ]
+            },
+            { 
+                path: URL.OURPLACE,
+                element: <Map />,
+                children: [
+                    { path: `create`, element: <CreatePlace /> },
+                    { path: ':id', element: <DetailFeed /> },
+                ]
+            },
+            { 
+                path: URL.JOINUS,
+                element: <Gathering />,
+                children: [
+                    { path: `create`, element: <CreateGathering /> },
+                    { path: ':id', element: <DetailGathering /> },
+                ]
+            },
             { path: URL.MYPAGE, element: <MyPage /> },
             { path: "*", element: <NotFound /> }
         ]

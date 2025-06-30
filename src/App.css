@@ -53,10 +53,23 @@ a {
 }
 
 .list-group.full {
-    width: calc(100% + 42px);
-    margin-left: -21px;
     border-radius: 0;
 }
+.list-group.full li {
+    border-left: none;
+    border-right: none;
+}
+.p-20 .list-group.full {
+    width: calc(100% + 40px);
+    margin-left: -20px;
+}
+
+.list-group.full li { border-bottom-width: 8px; }
+.list-group.full li:first-child { border-top-width: 8px; }
+
+.p-20 .list-group.full li { border-bottom-width: 1px; }
+.p-20 .list-group.full li:first-child { border-top-width: 1px; }
+
 .list-group-item-action:hover {
     background-color: var(--point-dim-color);
 }
@@ -64,6 +77,7 @@ a {
 
 .calendar {
     width: 60px;
+    min-width: 60px;
     height: 60px;
     background-color: var(--point-color);
     border: 2px solid var(--point-color);
@@ -72,3 +86,62 @@ a {
 }
 
 .calendar p:not(.h3) { font-size: 12px; margin-bottom: 2px; }
+
+.create_button {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+    position: sticky;
+    position: -webkit-sticky;
+    bottom: 20px;
+    left: calc(100% - 70px);
+    border: none;
+    background: var(--point-color) url('/assets/icons/pencil.png') center / 55% no-repeat;
+    box-shadow: 0 0 20px 0 #191E2333;
+    display: block;
+    z-index: 1;
+}
+
+.create_button::before {
+    content: "등록하기";
+    display: block;
+    position: absolute;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    color: var(--point-color);
+    font-size: 12px;
+    font-weight: 600;
+    transition: all .2s;
+    opacity: 0;
+    border: 2px solid var(--point-color);
+    background: #FFF;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 20px;
+}
+.create_button::after {
+    content: "";
+    display: block;
+    width: 8px;
+    height: 8px;
+    background: #FFF;
+    transform: rotate(45deg) translateX(-50%);
+    position: absolute;
+    transition: all .2s;
+    opacity: 0;
+    left: 50%;
+    top: 10px;
+    border-right: 2px solid var(--point-color);
+    border-bottom: 2px solid var(--point-color);
+}
+.create_button:hover::before {
+    top: -20px;
+    opacity: 1;
+}
+
+.create_button:hover::after {
+    top: 0px;
+    opacity: 1;
+}

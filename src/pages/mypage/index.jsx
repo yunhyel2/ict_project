@@ -8,7 +8,7 @@ export default function MyPage() {
     const useremail = 'test@gmail.com';
     return <>
         <StatusBar title="마이페이지" noBack />
-        <section className="d-flex flex-column" style={{ minHeight: "calc(100% + 40px)", width: "calc(100% + 40px)", margin: -20, background: 'var(--gray-border-color)' }}>
+        <section className="d-flex flex-column overflow-y-auto" style={{ minHeight: "100%", height: '100%', background: 'var(--gray-border-color)' }}>
             <div className="mb-2 d-flex gap-20 border-bottom border-gray align-items-center p-3 pt-4 pb-4 bg-white">
                 <ProfileImg />
                 <div className="flex-grow">

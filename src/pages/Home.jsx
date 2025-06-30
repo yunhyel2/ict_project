@@ -4,6 +4,7 @@ import axios from "axios";
 import { URL, USERS } from "/config/constants";
 import { UsersContext } from "/context/UsersContext";
 import Weather from "/components/Weather";
+import { makeCalendar, getDate } from "/components";
 import ProfileImg from "/components/ProfileImg";
 
 async function getUsersFromServer () {
@@ -53,33 +54,6 @@ const join = [
     { id: 4, subject: '같이 설빙 신메뉴 먹어볼 파티원 모집합니다', date: new Date('2025/07/11').toISOString(), max: 6, party: 0, author: "정동준", profile_image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQWG4MePynPvEaiOY7cL5vnawHiKkvO0bK81o4JJx-okbML_IIrDda_FtDKeKbhV_k47-8&usqp=CAU' }
 ];
 
-const makeCalendar = (dt) => {
-    const time = new Date(dt);
-    const locale = "en-gb";
-
-    var date   = time.getDate();
-    var month = time.toLocaleString(locale,  {month: "long"});
-
-    return <>
-        <div className="d-inline-flex flex-column calendar align-items-stretch">
-            <p className="text-white text-center">{month}</p>
-            <p className="h3 bg-white text-center flex-grow mb-0">{date}</p>
-        </div>
-    </>
-}
-
-const getDate = dt => {
-    const date = dt.split('T')[0];
-    let [hour, min] = dt.split('T')[1].split(':');
-    hour = parseInt(hour);
-    min = parseInt(min);
-    let fhour = hour > 12 ? hour - 12 : hour;
-    if (fhour == 0) fhour = 12;
-    return <>
-        <span>{date}</span><span className="ms-2">{hour >= 12 ? '오후' : '오전'} {fhour}시 {min != 0 && `${min}분`}</span>
-    </>;
-};
-
 export default function Home() {
     const { dispatch } = useContext(UsersContext);
 
@@ -88,7 +62,7 @@ export default function Home() {
     }, []);
 
     return <>
-        <main>
+        <div className="p-20 overflow-y-auto" style={{ height: '100%' }}>
             <Weather />
             <section>
                 <h2 className="section_title">New 추천 플레이스</h2>
@@ -111,10 +85,16 @@ export default function Home() {
                             <div className="flex-grow d-flex flex-column">
                                 <b>{author}</b>
                                 <Link to={`/feed/${id}`} className="text-truncate d-inline-block" style={{ maxWidth: 400 }}>{title}</Link>
-                                <span className="mt-1">
-                                    <i className="fas fa-heart text-gray" /> <small className="text-gray me-3">{inter}</small>
-                                    <i className="fas fa-comment text-gray" /> <small className="text-gray">{comments}</small>
-                                </span>
+                                <div className="mt-2" style={{ opacity: 0.5 }}>
+                                    <Link to={`/feed/${id}`} className="d-inline-flex align-items-center gap-1">
+                                        <img src="/assets/icons/heart.png" width="18px" height="auto" alt="" />
+                                        <small className="me-3">{inter}</small>
+                                    </Link>
+                                    <Link to={`/feed/${id}`} className="d-inline-flex align-items-center gap-1">
+                                        <img src="/assets/icons/comment.png" width="18px" height="auto" alt="" />
+                                        <small className="me-3">{comments}</small>
+                                    </Link>
+                                </div>
                             </div>
                         </li>
                     ))}
@@ -138,6 +118,6 @@ export default function Home() {
                     ))}
                 </ul>
             </section>
-        </main>
+        </div>
     </>
 }

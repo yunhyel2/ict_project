@@ -42,9 +42,12 @@ div, input, fieldset, select {
 
 #root > #main_section > .container {
   flex-grow: 1;
+  overflow: hidden;
+  padding: 0;
+}
+
+.p-20 {
   padding: 20px;
-  overflow-y: auto;
-  overflow-x: hidden;
 }
 
 #root > #side_section {
@@ -66,6 +69,7 @@ div, input, fieldset, select {
 .border-right { border-right: 1px solid; }
 .border-gray { border-color: var(--gray-border-color); }
 .border-point { border-color: var(--point-color); }
+.border-radius-0 { border-radius: 0; }
 .border-radius-12 { border-radius: 12px; }
 .border-radius-20 { border-radius: 20px; }
 
@@ -75,3 +79,5 @@ div, input, fieldset, select {
 .gap-20 { gap: 20px; }
 
 .pointer { cursor: pointer; }
+
+.btn-none { border-color: transparent !important; }

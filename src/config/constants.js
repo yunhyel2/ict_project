@@ -9,6 +9,16 @@ export const URL = {
     REGISTER: '/register'
 };
 
+export const FEEDS = {
+    ALL: 'all',
+    CREATE: 'create'
+};
+
+export const GATHERING = {
+    ALL: 'all',
+    CREATE: 'create'
+};
+
 export const AUTH_KEY = {
     USERNAME: 'username',
     PASSWORD: 'password'

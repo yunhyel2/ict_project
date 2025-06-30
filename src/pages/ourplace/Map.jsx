@@ -1,4 +1,6 @@
 import { useEffect, useRef } from "react"
+import { Link, Outlet } from "react-router-dom";
+import { URL } from "/config/constants";
 
 export default function Map() {
     const mapRef = useRef();
@@ -45,6 +47,8 @@ export default function Map() {
     }, []);
 
     return <>
-        <div ref={mapRef} id="map" style={{ height: 'calc(100% + 40px)', margin: -20 }}></div>
+        <div ref={mapRef} id="map" style={{ minHeight: '100%' }}></div>
+        <Link to={`${URL.OURPLACE}/create`} className="create_button" />
+        <Outlet />
     </>
 }

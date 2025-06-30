@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import ProfileImg from '/components/ProfileImg';
 
-export default function Feed({ id, title, comments, inter, author, profile_image }) {
+export default function Feed({ feed, isSimple }) {
+    const { id, title, comments, inter, author, profile_image, image } = feed;
 
     return <>
         <li className="list-group-item list-group-item-action pt-3 pb-3 d-flex align-items-start gap-20" key={id}>
@@ -9,10 +10,17 @@ export default function Feed({ id, title, comments, inter, author, profile_image
             <div className="flex-grow d-flex flex-column">
                 <b>{author}</b>
                 <p style={{ maxWidth: 400 }}>{title}</p>
-                <span className="mt-1">
-                    <i className="fas fa-heart text-gray" /> <small className="text-gray me-3">{inter}</small>
-                    <i className="fas fa-comment text-gray" /> <small className="text-gray">{comments}</small>
-                </span>
+                {!isSimple && image && <img src={image} width="100%" height="auto" className="mt-2 border-radius-12" alt="" />}
+                <div className="mt-1" style={{ opacity: 0.5 }}>
+                    <button to={`/feed/${id}`} className="btn btn-none p-0 d-inline-flex align-items-center gap-1">
+                        <img src="/assets/icons/heart.png" width="18px" height="auto" alt="" />
+                        <small className="me-3">{inter}</small>
+                    </button>
+                    <Link to={`/feed/${id}`} className="btn btn-none p-0 d-inline-flex align-items-center gap-1">
+                        <img src="/assets/icons/comment.png" width="18px" height="auto" alt="" />
+                        <small className="me-3">{comments}</small>
+                    </Link>
+                </div>
             </div>
         </li>
         {/* 코멘트 버튼 누르면 코멘트 불러와서 출력 */}

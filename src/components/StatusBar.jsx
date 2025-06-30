@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import './StatusBar.scss';
 
 function StatusBar({
-    children = null, title, path, noBack
+    children = null, title, path, noBack, onBack
 }) {
     const headerRef = useRef();
     const navigate = useNavigate();
@@ -16,7 +16,7 @@ function StatusBar({
         <div id="statusBar" className="d-flex" ref={headerRef}>
             <div className="flex1">
                 {!noBack && (
-                    <button className="btn btn-link" onClick={goBack}>
+                    <button className="btn btn-none" onClick={onBack || goBack}>
                         <i className="fas fa-angle-left"/>
                     </button>
                 )}
