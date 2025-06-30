@@ -6,6 +6,7 @@ import Introduce from "/pages/Introduce";
 import { URL } from "/config/constants";
 import Map from "/pages/ourplace/Map";
 import App from './App';
+import Signup from "/pages/signup/Signup";
 
 const router = createBrowserRouter([
     {
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
         children: [
             { path: "", element: <Home /> },
             { path: "login", element: <Login /> },
+            { path: "signup", element: <Signup /> },
             { path: URL.OURPLACE, element: <Map /> },
             { path: "*", element: <NotFound /> },
         ]
