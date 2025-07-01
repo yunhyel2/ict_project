@@ -21,6 +21,10 @@ div, input, fieldset, select {
   border-color: var(--gray-border-color);
 }
 
+textarea {
+  resize: none;
+}
+
 #root {
   display: flex;
   gap: 60px;
@@ -81,3 +85,4 @@ div, input, fieldset, select {
 .pointer { cursor: pointer; }
 
 .btn-none { border-color: transparent !important; }
+.overflow-y-auto { overflow-x: hidden; }

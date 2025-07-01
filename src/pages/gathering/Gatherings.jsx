@@ -24,7 +24,7 @@ export default function Gatherings(){
                     <div key={id} className="border border-gray border-radius-12 d-flex align-items-center p-3 gap-20" style={{ flex: '1 1 50%' }}>
                         {makeCalendar(date)}
                         <div className="d-flex flex-column flex-grow">
-                            <span className="text-truncate d-inline-block mb-1" style={{ maxWidth: '250px' }}>{subject}</span>
+                            <span className="text-truncate d-inline-block mb-1" style={{ maxWidth: 240 }}>{subject}</span>
                             <small className="text-gray"><i className="fas fa-calendar-check me-1" /> {getDate(date)}</small>
                         </div>
                         <div className="d-flex flex-column">

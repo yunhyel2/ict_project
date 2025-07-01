@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import ProfileImg from '/components/ProfileImg';
 
 export default function Feed({ feed, isSimple }) {
-    const { id, title, comments, inter, author, profile_image, image } = feed;
+    const { id, title, comments, inter, author, profile_image, image, postDate } = feed;
 
     return <>
         <li className="list-group-item list-group-item-action pt-3 pb-3 d-flex align-items-start gap-20" key={id}>
