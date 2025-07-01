@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL } from "/config/constants";
 
+// https://apis.map.kakao.com/web/sample/coord2addr/
+// 유저의 현재 위치로 행정동 주소 알아내기 (가입할때 당근처럼 진행)
+
 export default function Signup() {
     const navigate = useNavigate();
     const usernameRef = useRef();

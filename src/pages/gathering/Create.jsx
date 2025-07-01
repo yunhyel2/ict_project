@@ -3,6 +3,8 @@ import { OverlayPage } from "/components";
 
 export default function CreateGathering() {
 
+    const now = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0,16);
+
     const titleRef = useRef();
     const contentRef = useRef();
     //<<유효성 체크 메시지 출력을 위한 State>>
@@ -38,11 +40,20 @@ export default function CreateGathering() {
                     <textarea ref={contentRef} style={{resize: 'none'}} className="form-control border-0" rows="18" id="feed_content" name="content" placeholder="내용을 입력하세요"></textarea>
                     <small className="text-danger">{contenteValid}</small>
                 </div>
-                <div className="p-3 border-bottom border-gray">
-                    <label htmlFor="feed_image" className="btn btn-none">
-                        <i className="fa-solid fa-image me-1" /> 사진
-                    </label>
-                    <input type="file" name="image" id="feed_image" className="invisible" accept="image/*" />
+                <div className="border-bottom border-gray d-flex align-items">
+                    <div className="d-flex p-3 flex-grow border-right border-gray">
+                        <label htmlFor="feed_date" className="align-self-center pe-2 text-nowrap">일시</label>
+                        <div className="flex-grow">
+                            <input id="feed_date" type="datetime-local" name="date" className="form-control" min={now} defaultValue={now} />
+                        </div>
+                    </div>
+                    <div className="d-flex p-3" style={{ width: 260 }}>
+                        <label htmlFor="feed_goal" className="align-self-center pe-2 text-nowrap">모집 인원</label>
+                        <div className="flex-grow">
+                            <input type="number" className="form-control" name="goal" id="feed_goal" min="0" max="99" />
+                        </div>
+                        <span className="align-self-center ps-2 text-nowrap">명</span>
+                    </div>
                 </div>
                 <div className="p-3 text-end">
                     <button className="btn btn-primary">작성하기</button>
