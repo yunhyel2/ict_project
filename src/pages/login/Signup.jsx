@@ -1,7 +1,8 @@
 import { useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL } from "/config/constants";
+import Logo from '/components/Logo';
 
 // https://apis.map.kakao.com/web/sample/coord2addr/
 // 유저의 현재 위치로 행정동 주소 알아내기 (가입할때 당근처럼 진행)
@@ -47,92 +48,57 @@ export default function Signup() {
         }
     };
 
-    return (
-        <div style={{ marginTop: "50px", textAlign: "center" }}>
-  <h2 className="point">회원가입</h2>
-  <form
-    onSubmit={handleSubmit}
-    style={{
-      display: "inline-block",
-      textAlign: "left",
-      padding: "20px",
-      border: "1px solid var(--gray-border-color)",
-      borderRadius: "5px",
-      backgroundColor: "#fff",
-      maxWidth: "500px",
-      width: "100%",
-    }}
-  >
-    <div style={{ marginBottom: "10px" }}>
-      <label>아이디</label><br />
-      <input
-        type="text"
-        ref={usernameRef}
-        placeholder="아이디를 입력하세요"
-        style={{
-          width: "100%",
-          padding: "8px",
-          boxSizing: "border-box",
-          border: "1px solid var(--gray-border-color)",
-          color: "var(--text-color)",
-        }}
-      />
-    </div>
+    return <>
+        <div style={{ height: '100%' }}>
+            <form 
+                className="d-flex flex-column align-items-stretch" 
+                style={{ gap: 20, padding: 60 }} 
+                onSubmit={handleSubmit}
+            >
+                <Logo style={{ zoom: 1.5, margin: '0px auto' }} />
+                <label htmlFor="register_id" hidden>아이디</label>
+                <input
+                    id="login_id"
+                    type="text"
+                    ref={usernameRef}
+                    placeholder="아이디를 입력하세요"
+                    className="form-control border-color-gray border-radius-20"
+                    style={{ height: 60 }}
+                />
+                <label htmlFor="register_password" hidden>비밀번호</label>
+                <input
+                    id="register_password"
+                    type="password"
+                    ref={passwordRef}
+                    placeholder="비밀번호를 입력하세요"
+                    className="form-control border-color-gray border-radius-20"
+                    style={{ height: 60 }}
+                />
 
-    <div style={{ marginBottom: "10px" }}>
-      <label>비밀번호</label><br />
-      <input
-        type="password"
-        ref={passwordRef}
-        placeholder="비밀번호를 입력하세요"
-        style={{
-          width: "100%",
-          padding: "8px",
-          boxSizing: "border-box",
-          border: "1px solid var(--gray-border-color)",
-          color: "var(--text-color)",
-        }}
-      />
-    </div>
+                <label htmlFor="register_password_confirm" hidden>비밀번호 확인</label>
+                <input
+                    id="register_password_confirm"
+                    type="password"
+                    ref={confirmRef}
+                    placeholder="비밀번호를 다시 입력하세요"
+                    className="form-control border-color-gray border-radius-20"
+                    style={{ height: 60 }}
+                />
+                <button
+                    type="submit"
+                    className="btn btn-primary border-radius-20"
+                    style={{ height: 60 }}
+                >
+                  회원가입
+                </button>
+            </form>
 
-    <div style={{ marginBottom: "10px" }}>
-      <label>비밀번호 확인</label><br />
-      <input
-        type="password"
-        ref={confirmRef}
-        placeholder="비밀번호를 다시 입력하세요"
-        style={{
-          width: "100%",
-          padding: "8px",
-          boxSizing: "border-box",
-          border: "1px solid var(--gray-border-color)",
-          color: "var(--text-color)",
-        }}
-      />
-    </div>
-
-    <div style={{ textAlign: "center" }}>
-      <button
-        type="submit"
-        style={{
-          padding: "8px 20px",
-          backgroundColor: "var(--point-color)",
-          color: "white",
-          border: "none",
-          borderRadius: "4px",
-          cursor: "pointer",
-        }}
-      >
-        회원가입
-      </button>
-    </div>
-  </form>
-
-  <p style={{ marginTop: "10px" }}>
-    이미 회원이신가요?{" "}
-    <a href="/login" className="point" style={{ textDecoration: "none" }}>
-      로그인
-    </a>
-  </p>
-</div>);
+            <p className="d-flex gap-8 justify-content-center">
+                이미 회원이신가요?
+                <Link to={URL.LOGIN} className="point">
+                  로그인
+                </Link>
+            </p>
+        </div>
+    </>;
 }

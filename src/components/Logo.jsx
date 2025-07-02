@@ -2,9 +2,9 @@ import classes from './Logo.module.scss'
 
 
 
-export default function Logo() {
+export default function Logo(props) {
     return <>
-        <span className={classes.logo}>
+        <span className={classes.logo} {...props}>
             {/* <img src="/assets/icons/logo.png" width="auto" height={30} alt="logo"/> */}
             <span className={classes.logoText}>
                 Dongne

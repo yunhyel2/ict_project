@@ -2,6 +2,7 @@ import { useRef, useContext } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import { UsersContext } from "/context/UsersContext";
+import Logo from '/components/Logo';
 import { URL, USERS } from "/config/constants";
 
 export default function Login() {
@@ -35,74 +36,42 @@ export default function Login() {
             });
     };
 
-    return (
-        <div style={{ marginTop: "50px", textAlign: "center" }}>
-    <h2 className="point">로그인</h2>
-    <form
-        onSubmit={submit}
-        style={{
-            display: "inline-block",
-            textAlign: "left",
-            padding: "20px",
-            border: "1px solid var(--gray-border-color)",
-            borderRadius: "5px",
-            backgroundColor: "#fff",
-        }}
-    >
-        <div style={{ marginBottom: "10px" }}>
-            <label>아이디</label><br />
-            <input
-                ref={userNameRef}
-                type="text"
-                name="username"
-                placeholder="아이디를 입력하세요"
-                style={{
-                    width: "100%",
-                    padding: "8px",
-                    boxSizing: "border-box",
-                    border: "1px solid var(--gray-border-color)",
-                    color: "var(--text-color)",
-                }}
-            />
+    return <>
+        <div style={{ height: '100%' }}>
+            <form className="d-flex flex-column align-items-stretch" style={{ gap: 20, padding: 60 }} onSubmit={submit}>
+                <Logo style={{ zoom: 1.5, margin: '0px auto' }} />
+                <label htmlFor="login_id" hidden>아이디</label>
+                <input
+                    id="login_id"
+                    className="form-control border-color-gray border-radius-20"
+                    ref={userNameRef}
+                    type="text"
+                    name="username"
+                    placeholder="아이디를 입력하세요"
+                    style={{ height: 60 }}
+                />
+                <label htmlFor="login_password" hidden>비밀번호</label>
+                <input
+                    id="login_password"
+                    className="form-control border-color-gray border-radius-20"
+                    ref={passwordRef}
+                    type="password"
+                    name="password"
+                    placeholder="비밀번호를 입력하세요"
+                    style={{ height: 60 }}
+                />
+                <button
+                    type="submit"
+                    className="btn btn-primary border-radius-20"
+                    style={{ height: 60 }}
+                >
+                    로그인
+                </button>
+            </form>
+            <p className="d-flex gap-8 justify-content-center">
+                아직 회원이 아니신가요?
+                <Link to={URL.REGISTER} className="point">회원가입</Link>
+            </p>
         </div>
-        <div style={{ marginBottom: "10px" }}>
-            <label>비밀번호</label><br />
-            <input
-                ref={passwordRef}
-                type="password"
-                name="password"
-                placeholder="비밀번호를 입력하세요"
-                style={{
-                    width: "100%",
-                    padding: "8px",
-                    boxSizing: "border-box",
-                    border: "1px solid var(--gray-border-color)",
-                    color: "var(--text-color)",
-                }}
-            />
-        </div>
-        <div style={{ textAlign: "center" }}>
-            <button
-                type="submit"
-                style={{
-                    padding: "8px 20px",
-                    backgroundColor: "var(--point-color)",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "4px",
-                    cursor: "pointer",
-                }}
-            >
-                로그인
-            </button>
-        </div>
-    </form>
-    <p style={{ marginTop: "10px" }}>
-    아직 회원이 아니신가요?{" "}
-    <Link to="/signup" className="point" style={{ textDecoration: "none" }}>
-        회원가입
-    </Link>
-</p>
-</div>
-);
+    </>;
 }
