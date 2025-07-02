@@ -1,16 +1,17 @@
 .container {
-    margin:0px;
+    margin: 12px 0;
     text-align:center;
-    padding-top:43vh;
-    color:#fff;
+    color:var(--text-color);
     font-size:36px;
     font-weight:100;
     overflow:hidden;
     animation:bg 5s linear infinite;
-    min-width: 800px;
+    width: 350px;
+    height: 130px;
+    zoom: 0.7;
     .droppingTexts {
         display: inline-block;
-        width: 180px;
+        width: 150px;
         text-align: left;
         height: 36px;
         vertical-align: 0;
@@ -36,6 +37,15 @@
                 animation: roll 4s linear infinite 3s;
             }
         }
+    }
+
+    .staticTexts {
+        position: relative;
+        top: 10px;
+        left: 2px;
+        font-size: 40px;
+        background: #FFF;
+        line-height: 0.8;
     }
 }
 

@@ -19,7 +19,7 @@ export default function CreateFeed() {
     
     return <>
         <OverlayPage title="오늘의 피드">
-            <form method="POST">
+            <form method="POST" className="d-flex flex-column">
                 <div className="p-3 border-bottom border-gray">
                     <textarea ref={contentRef} style={{resize: 'none'}} className="form-control border-0" rows="18" id="feed_content" name="content" placeholder="내용을 입력하세요"></textarea>
                     <small className="text-danger">{contenteValid}</small>
@@ -30,9 +30,7 @@ export default function CreateFeed() {
                     </label>
                     <input type="file" name="image" id="feed_image" className="invisible" accept="image/*" />
                 </div>
-                <div className="p-3 text-end">
-                    <button className="btn btn-primary">작성하기</button>
-                </div>
+                <button className="btn btn-primary p-3 border-radius-0">작성하기</button>
             </form>
         </OverlayPage>
     </>

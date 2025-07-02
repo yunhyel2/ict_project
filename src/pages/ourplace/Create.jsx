@@ -29,7 +29,7 @@ export default function CreatePlace() {
     
     return <>
         <OverlayPage title="추천 플레이스">
-            <form method="POST">
+            <form method="POST" className="d-flex flex-column">
                 <div className="p-3 border-bottom border-gray">
                     <input ref={titleRef} type="text" className="form-control border-0" id="feed_title" placeholder="제목을 입력하세요" name="title"/>
                     <small className="text-danger">{titleValid}</small>
@@ -44,9 +44,7 @@ export default function CreatePlace() {
                     </label>
                     <input type="file" name="image" id="feed_image" className="invisible" accept="image/*" />
                 </div>
-                <div className="p-3 text-end">
-                    <button className="btn btn-primary">작성하기</button>
-                </div>
+                <button className="btn btn-primary p-3 border-radius-0">작성하기</button>
             </form>
         </OverlayPage>
     </>

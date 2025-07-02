@@ -27,7 +27,7 @@ textarea {
 
 #root {
   display: flex;
-  gap: 60px;
+  gap: 12px;
   justify-content: center;
   align-items: stretch;
   width: 100vw;
@@ -59,7 +59,7 @@ textarea {
   display: flex;
   flex-direction: column;
   -ms-flex-direction: column;
-  justify-content: center;
+  justify-content: start;
 }
 
 .point { color: var(--point-color); }
