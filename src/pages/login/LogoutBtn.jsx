@@ -1,6 +1,6 @@
 import { useContext } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import { USERS } from "/config/constants";
+import { USERS, URL } from "/config/constants";
 import { UsersContext } from "/context/UsersContext";
 
 export default function LogoutBtn() {
@@ -12,10 +12,10 @@ export default function LogoutBtn() {
     const logout = e => {
         e.preventDefault();
         dispatch({ type: USERS.LOGOUT });
-        navigate('/');
+        navigate(URL.LOGIN);
     }
 
-    if (!isLogin) return null;
+    // if (!isLogin) return null;
 
     return <NavLink to="/logout" onClick={logout} className="btn border border-gray border-radius-12 p-3">로그아웃</NavLink>
 }

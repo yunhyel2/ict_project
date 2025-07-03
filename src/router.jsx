@@ -15,6 +15,7 @@ import Feeds from "/pages/feed";
 import DetailFeed from "/pages/feed/Detail";
 import CreateFeed from "/pages/feed/Create";
 import App from './App';
+import AppNotAuth from "./AppNotAuth";
 
 const router = createBrowserRouter([
     {
@@ -22,8 +23,6 @@ const router = createBrowserRouter([
         element: <App />,
         children: [
             { path: "", element: <Home /> },
-            { path: URL.LOGIN, element: <Login /> },
-            { path: URL.REGISTER, element: <Signup /> },
             { 
                 path: URL.FEED,
                 element: <Feeds />,
@@ -53,8 +52,12 @@ const router = createBrowserRouter([
         ]
     },
     {
-        path: '/introduce',
-        element: <Introduce />
+        path: '/',
+        element: <AppNotAuth />,
+        children: [
+            { path: URL.LOGIN, element: <Login /> },
+            { path: URL.REGISTER, element: <Signup /> }
+        ]
     }
 ]);
 

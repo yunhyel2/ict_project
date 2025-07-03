@@ -1,0 +1,16 @@
+.container {
+    min-height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+.form {
+    width: 200%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: left .3s;
+    height: 100%;
+    display: flex;
+    &.next { left: -100%; }
+    & > div { flex: 1; width: 50%; }
+}
