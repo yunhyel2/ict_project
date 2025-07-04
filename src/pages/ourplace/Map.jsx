@@ -35,18 +35,6 @@ const places = [
     }
 ];
 
-const makePlaceInfo = (place) => {
-    return `
-        <div class="d-flex gap-8 align-items-center p-2 pe-5">
-            <div class="border border-gray border-radius-12" style="width: 80px; height: 80px; background: url('${place.image}') center / cover no-repeat;"></div>
-            <div class="p-2">
-                <p class="h6 text-nowrap">${place.name}</p>
-                <span class="text-gray text-nowrap">${place.category}</span>
-            </div>
-        </div>
-    `;
-}
-
 export default function Map() {
     const [map, setMap] = useState(null);
     const [clickedMap, setClickedMap] = useState({});

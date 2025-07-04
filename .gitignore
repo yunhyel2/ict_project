@@ -12,6 +12,9 @@ dist
 dist-ssr
 springboot/src/main/resources/static
 
+db/db.erd
+*.erd
+
 *.local
 
 # Editor directories and files
