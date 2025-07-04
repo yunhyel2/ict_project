@@ -1,5 +1,4 @@
 var geocoder = geocoder;
-let coords;
 
 if (!geocoder) {
     try {
@@ -9,28 +8,50 @@ if (!geocoder) {
     };
 }
 
-// 주소로 좌표 검색 :: 카카오 좌표 객체 리턴
-export function getCoordsfromAddress(address) {
+
+export function getKakaoMap(map, {lat, lng}) {
+    return new kakao.maps.Map(map, { 
+        center: new kakao.maps.LatLng(lat, lng)
+    });
+}
+
+export function setMarker(map, { lat, lng, onclick }) {
+    var marker = new kakao.maps.Marker({
+        position: new kakao.maps.LatLng(lat, lng)
+    });
+    marker.setMap(map);
+    if (onclick) {
+        kakao.maps.event.addListener(marker, 'click', onclick);
+    }
+}
+
+
+// 주소로 좌표 중심 지도 그리기
+export function getMapfromAddress(mapRef, address, success) {
     return geocoder.addressSearch(address, function(result, status) {
 
     // 정상적으로 검색이 완료됐으면 
         if (status === kakao.maps.services.Status.OK) {
-            return new kakao.maps.LatLng(result[0].y, result[0].x);
+            const lat = result[0].y;
+            const lng = result[0].x;
 
-            // 결과값으로 받은 위치를 마커로 표시합니다
-            var marker = new kakao.maps.Marker({
-                map: map,
-                position: coords
-            });
+            const map = getKakaoMap(mapRef, {lat, lng});
+            success(map);
+        } 
+        return null;
+    });    
+}
 
-            // 인포윈도우로 장소에 대한 설명을 표시합니다
-            var infowindow = new kakao.maps.InfoWindow({
-                content: '<div style="width:150px;text-align:center;padding:6px 0;">우리회사</div>'
-            });
-            infowindow.open(map, marker);
+// 주소로 지도에 마커 찍기
+export function setMarkerfromAddress(map, address, onclick) {
+    return geocoder.addressSearch(address, function(result, status) {
 
-            // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
-            map.setCenter(coords);
+    // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
+            const lat = result[0].y;
+            const lng = result[0].x;
+
+            setMarker(map, { lat, lng, onclick })
         } 
         return null;
     });    
@@ -46,28 +67,4 @@ export function getMyAddressNow(success) {
             success({ address, lat, lng });
         });
     })
-}
-
-export function getKakaoMap(map, {lat, lng}) {
-    return new kakao.maps.Map(map, { 
-        center: new kakao.maps.LatLng(lat, lng)
-    });
-}
-
-export function setMarker(map, { lat, lng, content }) {
-    var tooltip
-    var marker = new kakao.maps.Marker({
-        position: new kakao.maps.LatLng(lat, lng)
-    });
-    marker.setMap(map);
-    if (content) {
-        tooltip = new kakao.maps.InfoWindow({
-            content : `<div style="width:150px;word-break:keep-all;text-align:center;padding:6px 0;">${content}</div>`,
-            // removable: true
-        });
-        kakao.maps.event.addListener(marker, 'mouseover', () => tooltip.open(map, marker));
-        kakao.maps.event.addListener(marker, 'mouseout', () => tooltip.close());
-    }
-    //  아래 코드는 지도 위의 마커를 제거하는 코드입니다
-    //  marker.setMap(null);
 }

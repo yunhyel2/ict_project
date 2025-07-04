@@ -17,5 +17,5 @@ export default function LogoutBtn() {
 
     // if (!isLogin) return null;
 
-    return <NavLink to="/logout" onClick={logout} className="btn border border-gray border-radius-12 p-3">로그아웃</NavLink>
+    return <NavLink to="/logout" onClick={logout} className="btn border border-gray border-radius-12 btn-sm">로그아웃</NavLink>
 }

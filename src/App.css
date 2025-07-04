@@ -145,3 +145,31 @@ a {
     top: 0px;
     opacity: 1;
 }
+
+
+.bottom-window {
+    position: absolute;
+    z-index: 1;
+    left: 0;
+    bottom: var(--header-height);
+    width: 100%;
+    transition: all .2s;
+    transform: translateY(100%);
+    margin-top: -60px;
+}
+.bottom-window.active {
+    transform: translateY(0);
+}
+
+.bottom-window .close-btn {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 20px;
+    color: var(--text-color);
+    width: 40px;
+    height: 40px;
+    border-bottom: 1px solid var(--gray-border-color);
+    border-left: 1px solid var(--gray-border-color);
+    border-radius: 0;
+}

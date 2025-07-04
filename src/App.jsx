@@ -33,7 +33,7 @@ function App() {
             <div className="d-flex flex-column gap-8 align-items-stretch pt-3">
               <LogoutBtn/>
               {/* TODO:: 관리자 유저만 보이도록 처리 */}
-              <a href="/admin" target="_blank" className="btn btn-warning border-radius-12 p-3">관리자페이지</a>
+              <a href="/admin" target="_blank" className="btn btn-warning border-radius-12 btn-sm">관리자페이지</a>
             </div>
           </div>
         </div>

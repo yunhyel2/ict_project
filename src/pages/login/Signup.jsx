@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { URL } from "/config/constants";
 import Logo from '/components/Logo';
+import Statusbar from '/components/Statusbar';
 import SignupMap from "./SignupMap";
 import classes from "./Signup.module.scss";
 
@@ -51,12 +52,19 @@ export default function Signup() {
         }
     };
 
+    const onBack = e => {
+        e.preventDefault();
+        setStep(0);
+    }
+
+    console.log(import.meta.env.VITE_SOME_KEY);
+
     return <>
         <div className={classes.container}>
             <form className={classes.form} style={{ left: `-${step * 100}%` }} onSubmit={handleSubmit} >
                 <SignupMap setStep={setStep} />
-                <div className="d-flex flex-column align-items-stretch gap-20 p-3">
-                    <Logo style={{ zoom: 1.5, margin: '0px auto' }} />
+                <div className="d-flex flex-column align-items-stretch gap-20">
+                    <Statusbar title="회원가입" onBack={onBack} />
                     <label htmlFor="register_id" hidden>아이디</label>
                     <input
                         id="register_id"
@@ -64,7 +72,6 @@ export default function Signup() {
                         ref={usernameRef}
                         placeholder="아이디를 입력하세요"
                         className="form-control border-color-gray border-radius-20"
-                        style={{ height: 60 }}
                     />
                     <label htmlFor="register_password" hidden>비밀번호</label>
                     <input
@@ -73,7 +80,6 @@ export default function Signup() {
                         ref={passwordRef}
                         placeholder="비밀번호를 입력하세요"
                         className="form-control border-color-gray border-radius-20"
-                        style={{ height: 60 }}
                     />
 
                     <label htmlFor="register_password_confirm" hidden>비밀번호 확인</label>
@@ -83,15 +89,8 @@ export default function Signup() {
                         ref={confirmRef}
                         placeholder="비밀번호를 다시 입력하세요"
                         className="form-control border-color-gray border-radius-20"
-                        style={{ height: 60 }}
                     />
-                    <button
-                        type="submit"
-                        className="btn btn-primary border-radius-0"
-                        style={{ height: 60 }}
-                    >
-                    회원가입
-                    </button>
+                    <button type="submit" className="btn btn-primary border-radius-0 mt-auto">회원가입</button>
                 </div>
             </form>
         </div>

@@ -6,7 +6,7 @@ export default function SignupMap({ setStep }) {
     const mapRef = useRef();
 
     useEffect(() => {
-        getMyAddressNow(({ address: adrs, lat, lng}) => {
+        getMyAddressNow(({ address: adrs, lat, lng }) => {
             setAddress(adrs);
             const map = getKakaoMap(mapRef.current, { lat, lng });
             setMarker(map, { lat, lng });

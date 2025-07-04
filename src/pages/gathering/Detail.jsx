@@ -16,7 +16,7 @@ export default function DetailGathering() {
     console.log(id);
     return <>
         <OverlayPage title="모임/모집">
-            <div className="d-flex flex-column">
+            <div className="d-flex flex-column" style={{ height: '100%' }}>
                 <div className="p-3 border-bottom border-gray d-flex gap-20 align-items-center" style={{ borderBottomWidth: '8px !important' }}>
                     <ProfileImg small src={profile_image} />
                     <div className="flex-grow">
@@ -38,7 +38,7 @@ export default function DetailGathering() {
                         </small>
                     </div>
                 </div>
-                <div className="p-4 ps-3 pe-3 border-bottom border-gray" dangerouslySetInnerHTML={{ __html: content }} style={{ height: 300 }} />
+                <div className="flex-grow p-4 ps-3 pe-3 border-bottom border-gray" dangerouslySetInnerHTML={{ __html: content }} />
                 {/* TODO:: 지원하기 버튼 / 마감될 경우 지원마감 버튼 노출 */}
                 <button className="btn btn-primary p-3 border-radius-0">지원하기</button>
                 <button className="btn btn-secondary p-3 border-radius-0" disabled>지원마감</button>

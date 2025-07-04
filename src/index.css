@@ -33,6 +33,7 @@ textarea {
   width: 100vw;
   height: 100vh;
   background:var(--point-dim-color);
+  overflow: hidden;
 }
 
 #root > #main_section {
@@ -60,6 +61,14 @@ textarea {
   flex-direction: column;
   -ms-flex-direction: column;
   justify-content: start;
+}
+
+#root > #side_section .btn {
+  height: 47px;
+  font-weight: 500;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .point { color: var(--point-color); }
