@@ -61,10 +61,11 @@ export default function Map() {
         <div className={`position-absolute bg-white bottom-window ${clickedMap.id ? 'active' : ''}`}>
             <div className="d-flex gap-8 align-items-center p-3 border-top border-gray">
                 <button className="btn btn-sm close-btn" onClick={() => setClickedMap({})}><i className="fas fa-xmark" /></button>
-                <div className="border border-gray border-radius-12" style={{ width: 100, height: 100, background: `url('${clickedMap.image || ''}') center / cover no-repeat` }}></div>
-                <div className="p-2">
+                <div className="border border-gray border-radius-12" style={{ minWidth: 100, height: 100, background: `url('${clickedMap.image || ''}') center / cover no-repeat` }}></div>
+                <div className="p-2 flex-grow">
                     <p className="h6 text-nowrap">{clickedMap.name || ''}</p>
                     <span className="text-gray text-nowrap">{clickedMap.category || ''}</span>
+                    <p className="text-gray"><small>{clickedMap.address || ''}</small></p>
                 </div>
             </div>
         </div>
