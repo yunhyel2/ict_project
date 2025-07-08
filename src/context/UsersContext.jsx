@@ -14,7 +14,7 @@ const usersReducer = (state, action) => {
             return { ...state, users: action.users };
         case USERS.LOGIN:   // 로그인 처리
             sessionStorage.setItem(AUTH_KEY.USERNAME, action.auth);
-            return { ...state, auth: action.auth };
+            return { ...state, auth: action.auth, users:[...state.users,action.user] };
         case USERS.LOGOUT:  // 로그아웃 처리
             sessionStorage.removeItem(AUTH_KEY.USERNAME);
             return { ...state, auth: null };

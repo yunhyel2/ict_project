@@ -13,6 +13,7 @@ export default function Login() {
 
     const submit = (e) => {
         e.preventDefault();
+        
         const username = userNameRef.current.value;
         const password = passwordRef.current.value;
 
@@ -20,13 +21,16 @@ export default function Login() {
             alert("아이디와 비밀번호를 전부 입력해주세요!");
             return;
         }
-
-        axios.get(`${URL.USERS}?username=${username}&password=${password}`)
+        
+        axios.get(`/api/login?accountId=${username}&password=${password}`)
             .then(res => {
-                if (res.data?.length > 0) {
-                    const [user] = res.data;
-                    dispatch({ type: USERS.LOGIN, auth: user.username });
-                    navigate(`/users-nested/${username}`, { replace: true });
+                console.log("res.data:",res.data);
+             
+                if (res.data.accountId) {
+                    const user = res.data;
+                    dispatch({ type: USERS.LOGIN, auth: user.accountId, user: user});
+                    navigate('/', { replace: true });
+                    //navigate(`/users-nested/${username}`, { replace: true });
                 } else {
                     alert("회원 정보가 없습니다!");
                 }

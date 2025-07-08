@@ -13,18 +13,20 @@ import classes from "./Signup.module.scss";
 export default function Signup() {
     const [step, setStep] = useState(0);
     const navigate = useNavigate();
-    const usernameRef = useRef();
+    const accountIdRef = useRef();
     const passwordRef = useRef();
     const confirmRef = useRef();
+    const userNameRef = useRef();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const username = usernameRef.current.value;
+        const accountId = accountIdRef.current.value;
         const password = passwordRef.current.value;
         const confirm = confirmRef.current.value;
-
-        if (!username || !password || !confirm) {
+        const userName = userNameRef.current.value;
+        
+        if (!accountId || !password || !confirm || !userName) {
             alert("모든 항목을 입력해주세요.");
             return;
         }
@@ -36,14 +38,16 @@ export default function Signup() {
 
         try {
             // 기존 사용자 중복 확인
-            const check = await axios.get(`${URL.USERS}?username=${username}`);
-            if (check.data.length > 0) {
+            const check = await axios.get(`/api/register?accountId=${accountId}`);
+            console.log("check의 값:",check)
+            if (check.data) {
                 alert("이미 존재하는 아이디입니다.");
                 return;
             }
 
             // 회원 등록 요청
-            await axios.post(`${URL.USERS}`, { username, password });
+            const dto = await axios.post(`/api/register`, { accountId, password, userName });
+            console.log("dto:",dto.data.createdAt)
             alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
             navigate("/login");
         } catch (err) {
@@ -61,17 +65,17 @@ export default function Signup() {
 
     return <>
         <div className={classes.container}>
-            <form className={classes.form} style={{ left: `-${step * 100}%` }} onSubmit={handleSubmit} >
+            <form className={classes.form} style={{ left: `-${step * 100}%`}} onSubmit={handleSubmit} >
                 <SignupMap setStep={setStep} />
                 <div className="d-flex flex-column align-items-stretch gap-20">
                     <Statusbar title="회원가입" onBack={onBack} />
                     <label htmlFor="register_id" hidden>아이디</label>
-                    <input
+                    <input style={{marginTop:"100px" }}
                         id="register_id"
                         type="text"
-                        ref={usernameRef}
+                        ref={accountIdRef}
                         placeholder="아이디를 입력하세요"
-                        className="form-control border-color-gray border-radius-20"
+                        className="form-control border-color-gray border-radius-20 "
                     />
                     <label htmlFor="register_password" hidden>비밀번호</label>
                     <input
@@ -89,6 +93,13 @@ export default function Signup() {
                         ref={confirmRef}
                         placeholder="비밀번호를 다시 입력하세요"
                         className="form-control border-color-gray border-radius-20"
+                    />
+                    <input 
+                        id="register_id"
+                        type="text"
+                        ref={userNameRef}
+                        placeholder="이름을 입력하세요"
+                        className="form-control border-color-gray border-radius-20 "
                     />
                     <button type="submit" className="btn btn-primary border-radius-0 mt-auto">회원가입</button>
                 </div>

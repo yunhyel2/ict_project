@@ -1,7 +1,10 @@
 server: #디폴트 8080
   port: 8080 
+  servlet:
+    session:
+      timeout: 1800 #30분이 기본값
 #  servlet:
-#    context-path: /myspring # 디폴트 "/"
+#    context-path: /myspring # 디폴트 "/" /myspring으로 설정시 요청할때 http://localhost:9090/myspring
 
 #타임리프 템플릿 엔진 설정(디폴트)
 spring:
@@ -22,7 +25,26 @@ spring:
     resources:      
       static-location: classpath:/static/ #정적자원의 물리적 위치
       add-mappings: true #자동 매핑 활성화(true:기본값),비 활성화시(false) path-pattern 및 static-location등이 적용되지 않는다
-
-kakao:
-  rest_api_key: cf9810d894194590b690ea81e4de1171
-  redirect_uri: http://localhost:8080/users/login/oauth2
+#데이타 베이스 연결을 위한 설정
+  datasource: #필수 설정
+    driver-class-name: oracle.jdbc.OracleDriver
+    url: jdbc:oracle:thin:@localhost:1521/XEPDB1
+    username: DONGNE
+    password: DONGNE
+   #스프링 부트의 디폴트 커넥션 풀인 Hikari 디폴트 설정.
+   #https://github.com/brettwooldridge/HikariCP?tab=readme-ov-file#frequently-used
+    hikari: #선택 사항(스프링 부트는 hikari가 기본 CP다)
+      auto-commit: true			
+      connection-timeout: 30000
+      maximum-pool-size: 10 
+  #Spring Data JPA 설정
+  jpa:
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        default_batch_fetch_size: 100  #컬렉션 or 연관 엔티티를 한번에 N(100)개씩 IN으로 가져와 N+1 완화

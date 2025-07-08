@@ -7,17 +7,17 @@
 			이때 경로는 src/main/resources/templates 하위에서 부터 시작
 			확장자(.html)는 생략한다
 		-->
-		<th:block th:replace="~{layout/config::config}"></th:block>
+		<th:block th:replace="~{templates/layout/config::config}"></th:block>
 	</head>
 <body>
 	<div class="container">
 		<div class="container-fluid">
 			<!--  헤더:네비게이션 바 -->
-			<th:block th:replace="~{layout/header::header}"></th:block>
+			<th:block th:replace="~{templates/layout/header::header}"></th:block>
 			<!-- 컨텐츠 시작 -->
 			
 			<!-- 컨텐츠 끝 -->
-			<th:block th:replace="~{layout/footer::footer}"></th:block>
+			<th:block th:replace="~{templates/layout/footer::footer}"></th:block>
 		</div><!-- container-fluid -->
 	</div><!-- container -->
 </body>

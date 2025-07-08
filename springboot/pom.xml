@@ -32,11 +32,12 @@
 	<dependencies>
 		<!--
 		프로젝트 생성후 실행시 에러:JPA모듈 주석처리
+		-->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		-->
+		
 		<!--
 		프로젝트 생성후 실행시 에러:SECURITY모듈 주석처리
 		<dependency>
@@ -44,10 +45,35 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		-->
+		
+		<!-- 
+			
+			javax.sql.DataSource를 주입 받으려면 아래 라이브러리 추가.
+			단,Spring Data JPA 사용시는 주석 처리 해도 된다
+			왜냐하면 spring-boot-starter-data-jpa에 jdbc가 포함되 있다
+		    즉 아래는 JDBC 로 데이타베이스를 CRUD용이다
+		    (com.ict.springboot.basic.database.controller.DatabaseController에서 DataSource주입용)
+		-->
+		<!--
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-jdbc</artifactId>
+		</dependency>
+		-->
+		<!--오라클 연결용 JDBC 드라이버-->
+
+		<!--폼 유효성 검증용-->
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-validation</artifactId>		    
+		</dependency>
+		
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-thymeleaf</artifactId>
 		</dependency>
+		
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
@@ -63,11 +89,13 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+		
 		<dependency>
 			<groupId>com.oracle.database.jdbc</groupId>
 			<artifactId>ojdbc11</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>

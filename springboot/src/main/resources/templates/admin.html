@@ -9,7 +9,34 @@
 		<div class="container-fluid">
 			<th:block th:replace="~{templates/layout/header::header}"></th:block>
 			<!-- 컨텐츠 시작 -->
-			
+			<fieldset class="border rounded-3 p-3">
+				<legend class="float-none w-auto px-3">회원 목록</legend>
+				<div class="my-2 text-end">
+					<a th:href="@{/signup}" class="btn btn-danger">회원 등록</a>
+				</div>
+				<table class="table table-dark table-hover text-center">
+					<thead>
+						<tr>
+							<th class="col-1">아이디</th>
+							<th class="col-2">비밀번호</th>
+							<th class="col-2">이름</th>
+							<th class="col-2">프로필이미지</th>
+							<th class="col-2">가입일</th>
+							<th class="col-2">지역</th>
+						</tr>
+					</thead>
+					<tbody class="table-sm down-file-body">
+						<tr th:each="user:${users}" th:object="${user}">
+							<td>[[${user.accountId}]]</td>
+							<td th:text="*{password}"></td>
+							<td th:text="*{userName}"></td>
+							<td th:text="*{profileImage}"></td>
+							<td th:text="*{#temporals.format(createdAt,'yyyy-MM-dd')}"></td>
+							<td th:text="*{locationId}"></td>
+						</tr>
+					</tbody>
+				</table>
+			</fieldset>
 			<!-- 컨텐츠 끝 -->
 			<th:block th:replace="~{templates/layout/footer::footer}"></th:block>
 		</div><!--container-fluid-->

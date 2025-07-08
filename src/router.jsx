@@ -56,7 +56,7 @@ const router = createBrowserRouter([
         element: <AppNotAuth />,
         children: [
             { path: URL.LOGIN, element: <Login /> },
-            { path: URL.REGISTER, element: <Signup /> }
+            { path: URL.REGISTER, element: <Signup /> },
         ]
     }
 ]);
