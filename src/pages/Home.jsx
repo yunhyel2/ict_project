@@ -63,7 +63,8 @@ export default function Home() {
 
     return <>
         <div className="p-20 overflow-y-auto" style={{ height: '100%' }}>
-            <Weather />
+            {/** [TODO]:: 유저 location 여기에 넣어야 날씨 출력 */}
+            <Weather address="서울특별시 서초구 서초동" /> 
             <section>
                 <h2 className="section_title">New 추천 플레이스</h2>
                 <ul className="d-flex gap-8 flex-wrap">

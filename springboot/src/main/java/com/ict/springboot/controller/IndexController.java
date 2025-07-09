@@ -1,14 +1,10 @@
 package com.ict.springboot.controller;
 
 
-import java.util.List;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-
-import com.ict.springboot.dto.UsersDto;
-import com.ict.springboot.service.UsersService;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,26 +15,18 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequiredArgsConstructor
 public class IndexController {
-	
-	private final UsersService usersService;
 
-	@GetMapping("*")
+	@RequestMapping(value = {
+		"/{path:^(?!api|assets|admin).*}",
+    	"/{path:^(?!api|assets|admin).*}/**"
+	})
 	public String index(Model model) {
 		return "static/index";
 	}
 
 	@GetMapping("/admin")
 	public String admin(Model model) {
-
-		List<UsersDto> users = usersService.usersAll();
-		model.addAttribute("users", users);
 		return "templates/admin";
 	}
-
-	@GetMapping("/react")
-	public String react() {
-		return "redirect:/";
-	}
-	
 
 }

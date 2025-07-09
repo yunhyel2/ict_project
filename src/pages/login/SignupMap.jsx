@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react"
 import { getMyAddressNow, getKakaoMap, setMarker } from '/components/Map';
 
-export default function SignupMap({ setStep }) {
+export default function SignupMap({ onConfirm }) {
     const [address, setAddress] = useState('');
     const mapRef = useRef();
 
@@ -15,7 +15,7 @@ export default function SignupMap({ setStep }) {
 
     const confirmAddress = e => {
         e.preventDefault();
-        setStep(1);
+        onConfirm(address);
     }
 
     return <>

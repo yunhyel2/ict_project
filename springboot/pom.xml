@@ -37,7 +37,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
-		
 		<!--
 		프로젝트 생성후 실행시 에러:SECURITY모듈 주석처리
 		<dependency>
@@ -45,6 +44,14 @@
 			<artifactId>spring-boot-starter-security</artifactId>
 		</dependency>
 		-->
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-api</artifactId>
+			<version>2.8.9</version>
+		</dependency>
+
+
 		
 		<!-- 
 			

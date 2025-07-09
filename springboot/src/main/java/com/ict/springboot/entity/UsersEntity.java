@@ -10,8 +10,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -34,22 +37,34 @@ public class UsersEntity {
     private long id;
 
     @Column(length = 20,nullable = false)
-    private String accountId;
+    private String userId;
 
     @Column(length = 50,nullable = false)
     private String password;
 
     @Column(length = 20,nullable = false)
-    private String userName;
+    private String name;
 
-    @Column(length = 255)
+    @Column(name="profile_image", length = 255)
     private String profileImage;
 
+    @Column(length = 20, nullable = true)
+    private String gender;
+
+    @Column(length = 10, nullable=false)
+    @ColumnDefault("'USER'")   // 디폴트값 문자열로 적을때 ''로 감싸야됨
+    private String role;
+    
+    @Transient   // column이 아닌데 필요할 경우, 적어준다.
+    private String address;
+
+    @Column(name="created_at")
     @ColumnDefault("SYSDATE")
     @CreationTimestamp
     private LocalDateTime createdAt;
     
-    @Column(length = 255)
-    private int locationId;
+    @ManyToOne
+    @JoinColumn(name="location_id")
+    private LocationsEntity location;
 
 }

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<title>[관리자] DONGNE: 회원 등록</title>
+		<!-- 
+			~{템플릿파일의 경로::조각명} 
+			이때 경로는 src/main/resources/templates 하위에서 부터 시작
+			확장자(.html)는 생략한다
+		-->
+		<th:block th:replace="~{templates/layout/config::config}"></th:block>
+	</head>
+<body>
+	<div class="container">
+		<div class="container-fluid">
+			<!--  헤더:네비게이션 바 -->
+			<th:block th:replace="~{templates/layout/header::header}"></th:block>
+			<!-- 컨텐츠 시작 -->
+			<fieldset class="border rounded-3 p-3">
+				<legend class="float-none w-auto px-3">회원 등록</legend>		
+				<form method="post" th:action="@{/signupProcess}">
+					<div class="mb-3 mt-3">
+						<label for="userName" class="form-label">이름</label> <input type="text"
+							class="form-control" id="userName" placeholder="이름 입력?" name="userName">
+					</div>
+					<div class="mb-3">
+						<label for="accountId" class="form-label">아이디</label> <input
+							type="text" class="form-control" id="accountId"
+							placeholder="아이디 입력" name="accountId">
+					</div>
+					<div class="mb-3">
+						<label for="password" class="form-label">비밀번호</label> <input
+							type="password" class="form-control" id="password"
+							placeholder="비밀번호 입력" name="password">
+					</div>
+					<button type="submit" class="btn btn-warning">가입</button>
+				</form>
+				<div class="d-flex justify-content-center d-none" id="errorMsg" th:data-err="${errorMessage}">
+					<div class="alert alert-success alert-dismissible my-2 w-50">
+						<button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+						<strong>가입실패!</strong> [[${errorMessage}]]
+					</div>
+				</div>
+			</fieldset>
+			<!-- 컨텐츠 끝 -->
+			<th:block th:replace="~{templates/layout/footer::footer}"></th:block>
+		</div><!-- container-fluid -->
+	</div><!-- container -->
+
+	<script>
+		const err = document.querySelector('#errorMsg').dataset.err;
+		console.log("에러메세지:",err);
+		if(err){
+			document.querySelector('#errorMsg').classList.remove('d-none');
+		}
+		
+	</script>
+</body>
+</html>

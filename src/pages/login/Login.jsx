@@ -47,7 +47,7 @@ export default function Login() {
                 <label htmlFor="login_id" hidden>아이디</label>
                 <input
                     id="login_id"
-                    className="form-control border-color-gray border-radius-20"
+                    className="form-control border-color-gray border-radius-20 ps-3"
                     ref={userNameRef}
                     type="text"
                     name="username"
@@ -57,7 +57,7 @@ export default function Login() {
                 <label htmlFor="login_password" hidden>비밀번호</label>
                 <input
                     id="login_password"
-                    className="form-control border-color-gray border-radius-20"
+                    className="form-control border-color-gray border-radius-20 ps-3"
                     ref={passwordRef}
                     type="password"
                     name="password"

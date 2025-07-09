@@ -1,107 +1,129 @@
-import { useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { URL } from "/config/constants";
-import Logo from '/components/Logo';
+import Input from "/components/Input";
 import Statusbar from '/components/Statusbar';
 import SignupMap from "./SignupMap";
 import classes from "./Signup.module.scss";
 
-// https://apis.map.kakao.com/web/sample/coord2addr/
-// 유저의 현재 위치로 행정동 주소 알아내기 (가입할때 당근처럼 진행)
+async function getUserByUserId(userId) {
+    const { data } = await axios.get(`/api/users/${userId}`);
+    return data;
+}
+async function createUser(form) {
+    const { data } = await axios.post(`/api/users`, form);
+    return data;
+}
 
 export default function Signup() {
     const [step, setStep] = useState(0);
+    const [form, setForm] = useState({
+        userId: '',
+        userIdConfirm: undefined,  // undefined: 중복체크 미진행, false : 중복체크 통과못함, true : 중복체크 통과
+        password: '',
+        passwordConfirm: '',
+        name: '',
+        address: '',
+        gender: ''
+    });
+    const { userId, userIdConfirm, password, passwordConfirm, name, address, gender } = form;
+    const validate = userId && password && name && address && passwordConfirm;
+
     const navigate = useNavigate();
-    const accountIdRef = useRef();
-    const passwordRef = useRef();
-    const confirmRef = useRef();
-    const userNameRef = useRef();
+
+    const checkDuplicate = () => {
+        getUserByUserId(userId)
+        .then(user => setForm(prev => ({ ...prev, userIdConfirm: user?.id ? false : true })))
+        .catch(() => setForm(prev => ({ ...prev, userIdConfirm: false })))
+    }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        const accountId = accountIdRef.current.value;
-        const password = passwordRef.current.value;
-        const confirm = confirmRef.current.value;
-        const userName = userNameRef.current.value;
         
-        if (!accountId || !password || !confirm || !userName) {
+        if (!userIdConfirm) {
+            alert("아이디 중복 체크를 진행해주세요.");
+            return;
+        }
+        if (!validate) {
             alert("모든 항목을 입력해주세요.");
             return;
         }
 
-        if (password !== confirm) {
-            alert("비밀번호가 일치하지 않습니다.");
-            return;
-        }
-
-        try {
-            // 기존 사용자 중복 확인
-            const check = await axios.get(`/api/register?accountId=${accountId}`);
-            console.log("check의 값:",check)
-            if (check.data) {
-                alert("이미 존재하는 아이디입니다.");
-                return;
-            }
-
-            // 회원 등록 요청
-            const dto = await axios.post(`/api/register`, { accountId, password, userName });
-            console.log("dto:",dto.data.createdAt)
+        createUser({ userId, password, name, address, gender })
+        .then(() => {
             alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
             navigate("/login");
-        } catch (err) {
-            console.error(err);
-            alert("회원가입에 실패했습니다.");
-        }
+        }).catch(() => alert("회원가입에 실패했습니다."))
     };
 
     const onBack = e => {
         e.preventDefault();
-        setStep(0);
+        setForm(prev => ({ ...prev, address: "" }))
     }
 
-    console.log(import.meta.env.VITE_SOME_KEY);
+    useEffect(() => setStep(form.address ? 1 : 0), [form.address]);
 
     return <>
         <div className={classes.container}>
             <form className={classes.form} style={{ left: `-${step * 100}%`}} onSubmit={handleSubmit} >
-                <SignupMap setStep={setStep} />
-                <div className="d-flex flex-column align-items-stretch gap-20">
+                <SignupMap onConfirm={address => setForm(prev => ({ ...prev, address }))} />
+                <div className="d-flex flex-column align-items-stretch">
                     <Statusbar title="회원가입" onBack={onBack} />
-                    <label htmlFor="register_id" hidden>아이디</label>
-                    <input style={{marginTop:"100px" }}
-                        id="register_id"
-                        type="text"
-                        ref={accountIdRef}
-                        placeholder="아이디를 입력하세요"
-                        className="form-control border-color-gray border-radius-20 "
-                    />
-                    <label htmlFor="register_password" hidden>비밀번호</label>
-                    <input
-                        id="register_password"
-                        type="password"
-                        ref={passwordRef}
-                        placeholder="비밀번호를 입력하세요"
-                        className="form-control border-color-gray border-radius-20"
-                    />
+                    <div className="d-flex flex-column flex-grow align-items-stretch gap-20 p-4" style={{ marginTop: 68 }}>
+                        <div className="d-flex align-items-center">
+                            <Input
+                                id="register_id"
+                                type="text"
+                                name="userId"
+                                label="아이디"
+                                required
+                                value={form.userId}
+                                onChange={e => setForm(prev => ({ ...prev, userId: e.target.value, userIdConfirm: undefined }))}
+                                errorMessage={userIdConfirm == false ? '중복된 아이디가 있습니다.' : ''}
+                            />
+                            <div>
+                                <input 
+                                    type="button"
+                                    value={userIdConfirm ? '사용가능' : '중복확인'} 
+                                    className={`btn border border-gray border-radius-20 ${userIdConfirm == true ? classes.identified : ''}`} 
+                                    disabled={!!userIdConfirm} 
+                                    onClick={checkDuplicate} 
+                                />
+                             </div>
+                        </div>
+                        
+                        <Input
+                            id="register_password"
+                            type="password"
+                            name="password"
+                            label="비밀번호"
+                            required
+                            value={form.password}
+                            onChange={e => setForm(prev => ({ ...prev, password: e.target.value }))}
+                        />
 
-                    <label htmlFor="register_password_confirm" hidden>비밀번호 확인</label>
-                    <input
-                        id="register_password_confirm"
-                        type="password"
-                        ref={confirmRef}
-                        placeholder="비밀번호를 다시 입력하세요"
-                        className="form-control border-color-gray border-radius-20"
-                    />
-                    <input 
-                        id="register_id"
-                        type="text"
-                        ref={userNameRef}
-                        placeholder="이름을 입력하세요"
-                        className="form-control border-color-gray border-radius-20 "
-                    />
-                    <button type="submit" className="btn btn-primary border-radius-0 mt-auto">회원가입</button>
+                        <Input
+                            label="비밀번호 확인"
+                            placeholder="비밀번호를 다시 한번 입력하세요"
+                            id="register_password_confirm"
+                            type="password"
+                            required
+                            errorMessage={password && passwordConfirm && password != passwordConfirm ? '입력하신 비밀번호와 일치하지 않습니다' : ''}
+                            value={form.passwordConfirm}
+                            onChange={e => setForm(prev => ({ ...prev, passwordConfirm: e.target.value }))}
+                        />
+                        <Input 
+                            id="register_name"
+                            type="text"
+                            name="name"
+                            label="이름"
+                            placeholder="이름을 입력하세요"
+                            required
+                            value={form.name}
+                            onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
+                        />
+                    </div>
+                    <button type="submit" className="btn btn-primary border-radius-0 mt-auto" disabled={!validate}>{validate ? '회원가입' : '폼을 전부 입력하세요'}</button>
                 </div>
             </form>
         </div>

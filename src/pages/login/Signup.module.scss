@@ -14,7 +14,24 @@
     &.next { left: -100%; }
     & > div { flex: 1; min-width: 50%; position:relative; }
 
-    input, button {
+    button[type="submit"] {
         height: 60px;
+        transition: all .2s;
+        &:disabled {
+            background: #aaa;
+            border-color: #aaa;
+        }
+    }
+
+    input[type="button"] {
+        padding: 4px 12px;
+        margin-left: 12px;
+        font-size: 14px;
+        background: #f2f2f2;
+        &.identified {
+            color: var(--point-color);
+            border: 2px solid var(--point-color) !important;
+            font-weight: 600;
+        }
     }
 }

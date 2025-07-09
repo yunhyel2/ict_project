@@ -1,18 +1,20 @@
 #weather {
-    width: 100%;
-    height: 130px;
-    background: linear-gradient(var(--point-dim-color), var(--point-color));
+    width: calc(100% + 40px);
+    height: 280px;
+    background: url('/assets/icons/weatherBg.png') 60% / cover no-repeat;
     margin-bottom: 20px;
     gap: 8px;
+    margin: -20px -20px 0;
+    justify-content: space-evenly;
+
+    img { margin: -16px 0 -20px; }
 
     .degree {
-        font-family: Verdana, Geneva, Tahoma, sans-serif;
-        font-weight: 300;
-        font-size: 60px;
+        font-weight: 500;
+        font-size: 50px;
         line-height: 1;
-        p { }
         &::after {
-            content: "°C";
+            content: "℃";
             font-size: 20px;
             vertical-align: top;
             padding-top: 10px;
@@ -20,11 +22,14 @@
         }
     }
 
-    hr {
-        width: 1px;
-        height: 55%;
-        background-color: rgba($color: #FFF, $alpha: 1);
-        box-shadow: 0 0 5px rgba($color: #FFF, $alpha: 0.5);
-        margin-right: 20px;
+    .weather-box > div{
+        background: rgba(0,0,0,0.2);
+        border-radius: 20px;
+        padding: 12px;
+        text-align: center;
+        color: #FFF;
+        width: 80px;
+        small:first-child { font-size: 12px; }
+        small:last-child { font-size: 16px; }
     }
 }

@@ -2,8 +2,8 @@
 export const URL = {
     MAIN: '/',
     FEED: '/feed',
-    JOINUS: '/joinUs',
-    OURPLACE: '/ourPlace',
+    JOINUS: '/join-us',
+    OURPLACE: '/ourplace',
     MYPAGE: '/mypage',
     LOGIN: '/login',
     REGISTER: '/register'

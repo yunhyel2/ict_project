@@ -26,6 +26,22 @@ export function setMarker(map, { lat, lng, onclick }) {
 }
 
 
+export function getLatLngFromAddress(address, success) {
+    geocoder.addressSearch(address, function(result, status) {
+        console.log('test');
+            console.log(status);
+    // 정상적으로 검색이 완료됐으면 
+        if (status === kakao.maps.services.Status.OK) {
+            const lat = result[0].y;
+            const lng = result[0].x;
+
+            success({ lat, lng });
+        } 
+        return null;
+    });    
+}
+
+
 // 주소로 좌표 중심 지도 그리기
 export function getMapfromAddress(mapRef, address, success) {
     return geocoder.addressSearch(address, function(result, status) {
