@@ -2,6 +2,29 @@
     min-height: 100%;
     position: relative;
     overflow: hidden;
+
+    hr {
+        width: calc(100% + 50px);
+        margin: 10px -25px;
+        border: none;
+        border-top: 1px dashed var(--gray-border-color);
+        opacity: 1;
+        position: relative;
+        &::after {
+            content: "선택사항";
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: #FFF;
+            padding: 0 16px;
+            font-size: 14px;
+            letter-spacing: .5em;
+            text-align: center;
+            text-indent: .5em;
+            color: #777;
+        }
+    }
 }
 .form {
     width: 200%;

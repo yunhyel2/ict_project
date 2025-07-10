@@ -24,9 +24,10 @@ export default function Signup() {
         passwordConfirm: '',
         name: '',
         address: '',
-        gender: ''
+        gender: '',
+        profileImage: null
     });
-    const { userId, userIdConfirm, password, passwordConfirm, name, address, gender } = form;
+    const { userId, userIdConfirm, password, passwordConfirm, name, address, gender, profileImage } = form;
     const validate = userId && password && name && address && passwordConfirm;
 
     const navigate = useNavigate();
@@ -122,8 +123,26 @@ export default function Signup() {
                             value={form.name}
                             onChange={e => setForm(prev => ({ ...prev, name: e.target.value }))}
                         />
+                        <hr />
+                        <div className="d-flex flex-column align-items-stretch gap-8">
+                            <small>성별</small>
+                            <fieldset className="d-flex">
+                                <input type="radio" id="male" value="남자" name="gender" onChange={() => setForm(prev => ({ ...prev, gender: '남자' }))} />
+                                <label htmlFor="male" style={{ height: 60 }}>남자</label>
+                                <input type="radio" id="female" value="여자" name="gender" onChange={() => setForm(prev => ({ ...prev, gender: '여자' }))} />
+                                <label htmlFor="female" style={{ height: 60 }}>여자</label>
+                            </fieldset>
+                        </div>
+                        <div className="d-flex flex-column align-items-stretch gap-8">
+                            <small>프로필 사진</small>
+                            <input id="profile_image" type="file" name="profileImage" accept="image/jpg, image/png, image/jpeg" />
+                            <label htmlFor="profile_image">
+                                <i className="fas fa-camera" />
+                                <p>이미지를 첨부하세요 (최대 500KB)</p>
+                            </label>
+                        </div>
                     </div>
-                    <button type="submit" className="btn btn-primary border-radius-0 mt-auto" disabled={!validate}>{validate ? '회원가입' : '폼을 전부 입력하세요'}</button>
+                    <button type="submit" className="btn btn-primary border-radius-0 mt-auto" disabled={!validate}>{validate ? '회원가입' : '필수 사항을 전부 입력하세요'}</button>
                 </div>
             </form>
         </div>

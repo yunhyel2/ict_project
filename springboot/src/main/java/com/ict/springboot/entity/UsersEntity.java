@@ -11,6 +11,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
@@ -45,7 +46,8 @@ public class UsersEntity {
     @Column(length = 20,nullable = false)
     private String name;
 
-    @Column(name="profile_image", length = 255)
+    @Lob
+    @Column(name="profile_image", columnDefinition="CLOB")  // BASE64로 저장하기 위한 LONGTEXT 설정
     private String profileImage;
 
     @Column(length = 20, nullable = true)
