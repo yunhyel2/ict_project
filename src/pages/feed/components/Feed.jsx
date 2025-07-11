@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import ProfileImg from '/components/ProfileImg';
+import { URL } from '/config/constants';
 
 export default function Feed({ feed, isSimple }) {
     const { id, title, comments, inter, author, profile_image, image, postDate } = feed;
@@ -12,11 +13,11 @@ export default function Feed({ feed, isSimple }) {
                 <p style={{ maxWidth: 400 }}>{title}</p>
                 {!isSimple && image && <img src={image} width="100%" height="auto" className="mt-2 border-radius-12" alt="" />}
                 <div className="mt-1" style={{ opacity: 0.5 }}>
-                    <button to={`/feed/${id}`} className="btn btn-none p-0 d-inline-flex align-items-center gap-1">
+                    <button to={`${URL.FEED}/${id}`} className="btn btn-none p-0 d-inline-flex align-items-center gap-1">
                         <img src="/assets/icons/heart.png" width="18px" height="auto" alt="" />
                         <small className="me-3">{inter}</small>
                     </button>
-                    <Link to={`/feed/${id}`} className="btn btn-none p-0 d-inline-flex align-items-center gap-1">
+                    <Link to={`${URL.FEED}/${id}`} className="btn btn-none p-0 d-inline-flex align-items-center gap-1">
                         <img src="/assets/icons/comment.png" width="18px" height="auto" alt="" />
                         <small className="me-3">{comments}</small>
                     </Link>

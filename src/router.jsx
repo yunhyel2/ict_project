@@ -16,6 +16,7 @@ import DetailFeed from "/pages/feed/Detail";
 import CreateFeed from "/pages/feed/Create";
 import App from './App';
 import AppNotAuth from "./AppNotAuth";
+import MyPageUserInfo from "./pages/mypage/UserInfo";
 
 const router = createBrowserRouter([
     {
@@ -48,6 +49,7 @@ const router = createBrowserRouter([
                 ]
             },
             { path: URL.MYPAGE, element: <MyPage /> },
+            { path: URL.MYINFO, element: <MyPageUserInfo /> },
             { path: "*", element: <NotFound /> }
         ]
     },

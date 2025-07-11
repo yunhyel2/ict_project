@@ -1,20 +1,11 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import Input from "/components/Input";
 import Statusbar from '/components/Statusbar';
 import { fileToBase64 } from "/components/File";
+import { getUserByAccount, createUser } from "/services/users";
 import SignupMap from "./SignupMap";
 import classes from "./Signup.module.scss";
-
-async function getUserByAccount(account) {
-    const { data } = await axios.get(`/api/users/${account}`);
-    return data;
-}
-async function createUser(form) {
-    const { data } = await axios.post(`/api/users`, form);
-    return data;
-}
 
 export default function Signup() {
     const [step, setStep] = useState(0);

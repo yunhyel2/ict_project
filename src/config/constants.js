@@ -5,6 +5,7 @@ export const URL = {
     JOINUS: '/meets',
     OURPLACE: '/places',
     MYPAGE: '/mypage',
+    MYINFO: '/myinfo',
     LOGIN: '/login',
     REGISTER: '/register'
 };

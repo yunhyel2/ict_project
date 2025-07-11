@@ -1,11 +1,20 @@
+import { Link, useNavigate } from "react-router-dom";
 import ProfileImg from "/components/ProfileImg";
 import StatusBar from "/components/StatusBar";
 import Logo from "/components/Logo";
+import { URL } from "/config/constants";
+import { deleteUser } from "/services/users";
 
 export default function MyPage() {
 
+    const navigate = useNavigate();
     const username = 'Test';
     const useremail = 'test@gmail.com';
+    const deleteAccount = () => {
+        deleteUser('test').then(({ data }) => {
+            if (data.id) navigate(URL.LOGIN);   // 성공
+        });
+    }
     return <>
         <StatusBar title="마이페이지" noBack />
         <section className="d-flex flex-column overflow-y-auto" style={{ minHeight: "100%", height: '100%', background: 'var(--gray-border-color)' }}>
@@ -15,9 +24,9 @@ export default function MyPage() {
                     <p className="h5">{username} 님</p>
                     <p className="text-gray">{useremail}</p>
                 </div>
-                <button className="btn btn-none border-radius-20" style={{ width: 40, height: 40 }}>
+                <Link to={URL.MYINFO} className="btn btn-none border-radius-20" style={{ width: 40, height: 40 }}>
                     <i className="fas fa-wrench" />
-                </button>
+                </Link>
             </div>
             <ul className="bg-white">
                 <li className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
