@@ -8,6 +8,7 @@ export default function Input({
     const [error, setError] = useState("");
     const [shrink, setShrink] = useState(false);
     const regex = props.name && REGEX[props.name?.toUpperCase()] || '';
+    const { value: inputValue = null } = props;
 
     useEffect(() => {
         if (errorMessage) setError(`* ${errorMessage}`);
@@ -25,7 +26,7 @@ export default function Input({
             if (!new RegExp(regex).test(value)) {
                 let err;
                 switch (regex) {
-                    case REGEX.USERID : err = "영문소문자로 시작하고 영문소문자/숫자/_-만 허용 (4~20자)"; break;
+                    case REGEX.ACCOUNT : err = "영문소문자로 시작하고 영문소문자/숫자/_-만 허용 (4~20자)"; break;
                     case REGEX.PASSWORD : err = "대소문자, 숫자, 특수문자 포함 (8~16자)"; break;
                     default:
                 }
@@ -36,6 +37,8 @@ export default function Input({
         }
         else setError(errorMessage || "");
     }
+
+    useEffect(() => setError(""), [inputValue])
 
     return <>
         <div className={`${classes.field} ${error ? classes.error : ''}`}>
