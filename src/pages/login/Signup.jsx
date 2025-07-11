@@ -3,11 +3,12 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Input from "/components/Input";
 import Statusbar from '/components/Statusbar';
+import { fileToBase64 } from "/components/File";
 import SignupMap from "./SignupMap";
 import classes from "./Signup.module.scss";
 
-async function getUserByUserId(userId) {
-    const { data } = await axios.get(`/api/users/${userId}`);
+async function getUserByAccount(account) {
+    const { data } = await axios.get(`/api/users/${account}`);
     return data;
 }
 async function createUser(form) {
@@ -18,8 +19,8 @@ async function createUser(form) {
 export default function Signup() {
     const [step, setStep] = useState(0);
     const [form, setForm] = useState({
-        userId: '',
-        userIdConfirm: undefined,  // undefined: 중복체크 미진행, false : 중복체크 통과못함, true : 중복체크 통과
+        account: '',
+        accountConfirm: undefined,  // undefined: 중복체크 미진행, false : 중복체크 통과못함, true : 중복체크 통과
         password: '',
         passwordConfirm: '',
         name: '',
@@ -27,21 +28,21 @@ export default function Signup() {
         gender: '',
         profileImage: null
     });
-    const { userId, userIdConfirm, password, passwordConfirm, name, address, gender, profileImage } = form;
-    const validate = userId && password && name && address && passwordConfirm;
+    const { account, accountConfirm, password, passwordConfirm, name, address, gender, profileImage } = form;
+    const validate = account && password && name && address && passwordConfirm;
 
     const navigate = useNavigate();
 
     const checkDuplicate = () => {
-        getUserByUserId(userId)
-        .then(user => setForm(prev => ({ ...prev, userIdConfirm: user?.id ? false : true })))
-        .catch(() => setForm(prev => ({ ...prev, userIdConfirm: false })))
+        getUserByAccount(account)
+        .then(user => setForm(prev => ({ ...prev, accountConfirm: user?.id ? false : true })))
+        .catch(() => setForm(prev => ({ ...prev, accountConfirm: false })))
     }
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         
-        if (!userIdConfirm) {
+        if (!accountConfirm) {
             alert("아이디 중복 체크를 진행해주세요.");
             return;
         }
@@ -50,11 +51,26 @@ export default function Signup() {
             return;
         }
 
-        createUser({ userId, password, name, address, gender })
+        createUser({ account, password, name, address, gender, profileImage: profileImage.base64 })
         .then(() => {
             alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
             navigate("/login");
         }).catch(() => alert("회원가입에 실패했습니다."))
+    };
+
+
+    const handleFile = async e => {
+        const { files } = e.target;
+        const [file] = files;
+        if (!file) return;  // 파일없음
+        if (file?.size / 1024 > 500) {  // 500KB 초과
+            alert("파일 사이즈는 500KB를 초과할 수 없습니다.");
+            e.target.files = null;
+            setForm(prev => ({ ...prev, profileImage: null }));
+            return;
+        }
+        const base64 = await fileToBase64(file);
+        setForm(prev => ({ ...prev, profileImage: { base64, name: file.name } }));
     };
 
     const onBack = e => {
@@ -68,26 +84,26 @@ export default function Signup() {
         <div className={classes.container}>
             <form className={classes.form} style={{ left: `-${step * 100}%`}} onSubmit={handleSubmit} >
                 <SignupMap onConfirm={address => setForm(prev => ({ ...prev, address }))} />
-                <div className="d-flex flex-column align-items-stretch">
+                <div className="d-flex flex-column align-items-stretch overflow-y-auto">
                     <Statusbar title="회원가입" onBack={onBack} />
                     <div className="d-flex flex-column flex-grow align-items-stretch gap-20 p-4" style={{ marginTop: 68 }}>
                         <div className="d-flex align-items-center">
                             <Input
                                 id="register_id"
                                 type="text"
-                                name="userId"
+                                name="account"
                                 label="아이디"
                                 required
-                                value={form.userId}
-                                onChange={e => setForm(prev => ({ ...prev, userId: e.target.value, userIdConfirm: undefined }))}
-                                errorMessage={userIdConfirm == false ? '중복된 아이디가 있습니다.' : ''}
+                                value={form.account}
+                                onChange={e => setForm(prev => ({ ...prev, account: e.target.value, accountConfirm: undefined }))}
+                                errorMessage={accountConfirm == false ? '중복된 아이디가 있습니다.' : ''}
                             />
                             <div>
                                 <input 
                                     type="button"
-                                    value={userIdConfirm ? '사용가능' : '중복확인'} 
-                                    className={`btn border border-gray border-radius-20 ${userIdConfirm == true ? classes.identified : ''}`} 
-                                    disabled={!!userIdConfirm} 
+                                    value={accountConfirm ? '사용가능' : '중복확인'} 
+                                    className={`btn border border-gray border-radius-20 ${accountConfirm == true ? classes.identified : ''}`} 
+                                    disabled={!!accountConfirm} 
                                     onClick={checkDuplicate} 
                                 />
                              </div>
@@ -135,10 +151,16 @@ export default function Signup() {
                         </div>
                         <div className="d-flex flex-column align-items-stretch gap-8">
                             <small>프로필 사진</small>
-                            <input id="profile_image" type="file" name="profileImage" accept="image/jpg, image/png, image/jpeg" />
+                            <input id="profile_image" type="file" name="profileImage" accept="image/jpg, image/png, image/jpeg" onChange={handleFile} />
                             <label htmlFor="profile_image">
-                                <i className="fas fa-camera" />
-                                <p>이미지를 첨부하세요 (최대 500KB)</p>
+                                {!profileImage && <>
+                                    <i className="fas fa-camera" />
+                                    <p>이미지를 첨부하세요 (최대 500KB)</p>
+                                </>}
+                                {profileImage && <>
+                                    <img src={profileImage.base64} width="40px" height="40px" className="border-radius-20" />
+                                    <p>{profileImage.name}</p>
+                                </>}
                             </label>
                         </div>
                     </div>

@@ -36,9 +36,9 @@ public class UsersController {
     }
 
     // 상세조회 (데이터 하나만)
-    @GetMapping("/{userId}")
-    public UsersDto getUserByID(@PathVariable String userId) {
-        return usersService.getByUserId(userId);
+    @GetMapping("/{account}")
+    public UsersDto getUserByID(@PathVariable String account) {
+        return usersService.getByAccount(account);
     }
 
     // 등록

@@ -11,8 +11,7 @@ fieldset {
 fieldset input[type="radio"], fieldset input[type="checkbox"], input[type="file"] {
     position: absolute;
     opacity: 0;
-    top: -999px;
-    left: -999px;
+    z-index: -1;
     width: 0;
     height: 0;
 }

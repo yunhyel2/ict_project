@@ -18,7 +18,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class UsersDto {
     private long id;
-    private String userId;
+    private String account;
     private String password;
     private String name;
     private String address;
@@ -35,7 +35,7 @@ public class UsersDto {
         LocationsEntity loc = location == null ? null : location.toEntity();
         return UsersEntity.builder()
                         .id(id)
-                        .userId(userId)
+                        .account(account)
                         .password(password)
                         .name(name)
                         .gender(gender)
@@ -50,7 +50,7 @@ public class UsersDto {
         if(uEntity==null) return null;
         return UsersDto.builder()
                     .id(uEntity.getId())
-                    .userId(uEntity.getUserId())
+                    .account(uEntity.getAccount())
                     .password(uEntity.getPassword())
                     .name(uEntity.getName())
                     .gender(uEntity.getGender())

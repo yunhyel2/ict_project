@@ -1,11 +1,13 @@
 import { useEffect, useState } from 'react';
 import classes from './Input.module.scss';
+import { REGEX } from '../config/constants';
 
 export default function Input({
     id, placeholder, label, required, errorMessage, ...props
 }) {
     const [error, setError] = useState("");
     const [shrink, setShrink] = useState(false);
+    const regex = props.name && REGEX[props.name?.toUpperCase()] || '';
 
     useEffect(() => {
         if (errorMessage) setError(`* ${errorMessage}`);
@@ -17,8 +19,22 @@ export default function Input({
         const { value } = e.target;
         if (!value) {
             setError("* 이 값은 필수입니다!");
-            e.target.focus();
-        } else setError(errorMessage || "");
+        } 
+        else if (regex) {
+
+            if (!new RegExp(regex).test(value)) {
+                let err;
+                switch (regex) {
+                    case REGEX.USERID : err = "영문소문자로 시작하고 영문소문자/숫자/_-만 허용 (4~20자)"; break;
+                    case REGEX.PASSWORD : err = "대소문자, 숫자, 특수문자 포함 (8~16자)"; break;
+                    default:
+                }
+                setError(err);
+            } else {
+                setError(null);
+            }
+        }
+        else setError(errorMessage || "");
     }
 
     return <>

@@ -30,7 +30,7 @@ public class UsersService {
     /* 검색 조회 (**안해도 무방한데 관리자 페이지에 검색을 넣으면 좋을 것 같아서 넣어봤습니다.) */
     public List<UsersDto> searchByParams(Map params) {
         List<UsersEntity> usersEntities = userRepo.searchByParams(
-            params.get("userId"), 
+            params.get("account"), 
             params.get("name"), 
             params.get("gender"), 
             params.get("location"), 
@@ -40,14 +40,14 @@ public class UsersService {
     }
 
     /* 상세 조회 */
-    public UsersDto getByUserId(String userId) {
-        Optional<UsersEntity> usersEntity = userRepo.findByUserId(userId);
+    public UsersDto getByAccount(String account) {
+        Optional<UsersEntity> usersEntity = userRepo.findByAccount(account);
         return UsersDto.toDto(usersEntity.orElseGet(()->null));
     }
 
     /* 생성 */
     public UsersDto create(UsersDto dto) {
-        boolean isDuplicated = userRepo.existsByUserId(dto.getUserId()); // 기존 테이블에 저장되어있는지 체크 (유니크한 키로 작성)
+        boolean isDuplicated = userRepo.existsByAccount(dto.getAccount()); // 기존 테이블에 저장되어있는지 체크 (유니크한 키로 작성)
         if (isDuplicated) return null; // 유니크 중복의 경우 저장안함 (아래로 내려갈시 에러 반환)
         LocationsDto location = locService.findOrCreate(dto.getAddress());
         dto.setLocation(location);
@@ -58,7 +58,7 @@ public class UsersService {
     /* 수정 */
     public UsersDto update(UsersDto dto) {
         // 유저 기존 테이블에 저장된 아이디인지 체크
-        boolean isDuplicated = userRepo.existsByUserId(dto.getUserId());
+        boolean isDuplicated = userRepo.existsByAccount(dto.getAccount());
         if (isDuplicated) return null; // 이미 가입된 아이디일 경우 저장안함;
         // 새로운 회원일 경우 save로 저장 : 저장된 객체를 반환하는데(기본값이 자동으로 들어갑니다), 그걸 dto로 변환해서 리턴한다.
         UsersEntity usersEntity = userRepo.save(dto.toEntity());
@@ -67,7 +67,7 @@ public class UsersService {
 
     /* 삭제 */
     public UsersDto delete(UsersDto dto) throws Exception {
-        if (userRepo.existsByUserId(dto.getUserId())) {
+        if (userRepo.existsByAccount(dto.getAccount())) {
             try {
                 userRepo.deleteById(dto.getId());
             } catch (Exception e) {
@@ -79,8 +79,8 @@ public class UsersService {
   
    
     /* 중복 조회 */
-    public boolean checkExists(String userId) {
-        return userRepo.existsByUserId(userId);
+    public boolean checkExists(String account) {
+        return userRepo.existsByAccount(account);
     }
     
     

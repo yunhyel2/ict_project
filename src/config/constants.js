@@ -1,12 +1,17 @@
 
 export const URL = {
     MAIN: '/',
-    FEED: '/feed',
-    JOINUS: '/join-us',
-    OURPLACE: '/ourplace',
+    FEED: '/feeds',
+    JOINUS: '/meets',
+    OURPLACE: '/places',
     MYPAGE: '/mypage',
     LOGIN: '/login',
     REGISTER: '/register'
+};
+
+export const REGEX = {
+    ACCOUNT: "^[a-zA-Z][a-zA-Z0-9_-]{3,19}$",
+    PASSWORD: "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*])[A-Za-z\\d!@#$%^&*]{8,16}$"
 };
 
 export const FEEDS = {

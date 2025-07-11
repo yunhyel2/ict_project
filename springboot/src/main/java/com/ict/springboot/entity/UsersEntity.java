@@ -37,8 +37,8 @@ public class UsersEntity {
     @Column(length = 20,nullable = false)
     private long id;
 
-    @Column(length = 20,nullable = false)
-    private String userId;
+    @Column(length = 20,nullable = false, unique=true)
+    private String account;
 
     @Column(length = 50,nullable = false)
     private String password;

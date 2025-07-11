@@ -34,13 +34,13 @@
     .errorMessage {
         font-size: 12px;
         position: absolute;
-        bottom: 8px;
+        bottom: -12px;
         right: 8px;
         transition: all .2s;
         color: indianred;
         border: 2px solid indianred;
         background-color: rgb(255, 214, 214);
-        padding: 4px 8px;
+        padding: 2px 8px;
         border-radius: 20px;
     }
     
