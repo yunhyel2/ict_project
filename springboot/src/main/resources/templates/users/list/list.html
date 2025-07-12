@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymeleaf.org">
+	<head>
+		<title>list.html</title>
+
+		<th:block th:replace="~{layout/config::config}"></th:block>
+	</head>
+<body>
+	<div class="container">
+		<div class="container-fluid">
+			<!--  헤더:네비게이션 바 -->
+			<th:block th:replace="~{layout/header::header}"></th:block>
+			<!-- 컨텐츠 시작 -->
+			<fieldset class="border rounded-3 p-3">
+				<legend class="float-none w-auto px-3">회원 목록</legend>	
+				<!-- /* 
+					<<<링크 표현식에 변수 표현식 사용하기>>>
+					@{url패턴( 파라미터명=${변수})} : 가능
+					@{url패턴?파라미터명=${변수}} : ${변수}가 단순 문자열로 처리			
+					
+				 */ -->	
+				
+				
+				<div class="my-2 text-end">				
+					<a th:href="@{/users/signup}" class="btn btn-danger">회원 등록</a>	
+				</div> 	
+				<table class="table table-dark table-hover text-center">
+					<thead>
+						<tr>
+							<th class="col-1" >아이디</th>
+							<th class="col-2">비밀번호</th>
+							<th class="col-2">이름</th>
+							<th>가입일</th>
+						</tr>
+					</thead>
+					<tbody class="table-sm down-file-body">
+						
+						<tr th:if="${#lists.isEmpty(users)}">
+							<td colspan="4">등록된 사용자가 없습니다.</td>
+						</tr>	
+						<th:block th:each="user:${users}">
+								<!--/* 
+								<tr th:onclick="|toView('${user.username}')|"> 파싱 에러
+								Thymeleaf는 onclick, onchange 같은 [HTML 이벤트 속성]에서 문자열 타입 변수 표현식 사용을 
+								보안 문제로 허용하지 않는다
+								단,숫자나 boolean 타입은 허용한다 즉 ${user.username}값이 숫자라면 허용한다
+								
+								
+								 */-->	
+								<tr th:attr="data-username=${user.username}" style="cursor:pointer">
+									<td>[[${user.username}]]</td>
+									<td th:text="${user.password}">1234</td>
+									<td th:text="${user.name}">김길동</td>
+									<td th:text="${#temporals.format(user.regiDate,'yyyy.MM.dd')}">2025.1.1</td>
+								</tr>
+								
+						</th:block>
+					</tbody>
+				</table>
+				<!-- 페이징 출력 -->
+				<div >1 2 3 4 5 6 7 8 9 10</div>
+				<!-- 검색 UI -->
+				<form method="post" class="row justify-content-center">
+					<div class="col-2">
+						<select class="form-control" name="searchColumn">
+							<option value="name">이름</option>
+							<option value="username">아이디</option>
+						</select>
+					</div>
+					<div class="col-5">
+						<input type="text" class="form-control mx-2"
+							placeholder="검색어를 입력하세요" name="searchWord" />
+					</div>
+					<div class="col-auto">
+						<button type="submit" class="btn btn-primary">검색</button>
+					</div>
+				</form>
+			</fieldset>
+			<!-- 컨텐츠 끝 -->
+			<th:block th:replace="~{layout/footer::footer}"></th:block>
+		</div><!-- container-fluid -->
+	</div><!-- container -->
+	<script th:inline="javascript">
+		const tbody = document.querySelector(".table-sm.down-file-body");
+		tbody.onclick=e=>{
+			console.log(e.target.nodeName);
+			if(e.target.nodeName==='TD'){
+				
+				console.log('e.target.parentElement.dataset.username:',e.target.parentElement.dataset.username);
+				const url ='/users/'+e.target.parentElement.dataset.username;
+				console.log('url:',url);
+				location.href=url;
+			}
+		};
+	
+	
+	</script>
+</body>
+</html>

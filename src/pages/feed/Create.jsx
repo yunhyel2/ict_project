@@ -14,7 +14,7 @@ export default function CreateFeed() {
             setContentValid('내용을 입력하세요');
             contentNode.focus();
         }
-        if(contentNode.value.trim()==='') return;   
+        if(contentNode.value.trim()==='') return;
     };
     
     return <>
@@ -30,7 +30,7 @@ export default function CreateFeed() {
                     </label>
                     <input type="file" name="image" id="feed_image" className="invisible" accept="image/*" />
                 </div>
-                <button className="btn btn-primary p-3 border-radius-0">작성하기</button>
+                <button className="btn btn-primary p-3 border-radius-0" onClick={handleInsert}>작성하기</button>
             </form>
         </OverlayPage>
     </>
