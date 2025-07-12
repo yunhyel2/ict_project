@@ -28,8 +28,6 @@ export function setMarker(map, { lat, lng, onclick }) {
 
 export function getLatLngFromAddress(address, success) {
     geocoder.addressSearch(address, function(result, status) {
-        console.log('test');
-            console.log(status);
     // 정상적으로 검색이 완료됐으면 
         if (status === kakao.maps.services.Status.OK) {
             const lat = result[0].y;
@@ -82,5 +80,5 @@ export function getMyAddressNow(success) {
             const { address_name: address } = res[0];
             success({ address, lat, lng });
         });
-    })
+    }, err => console.log(err))
 }

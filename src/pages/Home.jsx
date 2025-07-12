@@ -1,16 +1,10 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { URL, USERS } from "/config/constants";
-import { UsersContext } from "/context/UsersContext";
 import Weather from "/components/Weather";
 import { makeCalendar, getDate } from "/components";
 import ProfileImg from "/components/ProfileImg";
+import { URL } from "../config/constants";
 
-async function getUsersFromServer () {
-    const { data } = await axios.get(URL.USERS);
-    return data;
-}
 
 const places = [
     {
@@ -55,10 +49,8 @@ const join = [
 ];
 
 export default function Home() {
-    const { dispatch } = useContext(UsersContext);
 
     useEffect(() => {
-        getUsersFromServer().then(data => dispatch({ type: USERS.ALL, users: data }));
     }, []);
 
     return <>
@@ -85,13 +77,13 @@ export default function Home() {
                             <ProfileImg small src={profile_image} />
                             <div className="flex-grow d-flex flex-column">
                                 <b>{author}</b>
-                                <Link to={`/feed/${id}`} className="text-truncate d-inline-block" style={{ maxWidth: 400 }}>{title}</Link>
+                                <Link to={`${URL.FEED}/${id}`} className="text-truncate d-inline-block" style={{ maxWidth: 400 }}>{title}</Link>
                                 <div className="mt-2" style={{ opacity: 0.5 }}>
-                                    <Link to={`/feed/${id}`} className="d-inline-flex align-items-center gap-1">
+                                    <Link to={`${URL.FEED}/${id}`} className="d-inline-flex align-items-center gap-1">
                                         <img src="/assets/icons/heart.png" width="18px" height="auto" alt="" />
                                         <small className="me-3">{inter}</small>
                                     </Link>
-                                    <Link to={`/feed/${id}`} className="d-inline-flex align-items-center gap-1">
+                                    <Link to={`${URL.FEED}/${id}`} className="d-inline-flex align-items-center gap-1">
                                         <img src="/assets/icons/comment.png" width="18px" height="auto" alt="" />
                                         <small className="me-3">{comments}</small>
                                     </Link>
@@ -113,7 +105,7 @@ export default function Home() {
                             </div>
                             <div className="d-flex flex-column">
                                 <small className="text-gray text-right text-nowrap" style={{ fontSize: 12 }}>지원 {party}명 / {max}명</small>
-                                <Link to={`/join/${id}`} className="btn btn-outline-primary btn-sm mt-1">지원</Link>
+                                <Link to={`${URL.OURPLACE}/${id}`} className="btn btn-outline-primary btn-sm mt-1">지원</Link>
                             </div>
                         </li>
                     ))}

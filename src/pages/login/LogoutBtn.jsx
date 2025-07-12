@@ -1,21 +1,13 @@
-import { useContext } from "react";
-import { NavLink, useNavigate } from "react-router-dom";
-import { USERS, URL } from "/config/constants";
-import { UsersContext } from "/context/UsersContext";
+import { NavLink } from "react-router-dom";
+import { useAuth } from "/context/AuthContext";
 
 export default function LogoutBtn() {
-    const { usersInfo = {}, dispatch } = useContext(UsersContext);
-    const { auth } = usersInfo;
-    const navigate = useNavigate();
-    const isLogin = !!auth;
+    const { logout } = useAuth();
 
-    const logout = e => {
+    const onLogout = e => {
         e.preventDefault();
-        dispatch({ type: USERS.LOGOUT });
-        navigate(URL.LOGIN);
+        logout();
     }
 
-    // if (!isLogin) return null;
-
-    return <NavLink to="/logout" onClick={logout} className="btn border border-gray border-radius-12 btn-sm">로그아웃</NavLink>
+    return <NavLink to="/logout" onClick={onLogout} className="btn border border-gray border-radius-12 btn-sm">로그아웃</NavLink>
 }

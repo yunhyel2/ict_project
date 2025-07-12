@@ -1,13 +1,9 @@
-import { useContext } from "react";
 import { Link, Outlet } from "react-router-dom";
 import { URL } from "/config/constants";
 import Feed from "./components/Feed";
-import { FeedsContext } from "/context/FeedsContext";
 
 
-export default function Feeds() {
-    const { model, dispatch } = useContext(FeedsContext);
-    const { feeds = [] } = model;
+export default function Feeds({ feeds = []}) {
 
     return <>
         <ul className="list-group full overflow-y-auto" style={{ minHeight: '100%', height: '100%' }}>

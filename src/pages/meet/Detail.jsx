@@ -1,26 +1,27 @@
-import { useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { GatheringContext } from "/context/GatheringContext";
-import { makeCalendar, getDate, OverlayPage } from "/components";
+import { getDate, OverlayPage } from "/components";
 import ProfileImg from '/components/ProfileImg';
 
+const dummy = { id: 1, title: '배드민턴 치실분 한분만', content: "배드민턴치실분 한분만 급하게 구해봅니다<br/>여자만 구해요. 남자안됨<br/><br/><br/>치고 밥먹고 헤어져요.", date: new Date('2025/07/20').toISOString(), goal: 1, applies: 0, user: { name: "윤혜리", profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKMfeYVIFGvDHrF30lB5S57Nxk1iFVLu48ZQpy_1dRTNQHp7c-VHGYXoMR-sUuVmg87K0&usqp=CAU' }, createdAt: new Date().toISOString() };
 
-export default function DetailGathering() {
+export default function DetailMeet() {
     const { id } = useParams();
-    const { model, dispatch } = useContext(GatheringContext);
-    const { feeds = [] } = model;
+    const [meet, setMeet] = useState(dummy);
+    const { title, content, createdAt = '', applies= 0, goal = 1, user } = meet;
+    const { profileImage = '', name: username = "윤혜리" } = user;
 
-    const { title = '배드민턴 치실분', content = '같이 배드민턴 치실분<br/>한분만 구해요 젊은 여성분이었으면 좋겠어요!', date = '2025-07-16T12:00:00', applies= 0, goal = 1 } = feeds[0] || {};
-    const { profile_image = '', name = "윤혜리" } = {};
+    useEffect(() => {
+        /* TODO:: 여기서 객체 불러와서 저장하기 */
+    }, []);
 
-    console.log(id);
     return <>
         <OverlayPage title="모임/모집">
             <div className="d-flex flex-column" style={{ height: '100%' }}>
                 <div className="p-3 border-bottom border-gray d-flex gap-20 align-items-center" style={{ borderBottomWidth: '8px !important' }}>
-                    <ProfileImg small src={profile_image} />
+                    <ProfileImg small src={profileImage} />
                     <div className="flex-grow">
-                        <strong>{name}</strong>
+                        <strong>{username}</strong>
                         <p>{title}</p>
                     </div>
                 </div>
@@ -28,7 +29,7 @@ export default function DetailGathering() {
                     <div className="d-flex p-3 flex-grow border-right border-gray">
                         <small className="align-self-center pe-4 text-nowrap text-gray">일시</small>
                         <small className="flex-grow">
-                            {getDate(date)}
+                            {getDate(createdAt)}
                         </small>
                     </div>
                     <div className="d-flex p-3">

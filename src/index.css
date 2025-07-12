@@ -75,7 +75,7 @@ textarea {
 .text-gray { color: var(--text-dim-color); }
 
 .bg-point { background-color: var(--point-color); }
-.bg-gray { background-color: var(--text-dim-color); }
+.bg-gray { background-color: var(--gray-border-color); }
 
 /* border 관련 */
 .border { border: 1px solid; }

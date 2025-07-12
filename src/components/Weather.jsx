@@ -11,8 +11,8 @@ const myKey = '57f1b4a37d807494899a6d53175123c7';
 const apiUrl = (lat, lng) => `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${myKey}&units=metric`;
 
 export default function Weather ({ address}) {
-    const [data, setData] = useState();
-    const { weather, main: temp, wind } = data || {};
+    const [data, setData] = useState({});
+    const { weather = [], main: temp = {}, wind = {} } = data;
 
     useEffect(() => {
        getLatLngFromAddress(address, ({ lat, lng }) => {
@@ -24,18 +24,15 @@ export default function Weather ({ address}) {
        })
     }, [address]);
 
-    console.log(data);
-    
-    if (!data) return null;
     return <>
         <div id="weather" className="d-flex flex-column align-items-center p-4 gap-20">
-            <div className="d-flex flex-column align-items-center gap-8">
+            <div className="d-flex flex-column align-items-center gap-8" style={{ height: 115 }}>
                 <small className="text-white text-nowrap">
                   <i className="fas fa-location-dot pe-2" />
                   {address}
                 </small>
-                <p className="h6 text-nowrap text-white">{weathers[weather[0].description]}</p>
-                <p className="degree text-white text-nowrap">{Math.round(temp.temp)}</p>
+                <p className="h6 text-nowrap text-white">{weathers[weather[0]?.description]}</p>
+                <p className="degree text-white text-nowrap">{temp.temp ? Math.round(temp.temp) : '--'}</p>
             </div>
             <div className="d-flex weather-box gap-20">
                 <div className="d-flex flex-column">
