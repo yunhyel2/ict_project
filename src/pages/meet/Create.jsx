@@ -1,7 +1,7 @@
 import { useRef, useState } from "react"
 import { OverlayPage } from "/components";
 
-export default function CreateGathering() {
+export default function CreateMeet() {
 
     const now = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0,16);
 

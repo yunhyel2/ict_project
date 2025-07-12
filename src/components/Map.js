@@ -80,5 +80,5 @@ export function getMyAddressNow(success) {
             const { address_name: address } = res[0];
             success({ address, lat, lng });
         });
-    })
+    }, err => console.log(err))
 }

@@ -1,15 +1,8 @@
-import { useContext } from "react";
 import { NavLink } from "react-router-dom";
 import { URL } from "/config/constants";
-import { UsersContext } from "/context/UsersContext";
 
 const kakao_login_url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_RESTAPI_KEY}&redirect_uri=${location.origin}${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
 export default function LoginRegisterBtn() {
-    const { usersInfo = {} } = useContext(UsersContext);
-    const { auth } = usersInfo;
-    const isLogin = !!auth;
-
-    if (isLogin) return null;
 
     return <>
         <a className="btn border-radius-12 p-0" style={{ background: '#fde500' }} href={kakao_login_url}>

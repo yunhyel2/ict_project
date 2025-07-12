@@ -1,12 +1,12 @@
-import { useRef, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
-import { UsersContext } from "/context/UsersContext";
+import { useRef, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { authSessionClear, useAuth } from "/context/AuthContext";
 import Logo from '/components/Logo';
 import { URL, USERS } from "/config/constants";
 
 export default function Login() {
-    const { dispatch } = useContext(UsersContext);
+    const { login } = useAuth;
     const userNameRef = useRef();
     const passwordRef = useRef();
     const navigate = useNavigate();
@@ -28,7 +28,7 @@ export default function Login() {
              
                 if (res.data.accountId) {
                     const user = res.data;
-                    dispatch({ type: USERS.LOGIN, auth: user.accountId, user: user});
+                    login(user);
                     navigate('/', { replace: true });
                     //navigate(`/users-nested/${username}`, { replace: true });
                 } else {
@@ -39,6 +39,11 @@ export default function Login() {
                 console.log(err);
             });
     };
+
+    useEffect(() => {
+        // 로그인 페이지로 떨어지는 순간 세션의 유저 정보를 삭제시킨다.
+        authSessionClear();
+    }, []);
 
     return <>
         <div style={{ height: '100%' }}>

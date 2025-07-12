@@ -3,10 +3,10 @@ import ProfileImg from "/components/ProfileImg";
 import StatusBar from "/components/StatusBar";
 import Logo from "/components/Logo";
 import { URL } from "/config/constants";
+import { useAuth } from "/context/AuthContext";
 
 export default function MyPage() {
-    const username = 'Test';
-    const useremail = 'test@gmail.com';
+    const { auth: { name: username, location } } = useAuth();
     return <>
         <StatusBar title="마이페이지" noBack />
         <section className="d-flex flex-column overflow-y-auto" style={{ minHeight: "100%", height: '100%', background: 'var(--gray-border-color)' }}>
@@ -14,7 +14,7 @@ export default function MyPage() {
                 <ProfileImg />
                 <div className="flex-grow">
                     <p className="h5">{username} 님</p>
-                    <p className="text-gray">{useremail}</p>
+                    <p className="text-gray">{location}</p>
                 </div>
                 <Link to={URL.MYINFO} className="btn btn-none border-radius-20" style={{ width: 40, height: 40 }}>
                     <i className="fas fa-wrench" />

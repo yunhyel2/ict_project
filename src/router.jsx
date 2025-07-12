@@ -5,12 +5,13 @@ import Home from "/pages/Home";
 import Login from "/pages/login/Login";
 import Signup from "/pages/login/Signup";
 import NotFound from "/pages/NotFound";
-import Map from "/pages/ourplace/Map";
-import CreatePlace from "/pages/ourplace/Create";
+import Place from "/pages/place";
+import CreatePlace from "/pages/place/Create";
+import DetailPlace from "/pages/place/Detail";
 import MyPage from "/pages/mypage";
-import Gathering from "/pages/gathering";
-import CreateGathering from "/pages/gathering/Create";
-import DetailGathering from "/pages/gathering/Detail";
+import Meet from "/pages/meet";
+import CreateMeet from "/pages/meet/Create";
+import DetailMeet from "/pages/meet/Detail";
 import MyPageUserInfo from "/pages/mypage/UserInfo";
 import Feeds from "/pages/feed";
 import DetailFeed from "/pages/feed/Detail";
@@ -34,18 +35,18 @@ const router = createBrowserRouter([
             },
             { 
                 path: URL.OURPLACE,
-                element: <Map />,
+                element: <Place />,
                 children: [
                     { path: `create`, element: <CreatePlace /> },
-                    { path: ':id', element: <DetailFeed /> },
+                    { path: ':id', element: <DetailPlace /> },
                 ]
             },
             { 
                 path: URL.JOINUS,
-                element: <Gathering />,
+                element: <Meet />,
                 children: [
-                    { path: `create`, element: <CreateGathering /> },
-                    { path: ':id', element: <DetailGathering /> },
+                    { path: `create`, element: <CreateMeet /> },
+                    { path: ':id', element: <DetailMeet /> },
                 ]
             },
             { path: URL.MYPAGE, element: <MyPage /> },
