@@ -1,16 +1,9 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import { Link } from "react-router-dom";
-import axios from "axios";
-import { URL, USERS } from "/config/constants";
-import { UsersContext } from "/context/UsersContext";
 import Weather from "/components/Weather";
 import { makeCalendar, getDate } from "/components";
 import ProfileImg from "/components/ProfileImg";
 
-async function getUsersFromServer () {
-    const { data } = await axios.get(URL.USERS);
-    return data;
-}
 
 const places = [
     {
@@ -55,10 +48,8 @@ const join = [
 ];
 
 export default function Home() {
-    const { dispatch } = useContext(UsersContext);
 
     useEffect(() => {
-        getUsersFromServer().then(data => dispatch({ type: USERS.ALL, users: data }));
     }, []);
 
     return <>

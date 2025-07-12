@@ -1,13 +1,16 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { URL } from "/config/constants";
+import { useAuth } from "/context/AuthContext";
 import StatusBar from "/components/StatusBar";
 import Input from "/components/Input";
 import { fileToBase64 } from "/components/File";
 import { updateUser, getUserByAccount } from "/services/users";
+import ResignBtn from "/pages/login/ResignBtn";
 
 
 export default function MyPageUserInfo() {
+    const { auth: { account } } = useAuth();
     const [form, setForm] = useState({
         name: '',
         address: '',
@@ -50,7 +53,9 @@ export default function MyPageUserInfo() {
     };
 
     useEffect(() => {
-        getUserByAccount("yunhyel2").then(({ data }) => setForm(data[0]));
+        getUserByAccount(account).then(({ data }) => {
+            if (data && data[0].id) setForm(data[0]);
+        });
     }, []);
 
     // if (!form.id) return null;
@@ -93,6 +98,7 @@ export default function MyPageUserInfo() {
                     </fieldset>
                 </div>
             </div>
+            <ResignBtn />
             <button type="submit" className="btn btn-primary border-radius-0 mt-auto" style={{ height: 60 }} disabled={!validate}>{validate ? '회원가입' : '필수 사항을 전부 입력하세요'}</button>
         </form>
     </>;

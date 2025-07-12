@@ -1,20 +1,12 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ProfileImg from "/components/ProfileImg";
 import StatusBar from "/components/StatusBar";
 import Logo from "/components/Logo";
 import { URL } from "/config/constants";
-import { deleteUser } from "/services/users";
 
 export default function MyPage() {
-
-    const navigate = useNavigate();
     const username = 'Test';
     const useremail = 'test@gmail.com';
-    const deleteAccount = () => {
-        deleteUser('test').then(({ data }) => {
-            if (data.id) navigate(URL.LOGIN);   // 성공
-        });
-    }
     return <>
         <StatusBar title="마이페이지" noBack />
         <section className="d-flex flex-column overflow-y-auto" style={{ minHeight: "100%", height: '100%', background: 'var(--gray-border-color)' }}>

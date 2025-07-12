@@ -20,5 +20,10 @@ export async function deleteUser(account) {
     return data;
 }
 
+export async function verifyUser(account, password) {
+    const { data } = await axios.get(`/api/users?account=${account}&password=${password}`);
+    return data;
+}
+
 
 export default {};

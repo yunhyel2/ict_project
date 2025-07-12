@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { URL } from "/config/constants";
 import Input from "/components/Input";
 import Statusbar from '/components/Statusbar';
 import { fileToBase64 } from "/components/File";
@@ -45,7 +46,7 @@ export default function Signup() {
         createUser({ account, password, name, address, gender, profileImage: profileImage.base64 })
         .then(() => {
             alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
-            navigate("/login");
+            navigate(URL.LOGIN);
         }).catch(() => alert("회원가입에 실패했습니다."))
     };
 
@@ -66,7 +67,7 @@ export default function Signup() {
 
     const onBack = e => {
         e.preventDefault();
-        setForm(prev => ({ ...prev, address: "" }))
+        setForm(prev => ({ ...prev, address: "" }));
     }
 
     useEffect(() => setStep(form.address ? 1 : 0), [form.address]);

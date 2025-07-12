@@ -1,83 +1,42 @@
-import { useRef, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import axios from "axios";
-import { UsersContext } from "/context/UsersContext";
-import Logo from '/components/Logo';
-import { URL, USERS } from "/config/constants";
+import { useState } from "react";
+import { verifyUser } from "/services/users";
+import Input from "/components/Input";
+import Logo from "/components/Logo";
+import { useAuth } from "/context/AuthContext";
 
-export default function PwdConfirm() {
-    const { model, dispatch } = useContext(UsersContext);
-    const userNameRef = useRef();
-    const passwordRef = useRef();
-    const navigate = useNavigate();
-    const account = model.account;
+export default function PwdConfirm({ onConfirm }) {
+    const [password, setPassword] = useState("");
+    const { auth: { account } } = useAuth();
 
     const submit = (e) => {
         e.preventDefault();
-        
-        const username = userNameRef.current.value;
-        const password = passwordRef.current.value;
 
-        if (!username || !password) {
-            alert("아이디와 비밀번호를 전부 입력해주세요!");
-            return;
-        }
-        
-        axios.get(`/api/login?account=${account}&password=${password}`)
-            .then(res => {
-                console.log("res.data:",res.data);
-             
-                if (res.data.accountId) {
-                    const user = res.data;
-                    dispatch({ type: USERS.LOGIN, auth: user.accountId, user: user});
-                    navigate('/', { replace: true });
-                    //navigate(`/users-nested/${username}`, { replace: true });
-                } else {
-                    alert("회원 정보가 없습니다!");
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        verifyUser(account, password).then(({ data }) => {
+            if (data[0]?.id) {
+                onConfirm();
+            } else {
+                alert("비밀번호가 틀립니다!");
+            }
+        });
     };
 
     return <>
-        <div style={{ height: '100%' }}>
-            <Input name="password" />
-            <form className="d-flex flex-column align-items-stretch" style={{ gap: 20, padding: 60 }} onSubmit={submit}>
-                <Logo style={{ zoom: 1.5, margin: '0px auto' }} />
-                <label htmlFor="login_id" hidden>아이디</label>
-                <input
-                    id="login_id"
-                    className="form-control border-color-gray border-radius-20 ps-3"
-                    ref={userNameRef}
-                    type="text"
-                    name="username"
-                    placeholder="아이디를 입력하세요"
-                    style={{ height: 60 }}
-                />
-                <label htmlFor="login_password" hidden>비밀번호</label>
-                <input
-                    id="login_password"
-                    className="form-control border-color-gray border-radius-20 ps-3"
-                    ref={passwordRef}
-                    type="password"
-                    name="password"
-                    placeholder="비밀번호를 입력하세요"
-                    style={{ height: 60 }}
-                />
+        <div className="bg-white position-absolute d-flex flex-column justify-content-center" style={{ width: '100%', height: '100%', top: 0, left: 0, zIndex: 20 }}>
+            <div className="d-flex flex-column align-items-stretch justify-content-center" style={{ gap: 20, padding: '0 40px 80px' }}>
+                <Logo style={{ margin: '0 auto', zoom: 1.6 }} />
+                <h6 className="mt-2 mb-1 text-center" style={{ lineHeight: 1.3 }}>회원정보 접근 시, <br/>개인정보 보호를 위해 본인확인을 진행합니다.</h6>
+                <input type="text" name="account" value={account} readOnly hidden />
+                <Input type="password" name="password" placeholder="비밀번호를 입력하세요" value={password} onChange={e => setPassword(e.target.value)} />
                 <button
                     type="submit"
                     className="btn btn-primary border-radius-20"
                     style={{ height: 60 }}
+                    disabled={!password}
+                    onClick={submit}
                 >
-                    로그인
+                    확인
                 </button>
-            </form>
-            <p className="d-flex gap-8 justify-content-center">
-                아직 회원이 아니신가요?
-                <Link to={URL.REGISTER} className="point">회원가입</Link>
-            </p>
+            </div>
         </div>
     </>;
 }
