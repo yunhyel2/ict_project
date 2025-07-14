@@ -36,7 +36,7 @@ public class UsersEntity {
     @GeneratedValue(generator = "SEQ_USERS",strategy = GenerationType.SEQUENCE)
     @Column(length = 20,nullable = false)
     private long id;
-
+    
     @Column(length = 20,nullable = false, unique=true)
     private String account;
 

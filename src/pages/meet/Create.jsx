@@ -1,15 +1,29 @@
 import { useRef, useState } from "react"
 import { OverlayPage } from "/components";
+import axios from "axios";
+import { URL } from "/config/constants";
+import { createMeet } from "../../services/meets";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 
 export default function CreateMeet() {
-
+    
+  
     const now = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0,16);
 
+    const navigate = useNavigate();
     const titleRef = useRef();
     const contentRef = useRef();
+    const goalRef = useRef();
+    const { account, name } = useAuth().auth; // auth = { account, location, name }
+    const user = { account, name };
+    const location = localStorage.getItem("location");
     //<<유효성 체크 메시지 출력을 위한 State>>
     const [titleValid, setTitleValid] = useState('');
     const [contenteValid, setContentValid] = useState('');
+
+    
+
     //<<게시글 등록 버튼 이벤트 처리용>>
     const handleInsert = e=>{
         e.preventDefault();//제출 기능 막기
@@ -27,6 +41,22 @@ export default function CreateMeet() {
             
         }
         if(titleNode.value.trim()==='' || contentNode.value.trim()==='') return;   
+        const title = titleNode.value;
+        const content = contentNode.value;
+        const goal = goalRef.current.value;
+        const meetDate = now;
+        
+        console.log({ user, location:{location}, title, content, meetDate, goal })
+        createMeet({ user, location:{location}, title, content, meetDate, goal })
+        .then(data=>{
+            console.log("data 확인:",data)
+            alert("모집이 생성되었습니다");
+            navigate(URL.JOINUS)
+        })
+        .catch(err=> {
+            console.log(err);
+            alert("모집생성에 실패했습니다.");
+        })
     };
     
     return <>
@@ -50,12 +80,12 @@ export default function CreateMeet() {
                     <div className="d-flex p-3" style={{ width: 260 }}>
                         <label htmlFor="feed_goal" className="align-self-center pe-2 text-nowrap">모집 인원</label>
                         <div className="flex-grow">
-                            <input type="number" className="form-control" name="goal" id="feed_goal" min="0" max="99" />
+                            <input ref={goalRef} type="number" className="form-control" name="goal" id="feed_goal" min="0" max="99" />
                         </div>
                         <span className="align-self-center ps-2 text-nowrap">명</span>
                     </div>
                 </div>
-                <button className="btn btn-primary p-3 border-radius-0">작성하기</button>
+                <button className="btn btn-primary p-3 border-radius-0" onClick={handleInsert}>작성하기</button>
             </form>
         </OverlayPage>
     </>

@@ -40,7 +40,7 @@ spring:
   #Spring Data JPA 설정
   jpa:
     hibernate:
-      ddl-auto: create # 기존 테이블(데이터가 쌓인)이 존재하는 경우 : validate / 기존 테이블이 없는 경우(새로 개발단계) : (최초)create -> (그이후)update
+      ddl-auto: update # 기존 테이블(데이터가 쌓인)이 존재하는 경우 : validate / 기존 테이블이 없는 경우(새로 개발단계) : (최초)create -> (그이후)update
       naming:
         physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: true

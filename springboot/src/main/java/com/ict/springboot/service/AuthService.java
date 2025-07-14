@@ -9,6 +9,7 @@ import com.ict.springboot.entity.UsersEntity;
 import com.ict.springboot.repository.UsersRepository;
 
 import lombok.RequiredArgsConstructor;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
