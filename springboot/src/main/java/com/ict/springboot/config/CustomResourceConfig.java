@@ -1,13 +1,15 @@
 package com.ict.springboot.config;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 @Configuration
 public class CustomResourceConfig implements WebMvcConfigurer {
 
-	//정적 리스소 설정을 추가 할수 있다
+	//정적 리소스 설정을 추가할 수 있다
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		
@@ -15,6 +17,10 @@ public class CustomResourceConfig implements WebMvcConfigurer {
 		
 	}
 
+	@Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
+    }
 	
 	
 }

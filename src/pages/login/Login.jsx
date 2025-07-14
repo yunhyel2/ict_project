@@ -1,43 +1,34 @@
 import axios from "axios";
 import { useRef, useEffect } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { authSessionClear, useAuth } from "/context/AuthContext";
 import Logo from '/components/Logo';
-import { URL, USERS } from "/config/constants";
+import { URL } from "/config/constants";
 
 export default function Login() {
-    const { login } = useAuth;
-    const userNameRef = useRef();
+    const { login } = useAuth();
+    const accountRef = useRef();
     const passwordRef = useRef();
-    const navigate = useNavigate();
 
     const submit = (e) => {
         e.preventDefault();
         
-        const username = userNameRef.current.value;
+        const account = accountRef.current.value;
         const password = passwordRef.current.value;
 
-        if (!username || !password) {
+        if (!account || !password) {
             alert("아이디와 비밀번호를 전부 입력해주세요!");
             return;
         }
         
-        axios.get(`/api/login?accountId=${username}&password=${password}`)
-            .then(res => {
-                console.log("res.data:",res.data);
-             
-                if (res.data.accountId) {
-                    const user = res.data;
-                    login(user);
-                    navigate('/', { replace: true });
-                    //navigate(`/users-nested/${username}`, { replace: true });
-                } else {
-                    alert("회원 정보가 없습니다!");
-                }
-            })
-            .catch(err => {
-                console.log(err);
-            });
+        // 로그인할 때 사용한 아이디와 비밀번호를 dto로 전송
+        axios.post("/api/auth/login", { account, password })
+        .then(({ data }) => {
+            if (data?.id) login(data);
+        })
+        .catch(err => {
+            alert(err.response.data?.message);
+        });
     };
 
     useEffect(() => {
@@ -53,7 +44,7 @@ export default function Login() {
                 <input
                     id="login_id"
                     className="form-control border-color-gray border-radius-20 ps-3"
-                    ref={userNameRef}
+                    ref={accountRef}
                     type="text"
                     name="username"
                     placeholder="아이디를 입력하세요"

@@ -4,6 +4,7 @@ import { AuthProvider } from '/context/AuthContext';
 import Home from "/pages/Home";
 import Login from "/pages/login/Login";
 import Signup from "/pages/login/Signup";
+import SignupMap from "/pages/login/SignupMap";
 import NotFound from "/pages/NotFound";
 import Place from "/pages/place";
 import CreatePlace from "/pages/place/Create";
@@ -51,15 +52,16 @@ const router = createBrowserRouter([
             },
             { path: URL.MYPAGE, element: <MyPage /> },
             { path: URL.MYINFO, element: <MyPageUserInfo /> },
+            { path: URL.MYLOCATION, element: <SignupMap /> },
             { path: "*", element: <NotFound /> }
         ]
     },
     {
         path: '/',
-        element: <AppNotAuth />,
+        element: <AuthProvider><AppNotAuth /></AuthProvider>,
         children: [
             { path: URL.LOGIN, element: <Login /> },
-            { path: URL.REGISTER, element: <Signup /> },
+            { path: URL.REGISTER, element: <Signup /> }
         ]
     }
 ]);

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { URL } from "/config/constants";
 
@@ -21,18 +21,20 @@ export function AuthProvider({ children }) {
     const navigate = useNavigate();
 
     const login = (user) => {
-        setAuth(user);
-        localStorage.setItem('account', user.account);
-        localStorage.setItem('name', user.name);
-        localStorage.setItem('location', user.locations?.location);
+        setAuth({ ...user, location: user.location?.location });
+        navigate(URL.HOME, { replace: true });
     };
 
     const logout = () => {
         setAuth({});
-        navigate(URL.LOGIN);
+        navigate(URL.LOGIN, { replace: true });
     }
 
-    
+    useEffect(() => {
+        localStorage.setItem('account', auth.account);
+        localStorage.setItem('name', auth.name);
+        if (auth.location?.location) localStorage.setItem('location', auth.location?.location);
+    }, [auth])
 
     return <>
         <AuthContext.Provider value={{ auth, login, logout }}>

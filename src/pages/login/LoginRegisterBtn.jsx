@@ -1,7 +1,7 @@
 import { NavLink } from "react-router-dom";
 import { URL } from "/config/constants";
 
-const kakao_login_url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_RESTAPI_KEY}&redirect_uri=${location.origin}${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
+const kakao_login_url = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${import.meta.env.VITE_KAKAO_RESTAPI_KEY}&redirect_uri=${import.meta.env.VITE_KAKAO_REDIRECT_URI}`;
 export default function LoginRegisterBtn() {
 
     return <>

@@ -31,5 +31,8 @@ public interface UsersRepository extends JpaRepository<UsersEntity,Long> {
         @Param("role") Object role
     );
 
+    //아이디와 비밀번호가 맞는지 비교하기 위한 쿼리 메소드
+	Optional<UsersEntity> findByAccountAndPassword(String account, String password);
+
 
 }

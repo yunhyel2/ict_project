@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '/context/AuthContext';
 import { URL } from '/config/constants';
@@ -8,17 +8,20 @@ import Search from '/components/Search';
 import Introduce from '/pages/Introduce';
 import LogoutBtn from '/pages/login/LogoutBtn';
 import './App.css';
+import axios from "axios";
+import SignupMap from './pages/login/SignupMap';
 
-
-/*  
-  로그인 해서 들어오는 화면들은 전부 이곳을 통한다. 
-  TODO:: 로그인 안되어있을 시 로그아웃 시키고 로그인 페이지로 즉시 이동
-*/
 function App() {
-  const { auth } = useAuth();
+  const { auth, login, logout } = useAuth();
   const navigate = useNavigate();
   
   useEffect(() => {
+
+    //백엔드에서 세션에 값이 남아 있는지 체크 후 로그인 상태가 아니라면 로그아웃 시킨다.
+    axios.get("/api/auth/login")
+    .then(({ data }) => login(data))
+    .catch(() => logout());
+
     //  들어올때 로그인 여부 체크해서 로그인 안되어있다면 로그인 화면으로
     if (!auth.account) navigate(URL.LOGIN);
   }, [])
@@ -26,11 +29,16 @@ function App() {
   return (
     <>
       <div id="main_section">
-        <Header />
-        <main className="container">
-          <Outlet />
-        </main>
-        <Menu />
+          {!auth.location ? 
+            <SignupMap /> :
+             <>
+              <Header />
+              <main className="container">
+                  <Outlet />
+              </main>
+              <Menu />
+            </>
+          }
       </div>
       <div id="side_section" className="p-4">
         <div className="p-3 border border-radius-12 border-gray bg-white">

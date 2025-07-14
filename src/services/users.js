@@ -11,7 +11,7 @@ export async function createUser(user) {
 }
 
 export async function updateUser(user) {
-    const { data } = await axios.put(`/api/users/${user.id}`, user);
+    const { data } = await axios.put(`/api/users/${user.account}`, user);
     return data;
 }
 

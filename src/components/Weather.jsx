@@ -8,7 +8,7 @@ import { weathers } from './Weather.constants';
 
 const myKey = '57f1b4a37d807494899a6d53175123c7';
 // URL 변수
-const apiUrl = (lat, lng) => `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${myKey}&units=metric`;
+const apiUrl = (lat, lng) => `http://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lng}&appid=${myKey}&units=metric`;
 
 export default function Weather ({ address}) {
     const [data, setData] = useState({});

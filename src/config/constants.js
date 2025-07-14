@@ -4,10 +4,11 @@ export const URL = {
     FEED: '/feeds',
     JOINUS: '/meets',
     OURPLACE: '/places',
-    MYPAGE: '/mypage',
-    MYINFO: '/myinfo',
+    MYPAGE: '/my',
+    MYINFO: '/my/info',
+    MYLOCATION: '/my/location',
     LOGIN: '/login',
-    REGISTER: '/register'
+    REGISTER: '/register',
 };
 
 export const REGEX = {
