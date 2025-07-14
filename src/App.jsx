@@ -1,15 +1,15 @@
 import { useEffect, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 import { useAuth } from '/context/AuthContext';
+import axios from "axios";
 import { URL } from '/config/constants';
 import Header from '/pages/Header';
 import Menu from '/pages/Menu';
 import Search from '/components/Search';
 import Introduce from '/pages/Introduce';
 import LogoutBtn from '/pages/login/LogoutBtn';
+import SignupMap from '/pages/login/SignupMap';
 import './App.css';
-import axios from "axios";
-import SignupMap from './pages/login/SignupMap';
 
 function App() {
   const { auth, login, logout } = useAuth();
@@ -20,16 +20,20 @@ function App() {
     //백엔드에서 세션에 값이 남아 있는지 체크 후 로그인 상태가 아니라면 로그아웃 시킨다.
     axios.get("/api/auth/login")
     .then(({ data }) => login(data))
-    .catch(() => logout());
+    // .catch(() => logout());     /* TODO:: 주석처리풀기 */
 
     //  들어올때 로그인 여부 체크해서 로그인 안되어있다면 로그인 화면으로
-    if (!auth.account) navigate(URL.LOGIN);
+    // if (!auth.account) navigate(URL.LOGIN);
   }, [])
+
+  /* TODO:: 주석처리풀기 */
+  // const needToSetLocation = !auth.location;
+  const needToSetLocation = false;
 
   return (
     <>
       <div id="main_section">
-          {!auth.location ? 
+          {needToSetLocation ? 
             <SignupMap /> :
              <>
               <Header />

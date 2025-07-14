@@ -18,7 +18,6 @@ export default function FeedsContainer(props) {
     const [feeds, setFeeds] = useState(dummy);
 
     useEffect(() => {
-        ax
         /* TODO:: 여기서 리스트 불러와서 저장하기 */
         // 단, 피드는 20개(혹은 10개?)씩 순차적으로 불러와 기존 데이터에 쌓는 방식으로 진행해야한다.
         // 참조 :: react-intersection-observer 이용한 무한스크롤 (수업시간에 배웠습니다!)
