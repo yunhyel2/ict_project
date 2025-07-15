@@ -48,15 +48,15 @@ public class UsersController {
     }
 
     // 수정
-    @PutMapping("")
-    public UsersDto updateUser(@RequestBody UsersDto dto) {
-        return usersService.update(dto);
+    @PutMapping("/{account}")
+    public UsersDto updateUser(@PathVariable String account, @RequestBody UsersDto dto) {
+        return usersService.update(account, dto);
     }
 
     // 삭제
-    @DeleteMapping("")
-    public UsersDto deleteUser(@RequestBody UsersDto dto) throws Exception {
-        return usersService.delete(dto);
+    @DeleteMapping("/{account}")
+    public UsersDto deleteUser(@PathVariable String account) throws Exception {
+        return usersService.delete(account);
     }
     
 }

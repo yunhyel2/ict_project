@@ -1,11 +1,15 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import ProfileImg from "/components/ProfileImg";
 import StatusBar from "/components/StatusBar";
 import Logo from "/components/Logo";
 import { URL } from "/config/constants";
 import { useAuth } from "/context/AuthContext";
+import PwdConfirm from "/pages/login/PwdConfirm";
 
 export default function MyPage() {
+    const [confirmed, setConfirmed] = useState(false);
+    const navigate = useNavigate();
     const { auth: { name: username, location } } = useAuth();
     return <>
         <StatusBar title="마이페이지" noBack />
@@ -16,9 +20,9 @@ export default function MyPage() {
                     <p className="h5">{username} 님</p>
                     <p className="text-gray">{location}</p>
                 </div>
-                <Link to={URL.MYINFO} className="btn btn-none border-radius-20" style={{ width: 40, height: 40 }}>
+                <button onClick={() => setConfirmed(true)} className="btn btn-none border-radius-20" style={{ width: 40, height: 40 }}>
                     <i className="fas fa-wrench" />
-                </Link>
+                </button>
             </div>
             <ul className="bg-white">
                 <li className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
@@ -49,7 +53,8 @@ export default function MyPage() {
                     <br/><br/>
                     icon by. <a className="text-gray" href="https://www.flaticon.com/kr/authors/arkinasi" target="_blank">arkinasi</a>
                 </small>		
-            </div>	
+            </div>
         </section>
+        {confirmed && <PwdConfirm onConfirm={() => navigate(URL.MYINFO)} />}
     </>;
 }

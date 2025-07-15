@@ -35,6 +35,8 @@ public class AuthController {
 	private String restApiKey;
 	@Value("${kakao.redirect_uri}")
 	private String redirectUri;
+	@Value("${kakao.logout_redirect_uri}")
+	private String logoutRedirectUri;
 
 	private final RestTemplate restTemplate;
 	
@@ -70,7 +72,7 @@ public class AuthController {
     @GetMapping("logout")
     public void logout(HttpSession session, HttpServletResponse response)  throws IOException  {
     	session.invalidate();
-    	KakaoLoginApi.kakaoAccountLogout(response, restApiKey, "/login");
+    	KakaoLoginApi.kakaoAccountLogout(response, restApiKey, logoutRedirectUri);
     }
     
     @GetMapping("kakaoLogin")

@@ -56,25 +56,34 @@ public class UsersService {
     }
 
     /* 수정 */
-    public UsersDto update(UsersDto dto) {
-        // 유저 기존 테이블에 저장된 아이디인지 체크
-        boolean isDuplicated = userRepo.existsByAccount(dto.getAccount());
-        if (isDuplicated) return null; // 이미 가입된 아이디일 경우 저장안함;
-        // 새로운 회원일 경우 save로 저장 : 저장된 객체를 반환하는데(기본값이 자동으로 들어갑니다), 그걸 dto로 변환해서 리턴한다.
-        UsersEntity usersEntity = userRepo.save(dto.toEntity());
+    public UsersDto update(String account, UsersDto newUser) {
+        UsersDto user = UsersDto.toDto(userRepo.findByAccount(account).orElseGet(()-> null));
+        if (user == null) return null;  // 수정 불가능
+        // 값이 있는 경우에만 수정한다. (null로 덮어쓰지 않는다.)
+        if (newUser.getName() != null) user.setName(newUser.getName());
+        if (newUser.getGender() != null) user.setGender(newUser.getGender());
+        if (newUser.getPassword() != null) user.setPassword(newUser.getPassword());
+        if (newUser.getProfileImage() != null) user.setProfileImage(newUser.getProfileImage());
+        if (newUser.getAddress() != null) {
+            LocationsDto location = locService.findOrCreate(newUser.getAddress());
+            user.setLocation(location);
+        }
+        UsersEntity usersEntity = userRepo.save(user.toEntity());
         return UsersDto.toDto(usersEntity);
     }
 
     /* 삭제 */
-    public UsersDto delete(UsersDto dto) throws Exception {
-        if (userRepo.existsByAccount(dto.getAccount())) {
+    public UsersDto delete(String account) throws Exception {
+        UsersEntity user = userRepo.findByAccount(account).orElseGet(()-> null);
+        if (user != null) {
             try {
-                userRepo.deleteById(dto.getId());
+                userRepo.deleteById(user.getId());
+                return UsersDto.toDto(user);
             } catch (Exception e) {
                 throw new Exception("데이터 삭제에 문제가 생겼습니다.");
             }
         }
-        return dto;
+        return null;
     }
   
    

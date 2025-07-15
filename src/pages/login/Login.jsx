@@ -1,7 +1,7 @@
 import axios from "axios";
-import { useRef, useEffect } from "react";
+import { useRef } from "react";
 import { Link } from "react-router-dom";
-import { authSessionClear, useAuth } from "/context/AuthContext";
+import { useAuth } from "/context/AuthContext";
 import Logo from '/components/Logo';
 import { URL } from "/config/constants";
 
@@ -30,11 +30,6 @@ export default function Login() {
             alert(err.response.data?.message);
         });
     };
-
-    useEffect(() => {
-        // 로그인 페이지로 떨어지는 순간 세션의 유저 정보를 삭제시킨다.
-        authSessionClear();
-    }, []);
 
     return <>
         <div style={{ height: '100%' }}>

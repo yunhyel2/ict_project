@@ -9,26 +9,24 @@ import Search from '/components/Search';
 import Introduce from '/pages/Introduce';
 import LogoutBtn from '/pages/login/LogoutBtn';
 import SignupMap from '/pages/login/SignupMap';
+import Chat from '/pages/Chat';
 import './App.css';
 
 function App() {
+  const [chat, setChat] = useState();
   const { auth, login, logout } = useAuth();
-  const navigate = useNavigate();
   
   useEffect(() => {
 
     //백엔드에서 세션에 값이 남아 있는지 체크 후 로그인 상태가 아니라면 로그아웃 시킨다.
     axios.get("/api/auth/login")
     .then(({ data }) => login(data))
-    // .catch(() => logout());     /* TODO:: 주석처리풀기 */
-
-    //  들어올때 로그인 여부 체크해서 로그인 안되어있다면 로그인 화면으로
-    // if (!auth.account) navigate(URL.LOGIN);
+    .catch(() => logout());     /* TODO:: 주석처리풀기 */
   }, [])
 
   /* TODO:: 주석처리풀기 */
-  // const needToSetLocation = !auth.location;
-  const needToSetLocation = false;
+  const needToSetLocation = auth.account && !auth.location;
+  // const needToSetLocation = false;
 
   return (
     <>
@@ -51,9 +49,11 @@ function App() {
           <div className="d-flex flex-column gap-8 align-items-stretch pt-3">
             <LogoutBtn/>
             {/* TODO:: 관리자 유저만 보이도록 처리 */}
-            <a href="/admin" target="_blank" className="btn btn-warning border-radius-12 btn-sm">관리자페이지</a>
+            {auth.role == "ADMIN" && <a href="/admin" target="_blank" className="btn btn-danger border-radius-12 btn-sm">관리자페이지</a>}
+            <button className="btn btn-warning border-radius-12 btn-sm" onClick={() => setChat(true)}>동네에서 실시간 채팅하기</button>
           </div>
         </div>
+        {chat && <Chat onClose={() => setChat(false)} />}
       </div>
     </>
   )

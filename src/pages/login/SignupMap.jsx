@@ -12,6 +12,7 @@ export default function SignupMap({ onConfirm = () => {} }) {
     const mapRef = useRef();
 
     useEffect(() => {
+        if (auth.location) return;
         getMyAddressNow(({ address: adrs, lat, lng }) => {
             setAddress(adrs);
             const map = getKakaoMap(mapRef.current, { lat, lng });
@@ -25,9 +26,9 @@ export default function SignupMap({ onConfirm = () => {} }) {
     }
 
     const confirmRegister = () => {
-        updateUser({ ...auth, location: address })
-        .then(({ data }) => {
-            if (data.id) login(data);
+        updateUser({ ...auth, address })
+        .then((data) => {
+            if (data?.id) login(data);
         });
     }
 

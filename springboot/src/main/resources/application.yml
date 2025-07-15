@@ -54,5 +54,6 @@ springdoc:
   swagger-ui:
     path: /api/swagger
 kakao: #카카오 로그인을 위한 api와 uri
-  rest_api_key: bc6a893e3a7d4cc4744e0bdf67d4fe52
+  rest_api_key: cf9810d894194590b690ea81e4de1171
   redirect_uri: http://localhost:8080/api/auth/kakaoLogin
+  logout_redirect_uri: http://localhost:8080/

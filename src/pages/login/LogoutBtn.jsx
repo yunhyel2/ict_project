@@ -6,7 +6,7 @@ export default function LogoutBtn() {
 
     const onLogout = () => {
         axios.get("/api/auth/logout")
-        .then(() => logout())
+        logout();
     }
 
     return <button onClick={onLogout} className="btn border border-gray border-radius-12 btn-sm">로그아웃</button>

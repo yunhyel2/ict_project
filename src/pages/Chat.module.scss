@@ -1,0 +1,43 @@
+$margin: 12px;
+
+.chat {
+    .notice {
+        font-size: 12px;
+        margin: $margin auto 0;
+        padding: 2px 16px;
+        background-color: rgba(0,0,0,0.1);
+        border-radius: 20px;
+    }
+    .message {
+        font-size: 14px;
+        padding: 6px 12px;
+        border-radius: 8px;
+        line-height: 1.5;
+    }
+    
+    .receive {
+        max-width: 60%;
+        margin: $margin auto 0 0;
+        .message {
+            background: var(--gray-border-color);
+        }
+    }
+    .send {
+        max-width: 60%;
+        margin: $margin 0 0 auto;
+        display: flex;
+        flex-direction: column;
+        -ms-flex-direction: column;
+        gap: 4px;
+        .message {
+            background: var(--point-dim-color);
+        }
+        & > div { margin-left: auto; }
+    }
+
+    .username {
+        font-size: 12px;
+        font-weight: 600;
+        margin-left: 4px;
+    }
+}
