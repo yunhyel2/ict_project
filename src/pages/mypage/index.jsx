@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, Outlet, useNavigate } from "react-router-dom";
 import ProfileImg from "/components/ProfileImg";
 import StatusBar from "/components/StatusBar";
 import Logo from "/components/Logo";
@@ -25,23 +25,38 @@ export default function MyPage() {
                 </button>
             </div>
             <ul className="bg-white">
-                <li className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
-                    <span><img src="/assets/icons/menuIcon3.png" width="24px" className="me-2"/> 내가 추천한 플레이스</span>
-                    <i className="fas fa-angle-right" />
+                <li >
+                    <Link to="/my/CreatePlace" className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
+                        <span><img src="/assets/icons/menuIcon3.png" width="24px" className="me-2"/> 내가 추천한 플레이스</span>
+                        <i className="fas fa-angle-right" />
+                    </Link>
                 </li>
-                <li className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
-                    <span><img src="/assets/icons/bookmark.png" width="24px" className="me-2"/> 북마크한 플레이스</span>
-                    <i className="fas fa-angle-right" />
+                <li >
+                    <Link to="/my/FavoritePlace" className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
+                        <span><img src="/assets/icons/bookmark.png" width="24px" className="me-2"/> 북마크한 플레이스</span>
+                        <i className="fas fa-angle-right" />
+                    </Link>
                 </li>
-                <li className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
-                    <span><img src="/assets/icons/menuIcon2.png" width="24px" className="me-2"/> 내가 작성한 글</span>
-                    <i className="fas fa-angle-right" />
+                <li >
+                    <Link to="/my/CreateFeed" className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
+                        <span><img src="/assets/icons/menuIcon2.png" width="24px" className="me-2"/> 내가 작성한 글</span>
+                        <i className="fas fa-angle-right" />
+                    </Link>
                 </li>
-                <li className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
-                    <span><img src="/assets/icons/menuIcon4.png" width="24px" className="me-2"/> 내가 작성한 모집글</span>
-                    <i className="fas fa-angle-right" />
+                <li >
+                    <Link to="/my/CreateMeet" className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
+                        <span><img src="/assets/icons/menuIcon4.png" width="24px" className="me-2"/> 내가 작성한 모집글</span>
+                        <i className="fas fa-angle-right" />
+                    </Link>
+                </li>
+                <li >
+                    <Link to="/my/JoinMeet" className="border-bottom border-gray p-4 pl-5 pointer d-flex justify-content-between align-items-center">
+                        <span><img src="/assets/icons/menuIcon4.png" width="24px" className="me-2"/> 내가 참여한 모집글</span>
+                        <i className="fas fa-angle-right" />
+                    </Link>
                 </li>
             </ul>
+            <Outlet />
             <br/>
             <div className="p-3 pt-4">
                 <Logo />

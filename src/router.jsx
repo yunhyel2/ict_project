@@ -19,6 +19,11 @@ import DetailFeed from "/pages/feed/Detail";
 import CreateFeed from "/pages/feed/Create";
 import App from './App';
 import AppNotAuth from "./AppNotAuth";
+import MyFavoritePlce from "/pages/mypage/FavoritePlace";
+import MyCreateFeed from "/pages/mypage/CreateFeed";
+import MyCreateMeet from "/pages/mypage/CreateMeet";
+import MyJoinMeet from "/pages/mypage/JoinMeet";
+import MyCreatePlace from "/pages/mypage/CreatePlace";
 
 const router = createBrowserRouter([
     {
@@ -50,7 +55,16 @@ const router = createBrowserRouter([
                     { path: ':id', element: <DetailMeet /> },
                 ]
             },
-            { path: URL.MYPAGE, element: <MyPage /> },
+            {  
+                path: URL.MYPAGE, 
+                element: <MyPage />,
+                children: [
+                    {path: "favoritePlace", element: <MyFavoritePlce/>},
+                    {path: "createFeed", element: <MyCreateFeed/>},
+                    {path: "createMeet", element: <MyCreateMeet/>},
+                    {path: "joinMeet", element: <MyJoinMeet/>},
+                    {path: "createPlace", element: <MyCreatePlace/>}]
+                 },
             { path: URL.MYINFO, element: <MyPageUserInfo /> },
             { path: URL.MYLOCATION, element: <SignupMap /> },
             { path: "*", element: <NotFound /> }
