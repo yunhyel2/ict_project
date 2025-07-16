@@ -10,18 +10,18 @@ import PwdConfirm from "/pages/login/PwdConfirm";
 export default function MyPage() {
     const [confirmed, setConfirmed] = useState(false);
     const navigate = useNavigate();
-    const { auth: { name: username, location } } = useAuth();
+    const { auth: { name: username, location, profileImage } } = useAuth();
     return <>
         <StatusBar title="마이페이지" noBack />
         <section className="d-flex flex-column overflow-y-auto" style={{ minHeight: "100%", height: '100%', background: 'var(--gray-border-color)' }}>
             <div className="mb-2 d-flex gap-20 border-bottom border-gray align-items-center p-3 pt-4 pb-4 bg-white">
-                <ProfileImg />
+                <ProfileImg src={profileImage} />
                 <div className="flex-grow">
                     <p className="h5">{username} 님</p>
-                    <p className="text-gray">{location}</p>
+                    <p className="text-gray"><i className="fas fa-location-dot me-2" />{location}</p>
                 </div>
                 <button onClick={() => setConfirmed(true)} className="btn btn-none border-radius-20" style={{ width: 40, height: 40 }}>
-                    <i className="fas fa-wrench" />
+                    <i className="fas fa-wrench" style={{ fontSize: 20 }} />
                 </button>
             </div>
             <ul className="bg-white">

@@ -40,6 +40,21 @@ public class AuthController {
 
 	private final RestTemplate restTemplate;
 	
+	@PostMapping("verify-password")
+	public ResponseEntity<?> verifyPassword(@RequestBody UsersDto testDto, HttpSession session) {
+		UsersDto loginUser = (UsersDto)session.getAttribute("user");
+		if (!testDto.getAccount().equals(loginUser.getAccount())) {
+			// 비밀번호 검증 시도하는 아이디와 로그인 아이디 불일치시 무조건 에러 반환 : 보안
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "정상적인 접근이 아닙니다."));
+        }
+		loginUser.setPassword(testDto.getPassword());
+		UsersDto loginDto = authService.isUser(loginUser);
+		if (loginDto == null) {
+            // 검증 실패시 401 Unauthorized 상태 반환
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "비밀번호가 틀립니다!"));
+        }
+        return ResponseEntity.ok(loginDto);
+	}
 	
 	@GetMapping("login")
 	public ResponseEntity<?> loginCheck(HttpSession session) {

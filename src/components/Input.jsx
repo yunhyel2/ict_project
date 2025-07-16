@@ -9,11 +9,13 @@ export default function Input({
     const [shrink, setShrink] = useState(false);
     const regex = props.name && REGEX[props.name?.toUpperCase()] || '';
     const { value: inputValue = null } = props;
+    const valueExists = !!inputValue;
 
     useEffect(() => {
         if (errorMessage) setError(`* ${errorMessage}`);
     }, [errorMessage]);
 
+    useEffect(() => setShrink(valueExists), [valueExists]);
 
     const handleBlur = e => {
         if (!required) return;

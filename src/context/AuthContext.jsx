@@ -19,8 +19,12 @@ export function AuthProvider({ children }) {
         navigate(URL.LOGIN, { replace: true });
     }
 
+    const fetchAuth = user => {
+        setAuth({ ...user, location: user.location?.location });
+    }
+
     return <>
-        <AuthContext.Provider value={{ auth, login, logout }}>
+        <AuthContext.Provider value={{ auth, login, logout, fetchAuth }}>
             {children}
         </AuthContext.Provider>
     </>
