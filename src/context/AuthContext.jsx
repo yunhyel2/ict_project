@@ -10,7 +10,7 @@ export function AuthProvider({ children }) {
     const navigate = useNavigate();
 
     const login = (user) => {
-        setAuth({ ...user, location: user.location?.location });
+        setAuth({ ...user, location: user.location?.location, locationId: user.location.id });
         navigate(URL.HOME, { replace: true });
     };
 
@@ -20,7 +20,7 @@ export function AuthProvider({ children }) {
     }
 
     const fetchAuth = user => {
-        setAuth({ ...user, location: user.location?.location });
+        setAuth({ ...user, location: user.location?.location, locationId: user.location.id });
     }
 
     return <>

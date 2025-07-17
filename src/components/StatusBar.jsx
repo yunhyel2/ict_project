@@ -8,7 +8,7 @@ function StatusBar({
     const headerRef = useRef();
     const navigate = useNavigate();
     const goBack = () => {
-        navigate(path || -1);
+        navigate(path || -1);//: 이전 페이지로 이동
     }
 
 

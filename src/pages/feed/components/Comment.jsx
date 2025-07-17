@@ -1,10 +1,33 @@
+import { useState } from 'react';
 import ProfileImg from '/components/ProfileImg';
+import { useAuth } from '/context/AuthContext';
+import { deleteComment } from '/services/feeds';
 
-/* TODO:: 현재 로그인 사용자가 이 코멘트에 좋아요를 찍었는가? 체크하여 버튼 이벤트/디스플레이 처리 (table : comments_like) */
-/* TODO:: 현재 로그인 사용자가 이 코멘트를 작성했는가?를 체크하여 좋아요 버튼 대신 삭제버튼을 추가한다. */
-export default function FeedComment({ id, content, user }) {
-
+export default function FeedComment({ id, content, user, onCommentDeleted }) {
+    const { auth } = useAuth();
     const { id: userId, name: username, profileImage } = user;
+    const [isDeleting, setIsDeleting] = useState(false);
+    
+    const isMyComment = auth.id === userId;
+    
+    const handleDelete = async () => {
+        if (!confirm('댓글을 삭제하시겠습니까?')) {
+            return;
+        }
+        
+        setIsDeleting(true);
+        try {
+            await deleteComment(id, auth.id);
+            if (onCommentDeleted) {
+                onCommentDeleted();
+            }
+        } catch (error) {
+            console.error('댓글 삭제 실패:', error);
+            alert('댓글 삭제에 실패했습니다.');
+        } finally {
+            setIsDeleting(false);
+        }
+    };
 
     return <>
         <li className="p-2 ps-3 border-bottom border-gray d-flex align-items-start gap-20" key={id}>
@@ -16,10 +39,15 @@ export default function FeedComment({ id, content, user }) {
                 {content}
             </div>
             <div className="d-flex align-items-center gap-8" style={{ height: 30 }}>
-                <button className="btn btn-none p-1 d-flex align-self-center">
-                    <img src="/assets/icons/heart.png" width="20px" alt="" />
-                </button>
-                {/* <button className="btn btn-none p-1"><i className="fas fa-reply text-gray" /></button> */}
+                {isMyComment && (
+                    <button 
+                        className="btn btn-none p-1 d-flex align-self-center text-danger"
+                        onClick={handleDelete}
+                        disabled={isDeleting}
+                    >
+                        <i className="fas fa-trash" />
+                    </button>
+                )}
             </div>
         </li>
     </>

@@ -29,10 +29,18 @@ export const getDate = dt => {
 };
 
 
-export function OverlayPage({ title, children }) {
+export function OverlayPage({ title, children, onDelete, onEdit }) {
+    const deleteAsset = () => {
+        if (confirm("정말 삭제하시겠습니까?")) {
+            onDelete();
+        }
+    }
     return <>
         <div className="bg-white position-absolute" style={{ width: '100%', height: '100%', top: 0, left: 0, zIndex: 10 }}>
-            <StatusBar title={title} />
+            <StatusBar title={title}>
+                {onEdit && <button className="btn btn-none p-1" onClick={onEdit} title="수정하기"><i className="fas fa-pen-to-square"></i></button>}
+                {onDelete && <button className="btn btn-none p-1" onClick={deleteAsset} title="삭제하기"><i className="fas fa-trash-can"></i></button>}
+            </StatusBar>
             <div className="overflow-y-auto" style={{ height: '100%', minHeight: '100%', paddingTop: 60 }}>
                 {children}
             </div>

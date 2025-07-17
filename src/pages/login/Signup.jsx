@@ -47,7 +47,7 @@ export default function Signup() {
         createUser({ account, password, name, address, gender, profileImage })
         .then(() => {
             alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
-            navigate(URL.LOGIN);
+            navigate(URL.LOGIN);//해당 URL로 이동
         }).catch(() => alert("회원가입에 실패했습니다."))
     };
 

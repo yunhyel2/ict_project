@@ -31,7 +31,7 @@ export default function MyPageUserInfo() {
         .then(user => {
             fetchAuth(user);    // context 정보 업데이트
             alert("정보 수정이 완료되었습니다. 마이 페이지로 이동합니다.");
-            navigate(URL.MYPAGE);
+            navigate(URL.MYPAGE);   // 해당 URL로 이동
         }).catch(() => alert("회원 정보 수정에 실패했습니다."))
     };
 
