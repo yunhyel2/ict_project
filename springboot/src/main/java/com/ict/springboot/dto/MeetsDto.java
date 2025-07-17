@@ -21,7 +21,7 @@ public class MeetsDto {
     private String content;
     private String category;
     private int goal;
-    private LocalDateTime meetDate;
+    private LocalDateTime meetAt;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private boolean isActive;
@@ -37,7 +37,7 @@ public class MeetsDto {
                         .content(content)
                         .category(category)
                         .goal(goal)
-                        .meetDate(meetDate)
+                        .meetAt(meetAt)
                         .createdAt(createdAt)
                         .updatedAt(updatedAt)
                         .isActive(isActive)
@@ -53,7 +53,7 @@ public class MeetsDto {
                         .content(mEntity.getContent())
                         .category(mEntity.getCategory())
                         .goal(mEntity.getGoal())
-                        .meetDate(mEntity.getMeetDate())
+                        .meetAt(mEntity.getMeetAt())
                         .createdAt(mEntity.getCreatedAt())
                         .updatedAt(mEntity.getUpdatedAt())
                         .isActive(mEntity.isActive())

@@ -9,7 +9,6 @@ export default function Login() {
     const { login } = useAuth();
     const accountRef = useRef();
     const passwordRef = useRef();
-
     const submit = (e) => {
         e.preventDefault();
         

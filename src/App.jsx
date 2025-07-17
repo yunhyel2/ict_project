@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { useAuth } from '/context/AuthContext';
 import axios from "axios";
-import { URL } from '/config/constants';
 import Header from '/pages/Header';
 import Menu from '/pages/Menu';
 import Search from '/components/Search';

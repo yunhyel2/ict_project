@@ -1,13 +1,13 @@
 import { useRef, useState } from "react"
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { OverlayPage } from "/components";
-import axios from "axios";
 import { URL } from "/config/constants";
-import { createMeet } from "../../services/meets";
-import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { createMeet } from "/services/meets";
+import { useAuth } from "/context/AuthContext";
 
 export default function CreateMeet() {
-    
+ 
+    const { setMeets } = useOutletContext();
   
     const now = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0,16);
 
@@ -15,9 +15,10 @@ export default function CreateMeet() {
     const titleRef = useRef();
     const contentRef = useRef();
     const goalRef = useRef();
-    const { account, name } = useAuth().auth; // auth = { account, location, name }
+    const { account, name, location, locationId } = useAuth().auth; // auth = { account, location, name }
     const user = { account, name };
-    const location = localStorage.getItem("location");
+    //const { account , location } = useAuth().auth; //테스트 용 임시
+
     //<<유효성 체크 메시지 출력을 위한 State>>
     const [titleValid, setTitleValid] = useState('');
     const [contenteValid, setContentValid] = useState('');
@@ -44,12 +45,11 @@ export default function CreateMeet() {
         const title = titleNode.value;
         const content = contentNode.value;
         const goal = goalRef.current.value;
-        const meetDate = now;
+        const meetAt = now;
         
-        console.log({ user, location:{location}, title, content, meetDate, goal })
-        createMeet({ user, location:{location}, title, content, meetDate, goal })
+        createMeet({ user, location:{ location, id: locationId }, title, content, meetAt, goal })
         .then(data=>{
-            console.log("data 확인:",data)
+            setMeets(prev=>[data , ...prev])
             alert("모집이 생성되었습니다");
             navigate(URL.JOINUS)
         })

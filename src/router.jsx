@@ -13,6 +13,7 @@ import MyPage from "/pages/mypage";
 import Meet from "/pages/meet";
 import CreateMeet from "/pages/meet/Create";
 import DetailMeet from "/pages/meet/Detail";
+import ModifyMeet from "/pages/meet/Modify";
 import MyPageUserInfo from "/pages/mypage/UserInfo";
 import Feeds from "/pages/feed";
 import DetailFeed from "/pages/feed/Detail";
@@ -47,6 +48,7 @@ const router = createBrowserRouter([
                 element: <Meet />,
                 children: [
                     { path: `create`, element: <CreateMeet /> },
+                    { path: `modify`, element: <ModifyMeet /> },
                     { path: ':id', element: <DetailMeet /> },
                 ]
             },

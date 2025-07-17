@@ -1,0 +1,114 @@
+import { useEffect, useRef, useState } from "react"
+import { OverlayPage } from "/components";
+import axios from "axios";
+import { URL } from "/config/constants";
+import { createMeet, getMeet, modifyMeet, updateMeet } from "../../services/meets";
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+
+const dummy = { id: 1, title: '배드민턴 치실분 한분만', content: "배드민턴치실분 한분만 급하게 구해봅니다<br/>여자만 구해요. 남자안됨<br/><br/><br/>치고 밥먹고 헤어져요.", meetDate : new Date('2025/07/20').toISOString(), goal: 1, applies: 0, user: { name: "윤혜리", profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKMfeYVIFGvDHrF30lB5S57Nxk1iFVLu48ZQpy_1dRTNQHp7c-VHGYXoMR-sUuVmg87K0&usqp=CAU' }, createdAt: new Date().toISOString() };
+
+export default function ModifyMeet() {
+    
+    const now = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0,16);
+    const navigate = useNavigate();
+    const { id } = useParams();
+    const { meets, setMeets } = useOutletContext();
+
+    const [ meet, setMeet ] = useState(dummy); 
+    const { title, content, createdAt ,applies= 0, goal = 1, user, active } = meet;
+    const { profileImage = '', name: username = "윤혜리" } = user;
+    
+    const { auth } = useAuth();
+    const isAuthor = user?.id === auth?.id;
+
+    const titleRef = useRef();
+    const contentRef = useRef();
+    const goalRef = useRef();
+    
+    
+    //<<유효성 체크 메시지 출력을 위한 State>>
+    const [titleValid, setTitleValid] = useState('');
+    const [contenteValid, setContentValid] = useState('');
+
+    
+    //<<게시글 수정 버튼 이벤트 처리용>>
+    const handleModify = e=>{
+        e.preventDefault();//제출 기능 막기
+        const titleNode = titleRef.current;
+        const contentNode = contentRef.current;
+
+        if(titleNode.value.trim()===''){
+            setTitleValid('제목을 입력하세요');
+            titleNode.focus();
+           
+        }
+        if(contentNode.value.trim()===''){
+            setContentValid('내용을 입력하세요');
+            contentNode.focus();
+            
+        }
+        if(titleNode.value.trim()==='' || contentNode.value.trim()==='') return;   
+        const title = titleNode.value;
+        const content = contentNode.value;
+        const goal = goalRef.current.value;
+        const meetAt = now;
+        
+        console.log({ title, content, meetAt, goal })
+        updateMeet({ title, content, meetAt, goal })
+        .then(data=>{
+            //글 수정, 상태 함수 작성. 
+            //setMeets(prev=>[data , ...prev])
+            alert("모집이 수정되었습니다");
+            navigate(`${URL.JOINUS}/${id}`)
+        })
+        .catch(err=> {
+            console.log(err);
+            alert("모집 수정에 실패했습니다.");
+        })
+    };
+    
+    useEffect(e=>{
+        getMeet(id)
+        .then((data)=>{
+            setMeet(data);
+        })
+        .catch(err=> {
+            console.log(err);
+            alert("(수정)글을 가져올 수 없습니다.");
+        })
+    },[])
+
+    return <>
+        <OverlayPage title="게시글 수정">
+            <form method="POST" className="d-flex flex-column">
+                <div className="p-3 border-bottom border-gray">
+                    <input ref={titleRef} value={title} type="text" className="form-control border-0" id="feed_title" placeholder="제목을 입력하세요" name="title"/>
+                    <small className="text-danger">{titleValid}</small>
+                </div>
+                <div className="p-3 border-bottom border-gray">
+                    <textarea ref={contentRef} value={content} style={{resize: 'none'}} className="form-control border-0" rows="18" id="feed_content" name="content" placeholder="내용을 입력하세요"></textarea>
+                    <small className="text-danger">{contenteValid}</small>
+                </div>
+                <div className="border-bottom border-gray d-flex align-items">
+                    <div className="d-flex p-3 flex-grow border-right border-gray">
+                        <label htmlFor="feed_date" className="align-self-center pe-2 text-nowrap">일시</label>
+                        <div className="flex-grow">
+                            <input id="feed_date" type="datetime-local" name="date" className="form-control" min={now} defaultValue={createdAt} />
+                        </div>
+                    </div>
+                    <div className="d-flex p-3" style={{ width: 260 }}>
+                        <label htmlFor="feed_goal" className="align-self-center pe-2 text-nowrap">모집 인원</label>
+                        <div className="flex-grow">
+                            <input ref={goalRef} type="number" className="form-control" name="goal" id="feed_goal" min="0" max="99" value={goal} />
+                        </div>
+                        <span className="align-self-center ps-2 text-nowrap">명</span>
+                    </div>
+                </div>
+                { isAuthor &&
+                <button className="btn btn-primary p-3 border-radius-0" onClick={handleModify}>수정 하기</button>
+                }
+            </form>
+        </OverlayPage>
+    </>
+}
