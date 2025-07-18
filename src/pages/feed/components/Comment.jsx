@@ -2,8 +2,9 @@ import { useState } from 'react';
 import ProfileImg from '/components/ProfileImg';
 import { useAuth } from '/context/AuthContext';
 import { deleteComment } from '/services/feeds';
+import { getDate } from '/components';
 
-export default function FeedComment({ id, content, user, onCommentDeleted }) {
+export default function FeedComment({ id, content, user, createdAt, onCommentDeleted }) {
     const { auth } = useAuth();
     const { id: userId, name: username, profileImage } = user;
     const [isDeleting, setIsDeleting] = useState(false);
@@ -30,25 +31,26 @@ export default function FeedComment({ id, content, user, onCommentDeleted }) {
     };
 
     return <>
-        <li className="p-2 ps-3 border-bottom border-gray d-flex align-items-start gap-20" key={id}>
+        <li className="p-2 ps-3 border-bottom border-gray d-flex align-items-start gap-8 position-relative comment" key={id}>
             <div className="d-flex align-items-center gap-8" style={{ height: 30 }}>
                 <ProfileImg small src={profileImage} zoom={0.6} />
-                <small style={{ lineHeight: 1 }}>{username}</small>
+                <small className="text-nowrap" style={{ lineHeight: 1 }}>{username}</small>
             </div>
-            <div className="flex-grow small pt-1" style={{ maxWidth: 400 }}>
+            <div className="flex-grow small p-1" style={{ maxWidth: 400, }}>
                 {content}
             </div>
-            <div className="d-flex align-items-center gap-8" style={{ height: 30 }}>
-                {isMyComment && (
-                    <button 
-                        className="btn btn-none p-1 d-flex align-self-center text-danger"
-                        onClick={handleDelete}
-                        disabled={isDeleting}
-                    >
-                        <i className="fas fa-trash" />
-                    </button>
-                )}
+            <div className="small text-center" style={{ minWidth: 70, paddingTop: 2, fontSize: 13, lineHeight: 1 }}>
+                <small className="text-gray text-nowrap">{getDate(createdAt, { nowrap: false })}</small>
             </div>
+            {isMyComment && <>
+                <button 
+                    className="delete btn btn-danger"
+                    onClick={handleDelete}
+                    disabled={isDeleting}
+                >
+                    삭제하기
+                </button>
+            </>}
         </li>
     </>
 }

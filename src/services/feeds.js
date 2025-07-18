@@ -11,7 +11,12 @@ export async function getFeeds(){
 }
 
 export async function getFeedsWithPagination(page = 0, size = 10){
-    const { data } = await axios.get(`/api/feeds/page?page=${page}&size=${size}`)
+    const { data } = await axios.get(`/api/feeds?page=${page}&size=${size}`)
+    return data;
+}
+
+export async function getFeedsRecentHot(limit){
+    const { data } = await axios.get(`/api/feeds/top?limit=${limit}`)
     return data;
 }
 
@@ -27,16 +32,6 @@ export async function deleteFeedById(id){
 
 export async function toggleLike(feedId, userId){
     const { data } = await axios.post(`/api/feeds/${feedId}/like?userId=${userId}`)
-    return data;
-}
-
-export async function getLikeCount(feedId){
-    const { data } = await axios.get(`/api/feeds/${feedId}/likes`)
-    return data;
-}
-
-export async function isLikedByUser(feedId, userId){
-    const { data } = await axios.get(`/api/feeds/${feedId}/like/check?userId=${userId}`)
     return data;
 }
 

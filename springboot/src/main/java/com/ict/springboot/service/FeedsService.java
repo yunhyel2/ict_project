@@ -10,16 +10,18 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ict.springboot.dto.FeedsDto;
+import com.ict.springboot.dto.UsersDto;
 import com.ict.springboot.entity.FeedsEntity;
-import com.ict.springboot.entity.LikesEntity;
+import com.ict.springboot.entity.FeedLikesEntity;
 import com.ict.springboot.entity.LocationsEntity;
 import com.ict.springboot.entity.UsersEntity;
-import com.ict.springboot.repository.CommentsRepository;
+import com.ict.springboot.repository.FeedCommentsRepository;
 import com.ict.springboot.repository.FeedsRepository;
-import com.ict.springboot.repository.LikesRepository;
+import com.ict.springboot.repository.FeedLikesRepository;
 import com.ict.springboot.repository.LocationsRepository;
 import com.ict.springboot.repository.UsersRepository;
 
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -29,28 +31,43 @@ public class FeedsService {
     private final FeedsRepository feedRepo;
     private final LocationsRepository locationsRepository;
     private final UsersRepository usersRepository;
-    private final CommentsRepository commentsRepository;
-    private final LikesRepository likesRepository;
+    private final FeedCommentsRepository commentsRepository;
+    private final FeedLikesRepository likesRepository;
     
     //전체 조회
-    public List<FeedsDto> getAll(){
+    public List<FeedsDto> getAll(HttpSession session){
         List<FeedsEntity> feedsEntities = feedRepo.findAllByOrderByCreatedAtDesc();
+
+        UsersDto user = (UsersDto)session.getAttribute("user");
+        UsersEntity loginUser = usersRepository.findByAccount(user.getAccount()).orElseGet(()->null);
+        if (loginUser == null) return null;
+
         return feedsEntities.stream().map(entity -> {
             FeedsDto dto = FeedsDto.todDto(entity);
+            // 현재 로그인된 사용자가 이 글을 좋아요 했는가 여부 설정
+            dto.setLiked(likesRepository.existsByFeedIdAndUserId(entity.getId(), loginUser.getId()));
             // 좋아요/댓글 수 설정
             dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
             dto.setCommentCount(commentsRepository.countByFeedId(entity.getId()));
+
             return dto;
         }).collect(Collectors.toList());
     }
     
     // 페이지네이션 조회
-    public List<FeedsDto> getFeedsWithPagination(int page, int size){
+    public List<FeedsDto> getFeedsWithPagination(int page, int size, HttpSession session){
+        UsersDto user = (UsersDto)session.getAttribute("user");
+        UsersEntity loginUser = usersRepository.findByAccount(user.getAccount()).orElseGet(()->null);
+
         Pageable pageable = PageRequest.of(page, size);
         Page<FeedsEntity> feedsPage = feedRepo.findAllByOrderByCreatedAtDesc(pageable);
         
         return feedsPage.getContent().stream().map(entity -> {
             FeedsDto dto = FeedsDto.todDto(entity);
+            // 현재 로그인된 사용자가 이 글을 좋아요 했는가 여부 설정
+            if (loginUser != null) {
+                dto.setLiked(likesRepository.existsByFeedIdAndUserId(entity.getId(), loginUser.getId()));
+            }
             // 좋아요/댓글 수 설정
             dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
             dto.setCommentCount(commentsRepository.countByFeedId(entity.getId()));
@@ -58,17 +75,39 @@ public class FeedsService {
         }).collect(Collectors.toList());
     }
 
+    // 핫한 피드 조회 (메인용)
+    public List<FeedsDto> getHotFeedsRecent(int limit, HttpSession session){
+        List<FeedsEntity> feedsEntities = feedRepo.findHotByOrderByCreatedAtDescLimit(limit);
+
+        UsersDto user = (UsersDto)session.getAttribute("user");
+        UsersEntity loginUser = usersRepository.findByAccount(user.getAccount()).orElseGet(()->null);
+        if (loginUser == null) return null;
+
+        return feedsEntities.stream().map(entity -> {
+            FeedsDto dto = FeedsDto.todDto(entity);
+            // 현재 로그인된 사용자가 이 글을 좋아요 했는가 여부 설정
+            dto.setLiked(likesRepository.existsByFeedIdAndUserId(entity.getId(), loginUser.getId()));
+            // 좋아요/댓글 수 설정
+            dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
+            dto.setCommentCount(commentsRepository.countByFeedId(entity.getId()));
+
+            return dto;
+        }).collect(Collectors.toList());
+    }
     
     //상세조회
-    public FeedsDto getById(Long id){
+    public FeedsDto getById(Long id, HttpSession session){
         Optional<FeedsEntity> feedsEntity = feedRepo.findById(id);
-        if (feedsEntity.isEmpty()) {
-            return null;
-        }
-        
+        if (feedsEntity.isEmpty()) return null;
+
+        UsersDto user = (UsersDto)session.getAttribute("user");
+        UsersEntity loginUser = usersRepository.findByAccount(user.getAccount()).orElseGet(()->null);
+        if (loginUser == null) return null;
+
         FeedsEntity entity = feedsEntity.get();
         FeedsDto dto = FeedsDto.todDto(entity);
-        
+        // 현재 로그인된 사용자가 이 글을 좋아요 했는가 여부 설정
+        dto.setLiked(likesRepository.existsByFeedIdAndUserId(entity.getId(), loginUser.getId()));
         // 좋아요/댓글 수 설정
         dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
         dto.setCommentCount(commentsRepository.countByFeedId(entity.getId()));
@@ -135,7 +174,7 @@ public class FeedsService {
             UsersEntity user = usersRepository.findById(userId)
                 .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
             
-            LikesEntity like = LikesEntity.builder()
+            FeedLikesEntity like = FeedLikesEntity.builder()
                 .feed(feed)
                 .user(user)
                 .build();
@@ -144,14 +183,4 @@ public class FeedsService {
         }
     }
     
-    // 좋아요 수 조회
-    public long getLikeCount(Long feedId) {
-        return likesRepository.countByFeedId(feedId);
-    }
-    
-    // 사용자가 좋아요를 눌렀는지 확인
-    public boolean isLikedByUser(Long feedId, Long userId) {
-        return likesRepository.existsByFeedIdAndUserId(feedId, userId);
-    }
-
 }

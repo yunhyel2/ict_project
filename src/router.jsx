@@ -18,6 +18,7 @@ import MyPageUserInfo from "/pages/mypage/UserInfo";
 import Feeds from "/pages/feed";
 import DetailFeed from "/pages/feed/Detail";
 import CreateFeed from "/pages/feed/Create";
+import Notifications from "/pages/Notifications";
 import App from './App';
 import AppNotAuth from "./AppNotAuth";
 
@@ -27,6 +28,7 @@ const router = createBrowserRouter([
         element: <AuthProvider><App /></AuthProvider>,
         children: [
             { path: "", element: <Home /> },
+            { path: URL.NOTIFICATIONS, element: <Notifications /> },
             { 
                 path: URL.FEED,
                 element: <Feeds />,

@@ -4,10 +4,10 @@ import { getDate } from '/components';
 import ProfileImg from '/components/ProfileImg';
 import { URL } from '/config/constants';
 import { useAuth } from '/context/AuthContext';
-import { toggleLike, getLikeCount, isLikedByUser } from '/services/feeds';
+import { toggleLike } from '/services/feeds';
 
 const Feed = forwardRef(({ feed, isSimple }, ref) => {
-    const { id, content, user, image, createdAt, likeCount = 0, commentCount = 0 } = feed;
+    const { id, content, user, image, createdAt, likeCount = 0, commentCount = 0, liked } = feed;
     const username = user?.name || '알 수 없음';
     const profileImage = user?.profileImage || '/assets/icons/empty_profile.svg';
     const { auth } = useAuth();
@@ -15,12 +15,6 @@ const Feed = forwardRef(({ feed, isSimple }, ref) => {
     
     const [likes, setLikes] = useState(likeCount);
     const [isLiked, setIsLiked] = useState(false);
-    
-    useEffect(() => {
-        if (auth.id) {
-            isLikedByUser(id, auth.id).then(setIsLiked);
-        }
-    }, [id, auth.id]);
     
     const handleLike = async (e) => {
         e.preventDefault();
@@ -39,6 +33,9 @@ const Feed = forwardRef(({ feed, isSimple }, ref) => {
         }
     };
 
+    useEffect(() => setIsLiked(liked), [liked]);
+    useEffect(() => setLikes(likeCount), [likeCount]);
+
     return <>
         <li ref={ref} role="button" onClick={() => navigate(`${URL.FEED}/${id}`)} className="list-group-item list-group-item-action pt-2 pb-3 d-flex align-items-start gap-20" key={id}>
             <ProfileImg small src={profileImage} />
@@ -55,7 +52,7 @@ const Feed = forwardRef(({ feed, isSimple }, ref) => {
                         onClick={handleLike}
                     >
                         <img 
-                            src={likes > 0 ? "/assets/icons/heart_filled.png" : "/assets/icons/heart.png"} 
+                            src={isLiked ? "/assets/icons/heart_filled.png" : "/assets/icons/heart.png"} 
                             width="18px" 
                             height="auto" 
                             alt="" 

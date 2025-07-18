@@ -1,10 +1,12 @@
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { URL } from "/config/constants";
 import Loading from "/components/Loading";
 import Feed from "./components/Feed";
 
 export default function Feeds({ feeds, loading, setFeeds, lastFeedElementRef, loadingMore, hasMore }) {
-    if (loading) return <Loading />;
+    const { pathname } = useLocation();
+    // 목록페이지에서만 로딩 노출
+    if (pathname === URL.FEED && loading) return <Loading />;
 
     return <>
         <ul className="list-group full overflow-y-auto" style={{ minHeight: '100%', height: '100%' }}>

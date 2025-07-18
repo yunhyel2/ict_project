@@ -2,7 +2,7 @@ package com.ict.springboot.dto;
 
 import java.time.LocalDateTime;
 
-import com.ict.springboot.entity.CommentsEntity;
+import com.ict.springboot.entity.FeedCommentsEntity;
 import com.ict.springboot.entity.FeedsEntity;
 import com.ict.springboot.entity.UsersEntity;
 
@@ -17,7 +17,7 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CommentsDto {
+public class FeedCommentsDto {
 
     private long id;
     private String content;
@@ -25,10 +25,10 @@ public class CommentsDto {
     private UsersDto user;
     private long feedId;
 
-    public CommentsEntity toEntity(){
+    public FeedCommentsEntity toEntity(){
         UsersEntity usersEntity = user == null ? null : user.toEntity();
         FeedsEntity feedsEntity = FeedsEntity.builder().id(feedId).build();
-        return CommentsEntity.builder()
+        return FeedCommentsEntity.builder()
                         .id(id)
                         .content(content)
                         .createdAt(createdAt)
@@ -37,9 +37,9 @@ public class CommentsDto {
                         .build();
     }
     
-    public static CommentsDto toDto(CommentsEntity cEntity){
+    public static FeedCommentsDto toDto(FeedCommentsEntity cEntity){
         if(cEntity==null) return null;
-        return CommentsDto.builder()
+        return FeedCommentsDto.builder()
                 .id(cEntity.getId())
                 .content(cEntity.getContent())
                 .createdAt(cEntity.getCreatedAt())

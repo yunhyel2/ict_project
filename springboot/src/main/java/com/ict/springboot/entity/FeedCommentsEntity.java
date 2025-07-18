@@ -21,19 +21,22 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "LIKES")
+@Table(name = "FEED_COMMENTS")
 @Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class LikesEntity {
+public class FeedCommentsEntity {
     
     @Id
-    @SequenceGenerator(name = "SEQ_LIKES_GENERATOR", sequenceName = "SEQ_LIKES", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(generator = "SEQ_LIKES", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "SEQ_COMMENTS_GENERATOR", sequenceName = "SEQ_COMMENTS", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "SEQ_COMMENTS", strategy = GenerationType.SEQUENCE)
     @Column(length = 20, nullable = false)
     private long id;
+
+    @Column(length = 500, nullable = false)
+    private String content;
 
     @Column(name="created_at")
     @ColumnDefault("SYSDATE")

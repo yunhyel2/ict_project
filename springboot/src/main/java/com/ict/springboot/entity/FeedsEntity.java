@@ -59,9 +59,9 @@ public class FeedsEntity {
     private LocationsEntity location;
     
     @OneToMany(mappedBy = "feed", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
-    private List<CommentsEntity> comments;
+    private List<FeedCommentsEntity> comments;
     
     @OneToMany(mappedBy = "feed", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
-    private List<LikesEntity> likes;
+    private List<FeedLikesEntity> likes;
     
 }

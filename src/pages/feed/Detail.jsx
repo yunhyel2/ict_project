@@ -3,18 +3,17 @@ import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { URL } from "/config/constants";
 import { OverlayPage, getDate } from "/components";
 import ProfileImg from "/components/ProfileImg";
-import { getFeedById, deleteFeedById, getComments, toggleLike, isLikedByUser } from "/services/feeds";
+import { getFeedById, deleteFeedById, getComments, toggleLike } from "/services/feeds";
 import { useAuth } from "/context/AuthContext";
 import Comment from './components/Comment';
 import FeedCommentWrite from "./components/CommentWrite";
 
 export default function DetailFeed() {
     const { setFeeds } = useOutletContext();
-    const [feed, setFeed] = useState(null);
+    const [feed, setFeed] = useState({});
     const [comments, setComments] = useState([]);
     const [likes, setLikes] = useState(0);
     const [isLiked, setIsLiked] = useState(false);
-    const [loading, setLoading] = useState(true);
     const { id } = useParams();
     const { auth } = useAuth();
     const navigate = useNavigate();
@@ -25,7 +24,6 @@ export default function DetailFeed() {
 
     const loadFeedData = async () => {
         try {
-            setLoading(true);
             const [feedData, commentsData] = await Promise.all([
                 getFeedById(id),
                 getComments(id)
@@ -33,18 +31,12 @@ export default function DetailFeed() {
             
             setFeed(feedData);
             setLikes(feedData.likeCount || 0);
+            setIsLiked(feedData.liked);
             setComments(commentsData);
-            
-            if (auth.id) {
-                const liked = await isLikedByUser(id, auth.id);
-                setIsLiked(liked);
-            }
-        } catch (error) {
-            console.error('피드 데이터 로딩 실패:', error);
-            setFeed(null);
-            setComments([]);
-        } finally {
-            setLoading(false);
+        }
+        catch (err) {
+            console.log(err);
+            navigate(URL.NOTFOUND);
         }
     };
 
@@ -81,17 +73,20 @@ export default function DetailFeed() {
             }
         })
     }
-    if (loading) {
-        return <div className="d-flex justify-content-center p-4">로딩 중...</div>;
-    }
 
-    if (!feed) {
-        return <div className="d-flex justify-content-center p-4">피드를 찾을 수 없습니다.</div>;
-    }
+    useEffect(() => {   // 로그인 유저의 좋아요 여부, 좋아요 개수, 코멘트 개수 변경 시 바깥 리스트에도 반영
+        setFeeds(prev => prev.map((fd) => {
+            if (fd.id != id) return fd;
+            return {
+                ...fd, 
+                liked: isLiked,
+                likeCount: likes, 
+                commentCount: comments.length
+            };
+        }));
+    }, [comments.length, likes, isLiked]);
 
     const { content, user, image, createdAt } = feed;
-    const username = user?.name || '알 수 없음';
-    const profileImage = user?.profileImage || '/assets/icons/empty_profile.svg';
 
     // 현재 로그인한 사용자가 해당 피드의 작성자인지 체크하는 변수
     const isAuthor = user?.account === auth.account;
@@ -99,8 +94,8 @@ export default function DetailFeed() {
     return <>
         <OverlayPage title="오늘의 피드" {...isAuthor && { onDelete: deleteFeed }}>
             <div className="d-flex p-3 pt-2 pb-2 align-items-center gap-20">
-                <ProfileImg small src={profileImage} />
-                <b>{username}</b>
+                <ProfileImg small src={user?.profileImage} />
+                <b>{user?.name || ''}</b>
                 <p className="d-flex flex-grow align-items-center justify-content-end gap-8 ms-auto">
                     <small className="text-gray">{getDate(createdAt)}</small>
                 </p>

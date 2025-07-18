@@ -9,6 +9,8 @@ export const URL = {
     MYLOCATION: '/my/location',
     LOGIN: '/login',
     REGISTER: '/register',
+    NOTIFICATIONS: '/notifications',
+    NOTFOUND: '/404-error'
 };
 
 export const REGEX = {
