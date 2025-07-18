@@ -30,7 +30,15 @@ public class FeedsController {
     //전체 조회
     @GetMapping("")
     public List<FeedsDto> getAllUser(@RequestParam Map<String,String> params){
-    return feedsService.getAll();
+        return feedsService.getAll();
+    }
+    
+    // 페이지네이션 조회
+    @GetMapping("/page")
+    public List<FeedsDto> getFeedsWithPagination(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size){
+        return feedsService.getFeedsWithPagination(page, size);
     }
     //상세 조회
     @GetMapping("/{id}")

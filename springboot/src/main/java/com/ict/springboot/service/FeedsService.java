@@ -4,6 +4,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.ict.springboot.dto.FeedsDto;
@@ -33,6 +36,20 @@ public class FeedsService {
     public List<FeedsDto> getAll(){
         List<FeedsEntity> feedsEntities = feedRepo.findAllByOrderByCreatedAtDesc();
         return feedsEntities.stream().map(entity -> {
+            FeedsDto dto = FeedsDto.todDto(entity);
+            // 좋아요/댓글 수 설정
+            dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
+            dto.setCommentCount(commentsRepository.countByFeedId(entity.getId()));
+            return dto;
+        }).collect(Collectors.toList());
+    }
+    
+    // 페이지네이션 조회
+    public List<FeedsDto> getFeedsWithPagination(int page, int size){
+        Pageable pageable = PageRequest.of(page, size);
+        Page<FeedsEntity> feedsPage = feedRepo.findAllByOrderByCreatedAtDesc(pageable);
+        
+        return feedsPage.getContent().stream().map(entity -> {
             FeedsDto dto = FeedsDto.todDto(entity);
             // 좋아요/댓글 수 설정
             dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
@@ -89,13 +106,14 @@ public class FeedsService {
     }
     //삭제
     public FeedsDto delete(long id) throws Exception{
-        FeedsEntity feed = feedRepo.findById(id).orElseGet(()->null);
+        FeedsEntity feed = feedRepo.findById(id).orElse(null);
         if(feed != null){
             try{
-                feedRepo.deleteById(id);
+                // 엔티티를 직접 삭제하여 cascade가 제대로 작동하도록 함
+                feedRepo.delete(feed);
                 return FeedsDto.todDto(feed);
             } catch (Exception e){
-                throw new Exception("데이터 삭제에 문제가 생겼습니다");
+                throw new Exception("데이터 삭제에 문제가 생겼습니다: " + e.getMessage());
             }
         }
         return null;

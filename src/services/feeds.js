@@ -10,6 +10,11 @@ export async function getFeeds(){
     return data;
 }
 
+export async function getFeedsWithPagination(page = 0, size = 10){
+    const { data } = await axios.get(`/api/feeds/page?page=${page}&size=${size}`)
+    return data;
+}
+
 export async function getFeedById(id){
     const { data } = await axios.get(`/api/feeds/${id}`)
     return data;

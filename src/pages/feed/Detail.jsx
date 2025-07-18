@@ -106,8 +106,8 @@ export default function DetailFeed() {
                 </p>
             </div>
             <div className="p-20 flex-grow d-flex flex-column border-top border-bottom border-gray" style={{ minHeight: 300, borderWidth: '8px !important' }}>
-                <p style={{ maxWidth: 400 }}>{content}</p>
-                {image && <img src={image} width="100%" height="auto" className="mt-2 border-radius-12" alt="" />}
+                <p style={{ maxWidth: 400, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{content}</p>
+                {image && <div className="d-flex justify-content-center mt-2"><img src={image} width="100%" height="auto" className="border-radius-12" alt="" /></div>}
             </div>
             <div className="p-3 d-flex align-items-center justify-between border-bottom border-gray">
                 <span>댓글</span>
