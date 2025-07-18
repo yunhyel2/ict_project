@@ -22,7 +22,8 @@ public class PlacesDto {
     private UsersDto user;
     private LocationsDto location;
     private String name;
-    private String address;
+    private String address; //행정동 주소 (프론트에서 받음)
+    private String placeAddress; //상세 주소(장소의 진짜 주소)
     private String image;
     private Category category;
     private LocalDateTime createdAt;

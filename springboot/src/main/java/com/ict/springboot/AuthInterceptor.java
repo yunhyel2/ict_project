@@ -23,13 +23,13 @@ public class AuthInterceptor implements HandlerInterceptor{
          HttpSession session= request.getSession();
          String uri=request.getRequestURI();
         
-         if(uri.contains("/feeds") || uri.contains("/meets") || uri.contains("/admin")){
-              Object authUser = session.getAttribute("user");
-              if(authUser == null) {  // 로그인이 안된 경우
-                  response.sendRedirect("/");
-                  return false;   // 요청을 컨트롤러에게 전달하지 않음
-            }
-        }
+        //  if(uri.contains("/feeds") || uri.contains("/meets") || uri.contains("/admin")){
+        //       Object authUser = session.getAttribute("user");
+        //       if(authUser == null) {  // 로그인이 안된 경우
+        //           response.sendRedirect("/");
+        //           return false;   // 요청을 컨트롤러에게 전달하지 않음
+        //     }
+        // }
         return true;  // 요청을 컨트롤러에게 전달
     }
 

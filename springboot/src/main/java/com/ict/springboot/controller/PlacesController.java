@@ -16,6 +16,8 @@ import com.ict.springboot.dto.PlacesDto;
 import com.ict.springboot.service.PlacesService;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.PutMapping;
+
 
 @RestController
 @RequestMapping("/api/places")
@@ -43,10 +45,16 @@ public class PlacesController {
         return placesService.create(dto);
     } 
 
+    //수정
+    @PutMapping("/{id}")
+    public PlacesDto updatePlace(@PathVariable Long id, @RequestBody PlacesDto dto) {
+        return placesService.update(dto, id);
+    } 
+
     //삭제
-    @DeleteMapping("")
-    public PlacesDto deletePlaces(@RequestBody PlacesDto dto) throws Exception {
-        return placesService.delete(dto);
+    @DeleteMapping("/{id}")
+    public PlacesDto deletePlaces(@PathVariable Long id) throws Exception {
+        return placesService.delete(id);
     }
 
 }
