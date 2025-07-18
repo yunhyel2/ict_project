@@ -11,7 +11,7 @@ const dummy = { id: 1, title: '배드민턴 치실분 한분만', content: "배�
 export default function DetailMeet() {
     const { id } = useParams();
     const [ meet, setMeet ] = useState(dummy); 
-    const { title, content, createdAt, applies= 0, goal = 1, user, active } = meet;
+    const { title, content, meetAt, applies= 0, goal = 1, user, active } = meet;
     const { profileImage = '', name: username = "윤혜리" } = user;
     const { auth } = useAuth();
     const navigate = useNavigate(); 
@@ -49,7 +49,7 @@ export default function DetailMeet() {
     }, []);
 
     return <>
-        <OverlayPage title="모임/모집">
+        <OverlayPage title="모임/모집" {...isAuthor && { onEdit: handleModify, onDelete: handleDelete }}>
             <div className="d-flex flex-column" style={{ height: '100%' }}>
                 <div className="p-3 border-bottom border-gray d-flex gap-20 align-items-center" style={{ borderBottomWidth: '8px !important' }}>
                     <ProfileImg small src={profileImage} />
@@ -62,7 +62,7 @@ export default function DetailMeet() {
                     <div className="d-flex p-3 flex-grow border-right border-gray">
                         <small className="align-self-center pe-4 text-nowrap text-gray">일시</small>
                         <small className="flex-grow">
-                            {getDate(createdAt)}
+                            {getDate(meetAt)}
                         </small>
                     </div>
                     <div className="d-flex p-3">
@@ -75,16 +75,16 @@ export default function DetailMeet() {
                 <div className="flex-grow p-4 ps-3 pe-3 border-bottom border-gray" dangerouslySetInnerHTML={{ __html: content }} />
                 {/* TODO:: 지원하기 버튼 / 마감될 경우 지원마감 버튼 노출 */}
                 {isAuthor ?    
-                    (<div className="d-flex">
-                        <button className="btn btn-warning p-3 border-radius-0 flex-grow-1 " style={{ flexBasis: 0 }} onClick={handleModify}>수정하기</button>
-                        <button className="btn btn-danger p-3 border-radius-0 flex-grow-1" style={{ flexBasis: 0 }} onClick={handleDelete}>삭제</button>
-                    </div>)
+                    <>
+                        <button className="btn btn-secondary p-3 border-radius-0" disabled>지원자 리스트 보기</button>
+                    </>
                     :
                         (!active ?
                         <button className="btn btn-primary p-3 border-radius-0">지원하기</button>
                         :
                         <button className="btn btn-secondary p-3 border-radius-0" disabled>지원마감</button>)
                 }
+                {/* TODO:: 댓글 리스트 */}
             </div>
         </OverlayPage>
     </>

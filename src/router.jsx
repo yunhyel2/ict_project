@@ -50,7 +50,7 @@ const router = createBrowserRouter([
                 element: <Meet />,
                 children: [
                     { path: `create`, element: <CreateMeet /> },
-                    { path: `modify`, element: <ModifyMeet /> },
+                    { path: `modify/:id`, element: <ModifyMeet />},
                     { path: ':id', element: <DetailMeet /> },
                 ]
             },

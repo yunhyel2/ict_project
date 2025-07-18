@@ -50,9 +50,14 @@ public class MeetsService {
         meetRepo.deleteById(id);
     }
 
+    //<<게시글 수정>>
     public MeetsDto updateMeet(MeetsDto dto) {
-        meetRepo.findById(dto.getId()).get();
-        return null;
+        MeetsEntity meetEntity = meetRepo.findById(dto.getId()).orElseThrow(() -> new IllegalArgumentException("존재하지 않는 모임입니다."));
+        meetEntity.setTitle(dto.getTitle());
+        meetEntity.setContent(dto.getContent());
+        meetEntity.setGoal(dto.getGoal());
+        meetEntity.setMeetAt(dto.getMeetAt());
+        return MeetsDto.toDto(meetRepo.save(meetEntity));
     }
 
     

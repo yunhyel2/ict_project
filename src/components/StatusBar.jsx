@@ -22,7 +22,7 @@ function StatusBar({
                 )}
             </div>
             <p className="h5 mb-0">{title}</p>
-            <div className="flex1">
+            <div className="flex2 d-flex flex-nowrap justify-content-end pe-2">
                 {children}
             </div>
         </div>

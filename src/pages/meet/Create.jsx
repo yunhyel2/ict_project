@@ -13,6 +13,7 @@ export default function CreateMeet() {
 
     const navigate = useNavigate();
     const titleRef = useRef();
+    const meetAtRef = useRef();
     const contentRef = useRef();
     const goalRef = useRef();
     const { account, name, location, locationId } = useAuth().auth; // auth = { account, location, name }
@@ -45,7 +46,7 @@ export default function CreateMeet() {
         const title = titleNode.value;
         const content = contentNode.value;
         const goal = goalRef.current.value;
-        const meetAt = now;
+        const meetAt = meetAtRef.current.value;
         
         createMeet({ user, location:{ location, id: locationId }, title, content, meetAt, goal })
         .then(data=>{
@@ -61,7 +62,7 @@ export default function CreateMeet() {
     
     return <>
         <OverlayPage title="모임/모집">
-            <form method="POST" className="d-flex flex-column">
+            <form method="POST" className="d-flex flex-column" style={{ height: '100%' }}>
                 <div className="p-3 border-bottom border-gray">
                     <input ref={titleRef} type="text" className="form-control border-0" id="feed_title" placeholder="제목을 입력하세요" name="title"/>
                     <small className="text-danger">{titleValid}</small>
@@ -74,7 +75,7 @@ export default function CreateMeet() {
                     <div className="d-flex p-3 flex-grow border-right border-gray">
                         <label htmlFor="feed_date" className="align-self-center pe-2 text-nowrap">일시</label>
                         <div className="flex-grow">
-                            <input id="feed_date" type="datetime-local" name="date" className="form-control" min={now} defaultValue={now} />
+                            <input ref={meetAtRef} id="feed_date" type="datetime-local" name="meetAt" className="form-control" min={now} defaultValue={now} />
                         </div>
                     </div>
                     <div className="d-flex p-3" style={{ width: 260 }}>
@@ -85,7 +86,7 @@ export default function CreateMeet() {
                         <span className="align-self-center ps-2 text-nowrap">명</span>
                     </div>
                 </div>
-                <button className="btn btn-primary p-3 border-radius-0" onClick={handleInsert}>작성하기</button>
+                <button className="btn btn-primary p-3 border-radius-0 mt-auto" onClick={handleInsert}>작성하기</button>
             </form>
         </OverlayPage>
     </>
