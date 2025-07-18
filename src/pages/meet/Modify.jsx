@@ -1,10 +1,9 @@
 import { useEffect, useRef, useState } from "react"
 import { OverlayPage } from "/components";
-import axios from "axios";
 import { URL } from "/config/constants";
-import { createMeet, getMeet, modifyMeet, updateMeet } from "../../services/meets";
+import { getMeet, updateMeet } from "/services/meets";
 import { useNavigate, useOutletContext, useParams } from "react-router-dom";
-import { useAuth } from "../../context/AuthContext";
+import { useAuth } from "/context/AuthContext";
 
 const dummy = { id: 1, title: '배드민턴 치실분 한분만', content: "배드민턴치실분 한분만 급하게 구해봅니다<br/>여자만 구해요. 남자안됨<br/><br/><br/>치고 밥먹고 헤어져요.", meetDate : new Date('2025/07/20').toISOString(), goal: 1, applies: 0, user: { name: "윤혜리", profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKMfeYVIFGvDHrF30lB5S57Nxk1iFVLu48ZQpy_1dRTNQHp7c-VHGYXoMR-sUuVmg87K0&usqp=CAU' }, createdAt: new Date().toISOString() };
 
@@ -13,6 +12,12 @@ export default function ModifyMeet() {
     const now = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0,16);
     const navigate = useNavigate();
     const { id } = useParams();
+
+    /** 
+     *  [혜리 comment] meets를 Outlet에서 받는 이유가 뭐죠?! 
+     *  목록 변경할때 사용하기 위해서라면 setMeets에서 이전 state 값을 받을 수 있습니다!
+     *  setMeets(prev => {}) 여기서 prev가 meets 값이 됨.
+     **/
     const { meets, setMeets } = useOutletContext();
 
     const [ meet, setMeet ] = useState(dummy); 
@@ -54,13 +59,14 @@ export default function ModifyMeet() {
         const goal = goalRef.current.value;
         const meetAt = now;
         
-        console.log({ title, content, meetAt, goal })
         updateMeet({ title, content, meetAt, goal })
         .then(data=>{
-            //글 수정, 상태 함수 작성. 
-            //setMeets(prev=>[data , ...prev])
-            alert("모집이 수정되었습니다");
-            navigate(`${URL.JOINUS}/${id}`)
+            if (data.id) {
+                //글 수정, 상태 함수 작성. 
+                //setMeets(prev=>[data , ...prev])
+                alert("모집이 수정되었습니다");
+                navigate(`${URL.JOINUS}/${id}`)
+            }
         })
         .catch(err=> {
             console.log(err);

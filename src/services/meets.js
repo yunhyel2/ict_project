@@ -16,11 +16,12 @@ export async function getMeet(id) {
 }
 
 export async function deleteMeet(id){
-    const {data} = await axios.delete(`/api/meets/${id}`)
+    const { data } = await axios.delete(`/api/meets/${id}`)
     return data;
 }
 
 export async function updateMeet(post) {
-    const { data } = await axios.put(`/api/meets/${id}`,post)
+    const { data } = await axios.put(`/api/meets/${post.id}`,post)
+    return data;
 }
 

@@ -35,7 +35,7 @@ export default function MeetsContainer(props) {
     }, []);
 
     return <>
-        <Meets {...props} meets={meets} setMeets={ setMeets } />
+        <Meets {...props} meets={meets} setMeets={setMeets} />
         
     </>
 }
