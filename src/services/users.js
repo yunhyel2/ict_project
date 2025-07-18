@@ -21,7 +21,7 @@ export async function deleteUser(account) {
 }
 
 export async function verifyUser(account, password) {
-    const { data } = await axios.get(`/api/users?account=${account}&password=${password}`);
+    const { data } = await axios.post('/api/auth/verify-password', { account, password });
     return data;
 }
 

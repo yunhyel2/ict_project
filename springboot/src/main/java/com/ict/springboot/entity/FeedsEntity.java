@@ -1,6 +1,7 @@
 package com.ict.springboot.entity;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
@@ -11,7 +12,9 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.Lob;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -35,10 +38,11 @@ public class FeedsEntity {
     @Column(length = 20,nullable = false)
     private long id;
 
-    @Column(name="image", length = 255)
+    @Lob
+    @Column(name="image", columnDefinition="CLOB")  // BASE64로 저장하기 위한 LONGTEXT 설정
     private String image;
 
-    @Column(length = 20, nullable = false)
+    @Column(length = 1000, nullable = false)
     private String content;
 
     @Column(name="created_at")
@@ -53,5 +57,11 @@ public class FeedsEntity {
     @ManyToOne
     @JoinColumn(name ="location_id",nullable = false)
     private LocationsEntity location;
+    
+    @OneToMany(mappedBy = "feed")
+    private List<CommentsEntity> comments;
+    
+    @OneToMany(mappedBy = "feed")
+    private List<LikesEntity> likes;
     
 }

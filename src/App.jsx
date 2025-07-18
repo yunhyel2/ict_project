@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import { useAuth } from '/context/AuthContext';
 import axios from "axios";
-import { URL } from '/config/constants';
 import Header from '/pages/Header';
 import Menu from '/pages/Menu';
 import Search from '/components/Search';
@@ -14,13 +13,13 @@ import './App.css';
 
 function App() {
   const [chat, setChat] = useState();
-  const { auth, login, logout } = useAuth();
+  const { auth, fetchAuth, logout } = useAuth();
   
   useEffect(() => {
 
     //백엔드에서 세션에 값이 남아 있는지 체크 후 로그인 상태가 아니라면 로그아웃 시킨다.
     axios.get("/api/auth/login")
-    .then(({ data }) => login(data))
+    .then(({ data }) => fetchAuth(data))
     .catch(() => logout());     /* TODO:: 주석처리풀기 */
   }, [])
 

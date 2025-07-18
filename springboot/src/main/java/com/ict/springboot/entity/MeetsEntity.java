@@ -2,7 +2,6 @@ package com.ict.springboot.entity;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -49,8 +48,8 @@ public class MeetsEntity {
     @Column(nullable = false)
     private int goal;
 
-    @Column(name = "meet_date",nullable = false)
-    private LocalDateTime meetDate;
+    @Column(name = "meet_at",nullable = false)
+    private LocalDateTime meetAt;
 
     @CreationTimestamp
     @Column(name = "created_at",nullable = false,updatable = false)
@@ -64,7 +63,7 @@ public class MeetsEntity {
     @Column(nullable = false)
     private boolean isActive = false;
 
-      @ManyToOne(optional = false,fetch = FetchType.LAZY)
+    @ManyToOne(optional = false,fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id",foreignKey = @ForeignKey(name = "FK_MEETS_USERS"))
     private UsersEntity user;
 

@@ -3,7 +3,7 @@ import { useAuth } from "/context/AuthContext";
 
 export default function LogoutBtn() {
     const { logout } = useAuth();
-
+    
     const onLogout = () => {
         axios.get("/api/auth/logout")
         logout();

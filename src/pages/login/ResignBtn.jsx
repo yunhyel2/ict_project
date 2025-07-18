@@ -8,9 +8,8 @@ export default function ResignBtn() {
     const [confirmed, setConfirmed] = useState(false);
     const { auth: { account }, logout } = useAuth();
 
-    const resign = e => {
-        e.preventDefault();
-        deleteUser(account).then(({ data }) => {
+    const resign = () => {
+        deleteUser(account).then((data) => {
             if (data?.id) {
                 alert('성공적으로 탈퇴되었습니다. \n로그인 화면으로 돌아갑니다.');
                 setConfirmed(false);

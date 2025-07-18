@@ -7,9 +7,15 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Service;
 
 import com.ict.springboot.dto.FeedsDto;
-import com.ict.springboot.dto.LocationsDto;
 import com.ict.springboot.entity.FeedsEntity;
+import com.ict.springboot.entity.LikesEntity;
+import com.ict.springboot.entity.LocationsEntity;
+import com.ict.springboot.entity.UsersEntity;
+import com.ict.springboot.repository.CommentsRepository;
 import com.ict.springboot.repository.FeedsRepository;
+import com.ict.springboot.repository.LikesRepository;
+import com.ict.springboot.repository.LocationsRepository;
+import com.ict.springboot.repository.UsersRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,39 +24,116 @@ import lombok.RequiredArgsConstructor;
 public class FeedsService {
 
     private final FeedsRepository feedRepo;
-    private final LocationsService locService;
-
+    private final LocationsRepository locationsRepository;
+    private final UsersRepository usersRepository;
+    private final CommentsRepository commentsRepository;
+    private final LikesRepository likesRepository;
+    
     //전체 조회
     public List<FeedsDto> getAll(){
-        List<FeedsEntity> feedsEntities = feedRepo.findAll();
-        return feedsEntities.stream().map(entiy ->FeedsDto.todDto(entiy)).collect(Collectors.toList());
+        List<FeedsEntity> feedsEntities = feedRepo.findAllByOrderByCreatedAtDesc();
+        return feedsEntities.stream().map(entity -> {
+            FeedsDto dto = FeedsDto.todDto(entity);
+            // 좋아요/댓글 수 설정
+            dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
+            dto.setCommentCount(commentsRepository.countByFeedId(entity.getId()));
+            return dto;
+        }).collect(Collectors.toList());
     }
 
     
     //상세조회
     public FeedsDto getById(Long id){
         Optional<FeedsEntity> feedsEntity = feedRepo.findById(id);
-        return FeedsDto.todDto(feedsEntity.orElseGet(()->null));
+        if (feedsEntity.isEmpty()) {
+            return null;
+        }
+        
+        FeedsEntity entity = feedsEntity.get();
+        FeedsDto dto = FeedsDto.todDto(entity);
+        
+        // 좋아요/댓글 수 설정
+        dto.setLikeCount(likesRepository.countByFeedId(entity.getId()));
+        dto.setCommentCount(commentsRepository.countByFeedId(entity.getId()));
+        
+        return dto;
     }
     //생성
     public FeedsDto create(FeedsDto dto){
         boolean isDuplicated = feedRepo.existsById(dto.getId());
         if(isDuplicated) return null;
-        LocationsDto location = locService.findOrCreate(dto.getLocation().toString());
-        dto.setLocation(location);
-        FeedsEntity feedsEntity = feedRepo.save(dto.toEntity());
+
+        // location
+        LocationsEntity locationEntity = null;
+        if (dto.getLocation() != null && dto.getLocation().getId() != 0) {
+            locationEntity = locationsRepository.findById(dto.getLocation().getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 location이 DB에 없습니다."));
+        }
+
+        // user
+        UsersEntity userEntity = null;
+        if (dto.getUser() != null && dto.getUser().getId() != 0) {
+            userEntity = usersRepository.findById(dto.getUser().getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 user가 DB에 없습니다."));
+        }
+
+        FeedsEntity feedsEntity = FeedsEntity.builder()
+            .content(dto.getContent())
+            .image(dto.getImage())
+            .user(userEntity)
+            .location(locationEntity)
+            .build();
+
+        feedsEntity = feedRepo.save(feedsEntity);
         return FeedsDto.todDto(feedsEntity);
     }
     //삭제
-    public FeedsDto delete(FeedsDto dto) throws Exception{
-        if(feedRepo.existsById(dto.getId())){
+    public FeedsDto delete(long id) throws Exception{
+        FeedsEntity feed = feedRepo.findById(id).orElseGet(()->null);
+        if(feed != null){
             try{
-                feedRepo.deleteById(dto.getId());
+                feedRepo.deleteById(id);
+                return FeedsDto.todDto(feed);
             } catch (Exception e){
                 throw new Exception("데이터 삭제에 문제가 생겼습니다");
             }
         }
-        return dto;
+        return null;
+    }
+    
+    // 좋아요 토글
+    public boolean toggleLike(Long feedId, Long userId) {
+        boolean exists = likesRepository.existsByFeedIdAndUserId(feedId, userId);
+        
+        if (exists) {
+            // 좋아요 취소
+            likesRepository.findByFeedIdAndUserId(feedId, userId)
+                .ifPresent(likesRepository::delete);
+            return false;
+        } else {
+            // 좋아요 추가
+            FeedsEntity feed = feedRepo.findById(feedId)
+                .orElseThrow(() -> new IllegalArgumentException("피드를 찾을 수 없습니다."));
+            UsersEntity user = usersRepository.findById(userId)
+                .orElseThrow(() -> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+            
+            LikesEntity like = LikesEntity.builder()
+                .feed(feed)
+                .user(user)
+                .build();
+            likesRepository.save(like);
+            return true;
+        }
+    }
+    
+    // 좋아요 수 조회
+    public long getLikeCount(Long feedId) {
+        return likesRepository.countByFeedId(feedId);
+    }
+    
+    // 사용자가 좋아요를 눌렀는지 확인
+    public boolean isLikedByUser(Long feedId, Long userId) {
+        return likesRepository.existsByFeedIdAndUserId(feedId, userId);
     }
 
 }

@@ -10,6 +10,7 @@ import classes from "./Signup.module.scss";
 
 export default function Signup() {
     const [step, setStep] = useState(0);
+    const [fileName, setFileName] = useState('');
     const [form, setForm] = useState({
         account: '',
         accountConfirm: undefined,  // undefined: 중복체크 미진행, false : 중복체크 통과못함, true : 중복체크 통과
@@ -43,10 +44,10 @@ export default function Signup() {
             return;
         }
 
-        createUser({ account, password, name, address, gender, profileImage: profileImage?.base64 || null })
+        createUser({ account, password, name, address, gender, profileImage })
         .then(() => {
             alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
-            navigate(URL.LOGIN);
+            navigate(URL.LOGIN);//해당 URL로 이동
         }).catch(() => alert("회원가입에 실패했습니다."))
     };
 
@@ -58,11 +59,13 @@ export default function Signup() {
         if (file?.size / 1024 > 500) {  // 500KB 초과
             alert("파일 사이즈는 500KB를 초과할 수 없습니다.");
             e.target.files = null;
+            setFileName('');
             setForm(prev => ({ ...prev, profileImage: null }));
             return;
         }
         const base64 = await fileToBase64(file);
-        setForm(prev => ({ ...prev, profileImage: { base64, name: file.name } }));
+        setFileName(file.name);
+        setForm(prev => ({ ...prev, profileImage: base64 }));
     };
 
     const onBack = e => {
@@ -141,19 +144,16 @@ export default function Signup() {
                                 <label htmlFor="female" style={{ height: 60 }}>여자</label>
                             </fieldset>
                         </div>
-                        <div className="d-flex flex-column align-items-stretch gap-8">
-                            <small>프로필 사진</small>
-                            <input id="profile_image" type="file" name="profileImage" accept="image/jpg, image/png, image/jpeg" onChange={handleFile} />
-                            <label htmlFor="profile_image">
-                                {!profileImage && <>
+                        <div className="d-flex align-items-center gap-8">
+                            <div className="d-flex flex-grow flex-column align-items-stretch gap-8">
+                                <small>프로필 사진</small>
+                                <input id="profile_image" type="file" name="profileImage" accept="image/jpg, image/png, image/jpeg" onChange={handleFile} />
+                                <label htmlFor="profile_image">
                                     <i className="fas fa-camera" />
-                                    <p>이미지를 첨부하세요 (최대 500KB)</p>
-                                </>}
-                                {profileImage && <>
-                                    <img src={profileImage.base64} width="40px" height="40px" className="border-radius-20" />
-                                    <p>{profileImage.name}</p>
-                                </>}
-                            </label>
+                                    <p>{fileName || '이미지를 첨부하세요 (최대 500KB)'}</p>
+                                </label>
+                            </div>
+                            {profileImage && <img src={profileImage} width="90px" height="90px" className="border border-gray border-radius-20" />}
                         </div>
                     </div>
                     <button type="submit" className="btn btn-primary border-radius-0 mt-auto" disabled={!validate}>{validate ? '회원가입' : '필수 사항을 전부 입력하세요'}</button>

@@ -29,6 +29,11 @@ public class FeedsDto {
     private LocalDateTime createdAt;
     private UsersDto user;
     private LocationsDto location;
+    
+    // 좋아요/댓글 수 (실시간 계산)
+    private long likeCount;
+    private long commentCount;
+    private boolean isLiked; // 현재 사용자가 좋아요를 눌렀는지 여부
 
     public FeedsEntity toEntity(){
         UsersEntity usersEntity = user == null ? null : user.toEntity();
