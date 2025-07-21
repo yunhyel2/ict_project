@@ -1,13 +1,13 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, forwardRef } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { getDate } from '/components';
 import ProfileImg from '/components/ProfileImg';
 import { URL } from '/config/constants';
 import { useAuth } from '/context/AuthContext';
-import { toggleLike, getLikeCount, isLikedByUser } from '/services/feeds';
+import { toggleLike } from '/services/feeds';
 
-export default function Feed({ feed, isSimple }) {
-    const { id, content, user, image, createdAt, likeCount = 0, commentCount = 0 } = feed;
+const Feed = forwardRef(({ feed, isSimple }, ref) => {
+    const { id, content, user, image, createdAt, likeCount = 0, commentCount = 0, liked } = feed;
     const username = user?.name || '알 수 없음';
     const profileImage = user?.profileImage || '/assets/icons/empty_profile.svg';
     const { auth } = useAuth();
@@ -15,12 +15,6 @@ export default function Feed({ feed, isSimple }) {
     
     const [likes, setLikes] = useState(likeCount);
     const [isLiked, setIsLiked] = useState(false);
-    
-    useEffect(() => {
-        if (auth.id) {
-            isLikedByUser(id, auth.id).then(setIsLiked);
-        }
-    }, [id, auth.id]);
     
     const handleLike = async (e) => {
         e.preventDefault();
@@ -39,16 +33,19 @@ export default function Feed({ feed, isSimple }) {
         }
     };
 
+    useEffect(() => setIsLiked(liked), [liked]);
+    useEffect(() => setLikes(likeCount), [likeCount]);
+
     return <>
-        <li role="button" onClick={() => navigate(`${URL.FEED}/${id}`)} className="list-group-item list-group-item-action pt-2 pb-3 d-flex align-items-start gap-20" key={id}>
+        <li ref={ref} role="button" onClick={() => navigate(`${URL.FEED}/${id}`)} className="list-group-item list-group-item-action pt-2 pb-3 d-flex align-items-start gap-20" key={id}>
             <ProfileImg small src={profileImage} />
             <div className="flex-grow d-flex flex-column">
                 <div className="d-flex justify-content-between align-items-center pt-1 pb-1">
                     <b>{username}</b>
                     <small className="text-gray" style={{ fontSize: 12 }}>{getDate(createdAt)}</small>
                 </div>
-                <p style={{ maxWidth: 400 }}>{content}</p>
-                {!isSimple && image && <img src={image} width="100%" height="auto" className="mt-2 border-radius-12" alt="" />}
+                <p style={{ maxWidth: 400, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{content}</p>
+                {!isSimple && image && <div className="d-flex justify-content-center mt-2"><img src={image} width="100%" height="auto" className="border-radius-12" alt="" /></div>}
                 <div className="mt-3 d-flex align-items-center gap-8">
                     <button 
                         className="border-0 bg-transparent p-0 d-inline-flex align-items-center gap-1"
@@ -70,4 +67,6 @@ export default function Feed({ feed, isSimple }) {
             </div>
         </li>
     </>
-}
+});
+
+export default Feed;

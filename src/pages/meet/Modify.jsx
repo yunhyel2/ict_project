@@ -1,16 +1,14 @@
 import { useEffect, useRef, useState } from "react"
+import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { OverlayPage } from "/components";
 import { URL } from "/config/constants";
 import { getMeet, updateMeet } from "/services/meets";
-import { useNavigate, useOutletContext, useParams } from "react-router-dom";
 import { useAuth } from "/context/AuthContext";
-
-const dummy = { id: 1, title: '배드민턴 치실분 한분만', content: "배드민턴치실분 한분만 급하게 구해봅니다<br/>여자만 구해요. 남자안됨<br/><br/><br/>치고 밥먹고 헤어져요.", meetDate : new Date('2025/07/20').toISOString(), goal: 1, applies: 0, user: { name: "윤혜리", profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSKMfeYVIFGvDHrF30lB5S57Nxk1iFVLu48ZQpy_1dRTNQHp7c-VHGYXoMR-sUuVmg87K0&usqp=CAU' }, createdAt: new Date().toISOString() };
 
 export default function ModifyMeet() {
     
     const now = new Date(Date.now() - (new Date().getTimezoneOffset() * 60000)).toISOString().substring(0,16);
-    const navigate = useNavigate();
+    //Detail에서  navigate로 넘겨온 파라미터,  글 id값을 구조분해로 받음
     const { id } = useParams();
 
     /** 
@@ -18,25 +16,33 @@ export default function ModifyMeet() {
      *  목록 변경할때 사용하기 위해서라면 setMeets에서 이전 state 값을 받을 수 있습니다!
      *  setMeets(prev => {}) 여기서 prev가 meets 값이 됨.
      **/
-    const { meets, setMeets } = useOutletContext();
+    const { setMeets } = useOutletContext();
 
-    const [ meet, setMeet ] = useState(dummy); 
-    const { title, content, createdAt ,applies= 0, goal = 1, user, active } = meet;
-    const { profileImage = '', name: username = "윤혜리" } = user;
+    const [ meet, setMeet ] = useState({}); 
+    //구조분해 해주고 
+    const { title, content, meetAt, createdAt , goal = 1, user } = meet;
     
+    //로그인 유저와 저자가 같은지 체크 (둘다 null이면 안됨)
     const { auth } = useAuth();
     const isAuthor = user?.id === auth?.id;
-
+    
+    // useRef로 폼 값을 받아옴.
     const titleRef = useRef();
     const contentRef = useRef();
     const goalRef = useRef();
-    
-    
+    const navigate = useNavigate();
+
     //<<유효성 체크 메시지 출력을 위한 State>>
     const [titleValid, setTitleValid] = useState('');
     const [contenteValid, setContentValid] = useState('');
 
-    
+    //<<>>
+    const handleForm = e=>{
+        const {name,value} = e.target; 
+        setMeet(prev=>({...prev,[name]:value}))
+        //실시간 유효성 체크도 가능하다
+    }
+
     //<<게시글 수정 버튼 이벤트 처리용>>
     const handleModify = e=>{
         e.preventDefault();//제출 기능 막기
@@ -46,35 +52,30 @@ export default function ModifyMeet() {
         if(titleNode.value.trim()===''){
             setTitleValid('제목을 입력하세요');
             titleNode.focus();
-           
         }
+
         if(contentNode.value.trim()===''){
             setContentValid('내용을 입력하세요');
             contentNode.focus();
-            
         }
+
         if(titleNode.value.trim()==='' || contentNode.value.trim()==='') return;   
-        const title = titleNode.value;
-        const content = contentNode.value;
-        const goal = goalRef.current.value;
-        const meetAt = now;
         
-        updateMeet({ title, content, meetAt, goal })
+        console.log({...meet,title:title,content:content,goal:goal})
+        updateMeet({...meet,title:title,content:content,goal:goal})
         .then(data=>{
-            if (data.id) {
-                //글 수정, 상태 함수 작성. 
-                //setMeets(prev=>[data , ...prev])
-                alert("모집이 수정되었습니다");
-                navigate(`${URL.JOINUS}/${id}`)
-            }
+            //글 수정, 상태 함수 작성. 
+            setMeets(prev => prev.map(m => data.id === m.id ? data : m));
+            alert("모집이 수정되었습니다");
+            navigate(`${URL.JOINUS}/${data.id}`)
         })
         .catch(err=> {
             console.log(err);
             alert("모집 수정에 실패했습니다.");
         })
     };
-    
-    useEffect(e=>{
+    //초기 렌더링.
+    useEffect(e => {
         getMeet(id)
         .then((data)=>{
             setMeet(data);
@@ -86,27 +87,27 @@ export default function ModifyMeet() {
     },[])
 
     return <>
-        <OverlayPage title="게시글 수정">
+        <OverlayPage title="수정">
             <form method="POST" className="d-flex flex-column">
                 <div className="p-3 border-bottom border-gray">
-                    <input ref={titleRef} value={title} type="text" className="form-control border-0" id="feed_title" placeholder="제목을 입력하세요" name="title"/>
+                    <input ref={titleRef} value={title} onChange={handleForm} type="text" className="form-control border-0" id="feed_title" placeholder="제목을 입력하세요" name="title"/>
                     <small className="text-danger">{titleValid}</small>
                 </div>
                 <div className="p-3 border-bottom border-gray">
-                    <textarea ref={contentRef} value={content} style={{resize: 'none'}} className="form-control border-0" rows="18" id="feed_content" name="content" placeholder="내용을 입력하세요"></textarea>
+                    <textarea ref={contentRef} value={content} onChange={handleForm} style={{resize: 'none'}} className="form-control border-0" rows="18" id="feed_content" name="content" placeholder="내용을 입력하세요"></textarea>
                     <small className="text-danger">{contenteValid}</small>
                 </div>
                 <div className="border-bottom border-gray d-flex align-items">
                     <div className="d-flex p-3 flex-grow border-right border-gray">
                         <label htmlFor="feed_date" className="align-self-center pe-2 text-nowrap">일시</label>
                         <div className="flex-grow">
-                            <input id="feed_date" type="datetime-local" name="date" className="form-control" min={now} defaultValue={createdAt} />
+                            <input id="feed_date" type="datetime-local" name="meetAt" className="form-control" min={now} defaultValue={createdAt} value={meetAt} onChange={handleForm} />
                         </div>
                     </div>
                     <div className="d-flex p-3" style={{ width: 260 }}>
                         <label htmlFor="feed_goal" className="align-self-center pe-2 text-nowrap">모집 인원</label>
                         <div className="flex-grow">
-                            <input ref={goalRef} type="number" className="form-control" name="goal" id="feed_goal" min="0" max="99" value={goal} />
+                            <input ref={goalRef} value={goal} onChange={handleForm} type="number" className="form-control" name="goal" id="feed_goal" min="0" max="99"/>
                         </div>
                         <span className="align-self-center ps-2 text-nowrap">명</span>
                     </div>

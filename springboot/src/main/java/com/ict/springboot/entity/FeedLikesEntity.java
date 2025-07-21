@@ -14,6 +14,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -21,22 +22,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "COMMENTS")
+@Table(name = "FEED_LIKES", uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "feed_id" }) })
 @Setter
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class CommentsEntity {
+public class FeedLikesEntity {
     
     @Id
-    @SequenceGenerator(name = "SEQ_COMMENTS_GENERATOR", sequenceName = "SEQ_COMMENTS", allocationSize = 1, initialValue = 1)
-    @GeneratedValue(generator = "SEQ_COMMENTS", strategy = GenerationType.SEQUENCE)
+    @SequenceGenerator(name = "SEQ_LIKES_GENERATOR", sequenceName = "SEQ_LIKES", allocationSize = 1, initialValue = 1)
+    @GeneratedValue(generator = "SEQ_LIKES", strategy = GenerationType.SEQUENCE)
     @Column(length = 20, nullable = false)
     private long id;
-
-    @Column(length = 500, nullable = false)
-    private String content;
 
     @Column(name="created_at")
     @ColumnDefault("SYSDATE")

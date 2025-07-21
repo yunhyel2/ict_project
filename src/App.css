@@ -230,3 +230,27 @@ a {
     border-left: 1px solid var(--gray-border-color);
     border-radius: 0;
 }
+
+.comment {
+    position: relative;
+}
+
+.comment button.delete {
+    position: absolute;
+    transition: all .2s;
+    width: 0;
+    height: 100%;
+    white-space: nowrap;
+    border-radius: 0;
+    padding: 0;
+    box-sizing: border-box;
+    border: none;
+    overflow: hidden;
+    top: 0;
+    right: 0;
+    font-size: 13px;
+}
+
+.comment:hover button.delete, .comment:focus button.delete, .comment:active button.delete {
+    width: 80px;
+}

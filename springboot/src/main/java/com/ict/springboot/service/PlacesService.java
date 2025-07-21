@@ -59,7 +59,6 @@ public class PlacesService {
             .address(dto.getPlaceAddress())
             .image(dto.getImage())
             .category(dto.getCategory())
-            .createdAt(dto.getCreatedAt())
             .build();
 
         placesEntity = placesRepo.save(dto.toEntity());

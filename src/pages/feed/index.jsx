@@ -1,23 +1,27 @@
-import { useEffect, useState } from "react";
-import { getFeeds } from "/services/feeds";
+import { useEffect, useState, useCallback, useRef } from "react";
+import { getFeedsWithPagination } from "/services/feeds";
 import Feeds from "./Feeds";
 
 export default function FeedsContainer(props) {
     const [feeds, setFeeds] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [hasMore, setHasMore] = useState(true);
+    const [page, setPage] = useState(0);
+    const [loadingMore, setLoadingMore] = useState(false);
+    const observer = useRef();
+    const PAGE_SIZE = 10;
 
     useEffect(() => {
-        /* TODO:: 여기서 리스트 불러와서 저장하기 */
-        // 단, 피드는 20개(혹은 10개?)씩 순차적으로 불러와 기존 데이터에 쌓는 방식으로 진행해야한다.
-        // 참조 :: react-intersection-observer 이용한 무한스크롤 (수업시간에 배웠습니다!)
         loadFeeds();
     }, []);
 
     const loadFeeds = async () => {
         try {
             setLoading(true);
-            const data = await getFeeds();
+            const data = await getFeedsWithPagination(0, PAGE_SIZE);
             setFeeds(data);
+            setPage(1);
+            setHasMore(data.length === PAGE_SIZE);
         } catch (error) {
             console.error("피드 로딩 실패:", error);
             setFeeds([]);
@@ -26,7 +30,47 @@ export default function FeedsContainer(props) {
         }
     };
 
+    const loadMoreFeeds = async () => {
+        if (loadingMore || !hasMore) return;
+        
+        try {
+            setLoadingMore(true);
+            const data = await getFeedsWithPagination(page, PAGE_SIZE);
+            
+            if (data.length > 0) {
+                setFeeds(prev => [...prev, ...data]);
+                setPage(prev => prev + 1);
+                setHasMore(data.length === PAGE_SIZE);
+            } else {
+                setHasMore(false);
+            }
+        } catch (error) {
+            console.error("추가 피드 로딩 실패:", error);
+        } finally {
+            setLoadingMore(false);
+        }
+    };
+
+    const lastFeedElementRef = useCallback(node => {
+        if (loading) return;
+        if (observer.current) observer.current.disconnect();
+        observer.current = new IntersectionObserver(entries => {
+            if (entries[0].isIntersecting && hasMore) {
+                loadMoreFeeds();
+            }
+        });
+        if (node) observer.current.observe(node);
+    }, [loading, hasMore]);
+
     return <>
-        <Feeds {...props} feeds={feeds} loading={loading} setFeeds={setFeeds} />
+        <Feeds 
+            {...props} 
+            feeds={feeds} 
+            loading={loading} 
+            setFeeds={setFeeds}
+            lastFeedElementRef={lastFeedElementRef}
+            loadingMore={loadingMore}
+            hasMore={hasMore}
+        />
     </>
 }

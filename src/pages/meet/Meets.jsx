@@ -32,7 +32,7 @@ export default function Meets({ meets = [], setMeets }){
             </div>
         </div>
         <Link to={`${URL.JOINUS}/create`} className="create_button" />
-        <Outlet context={{ meets , setMeets }} /> 
+        <Outlet context={{ setMeets }} /> 
     </>
 
 }

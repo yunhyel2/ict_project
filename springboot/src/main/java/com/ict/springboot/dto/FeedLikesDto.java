@@ -3,7 +3,7 @@ package com.ict.springboot.dto;
 import java.time.LocalDateTime;
 
 import com.ict.springboot.entity.FeedsEntity;
-import com.ict.springboot.entity.LikesEntity;
+import com.ict.springboot.entity.FeedLikesEntity;
 import com.ict.springboot.entity.UsersEntity;
 
 import lombok.AllArgsConstructor;
@@ -17,17 +17,17 @@ import lombok.Setter;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class LikesDto {
+public class FeedLikesDto {
 
     private long id;
     private LocalDateTime createdAt;
     private UsersDto user;
     private long feedId;
 
-    public LikesEntity toEntity(){
+    public FeedLikesEntity toEntity(){
         UsersEntity usersEntity = user == null ? null : user.toEntity();
         FeedsEntity feedsEntity = FeedsEntity.builder().id(feedId).build();
-        return LikesEntity.builder()
+        return FeedLikesEntity.builder()
                         .id(id)
                         .createdAt(createdAt)
                         .user(usersEntity)
@@ -35,9 +35,9 @@ public class LikesDto {
                         .build();
     }
     
-    public static LikesDto toDto(LikesEntity lEntity){
+    public static FeedLikesDto toDto(FeedLikesEntity lEntity){
         if(lEntity==null) return null;
-        return LikesDto.builder()
+        return FeedLikesDto.builder()
                 .id(lEntity.getId())
                 .createdAt(lEntity.getCreatedAt())
                 .user(UsersDto.toDto(lEntity.getUser()))

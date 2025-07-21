@@ -58,10 +58,10 @@ public class FeedsEntity {
     @JoinColumn(name ="location_id",nullable = false)
     private LocationsEntity location;
     
-    @OneToMany(mappedBy = "feed")
-    private List<CommentsEntity> comments;
+    @OneToMany(mappedBy = "feed", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
+    private List<FeedCommentsEntity> comments;
     
-    @OneToMany(mappedBy = "feed")
-    private List<LikesEntity> likes;
+    @OneToMany(mappedBy = "feed", cascade = jakarta.persistence.CascadeType.ALL, orphanRemoval = true)
+    private List<FeedLikesEntity> likes;
     
 }
